@@ -116,7 +116,6 @@ class BMP {
 
 
 
-
 class PNG {
   private:
     SDL_Surface* _png;

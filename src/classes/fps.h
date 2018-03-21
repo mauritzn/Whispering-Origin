@@ -14,7 +14,6 @@ class FPS {
     uint32_t _ticks = 0;
     uint32_t _ticks_last = 0;
     int _delta = 0;
-    int _frame_time_last = 0;
     
     float _frame_time = 0.0;
     float _fps_current = 0.0;
@@ -25,13 +24,12 @@ class FPS {
     void calculate() {
       _ticks_last = _ticks;
       _ticks = SDL_GetTicks();
-      _delta = (_ticks - _frame_time_last);
-      _frame_time_last = _ticks;
+      _delta = (_ticks - _ticks_last);
+      _delta_time = _delta / 1000.0;
 
       _frame_time = (_alpha * _delta) + ((1.0 - _alpha) * _frame_time);
       _fps_last = _fps_current;
       _fps_current = (1000.0 / _frame_time);
-      _delta_time = (_ticks - _ticks_last) / 1000.0;
       
       if(_fps_current < 0) _fps_current = 0;
     }
