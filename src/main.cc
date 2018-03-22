@@ -75,6 +75,8 @@ string to_fixed(float number_to_fix) {
 
 
 int main() {
+  bool debug_mode = true;
+  
   FPS fps;
   uint32_t frames = 0;
 
@@ -161,8 +163,8 @@ int main() {
 
 
 
-  Text hello(win, ren, Ubuntu_font, text_color, "<text will be updated ;) >", -50, -100); // -50 => centered, -100 => bottom aligned / right aligned
-  hello.set_y(win, (hello.get_y() - 25));
+  Text hello_text(win, ren, Ubuntu_font, text_color, "<text will be updated ;) >", -50, -100); // -50 => centered, -100 => bottom aligned / right aligned
+  hello_text.set_y(win, (hello_text.get_y() - 25));
 
   Text debug_ticks(win, ren, debug_font, text_color, "Ticks: 0", 25, 25);
   Text debug_frame_count(win, ren, debug_font, text_color, "Frames: 0", 25, 50);
@@ -203,6 +205,8 @@ int main() {
 
         if(event.key.keysym.sym == SDLK_RIGHT) right_is_down = true;
         if(event.key.keysym.sym == SDLK_d) right_is_down = true;
+        
+        if(event.key.keysym.sym == SDLK_F4) debug_mode = !debug_mode;
       } else if(event.type == SDL_KEYUP) {
         if(event.key.keysym.sym == SDLK_UP) up_is_down = false;
         if(event.key.keysym.sym == SDLK_w) up_is_down = false;
@@ -219,7 +223,10 @@ int main() {
         //if(event.type != 1024 && event.type != 512) cout << ">> Event: " << event.type << endl;
       }
     }
+    
+    fps.update();
 
+    
     float temp_vel = (vel * fps.delta_time());
     //float temp_vel = (vel * 0.015000);
     // down and right seem a bit slower than up and left?
@@ -241,43 +248,41 @@ int main() {
     ren.clear();
     demo_720p_map.render(ren);
 
-    hello.render(ren);
-
-
-
+    hello_text.render(ren);
     test_char.render(ren);
 
     for(int i = 0; i < tree_count; i++) {
       trees[i]->render(ren);
     }
-
-
+    
+    
+    if(fps.ticks() > 1000) {
+      hello_text.update(ren, "Use arrow keys or WASD to move \"the character\" (up, down, left, right), F4 to toggle debug menu"); // will not mess up alignment ;)
+    }
+    
+    
+    
+    // BEGIN, DEBUG TEXT UPDATING & RENDERING
     debug_frame_count.update(ren, "Frames: " + format_number(frames++));
-    debug_frame_count.render(ren);
-
-    fps.update();
-
-
-
     debug_ticks.update(ren, "Ticks: " + format_number(fps.ticks()));
-    debug_ticks.render(ren);
-
+    
     if((fps.ticks() % 500) < 250) {
       debug_fps.update(ren, "FPS: " + to_fixed(fps.get()));
     }
-    debug_fps.render(ren);
-
+    
     debug_delta_time.update(ren, "Delta Time: " + to_string(fps.delta_time()));
-    debug_delta_time.render(ren);
-
-
-    if(fps.ticks() > 1000) {
-      hello.update(ren, "Use arrow keys or WASD to move \"the character\" (up, down, left, right)"); // will not mess up alignment ;)
+    
+    if(debug_mode) {
+      debug_frame_count.render(ren);
+      debug_ticks.render(ren);
+      debug_fps.render(ren);
+      debug_delta_time.render(ren);
     }
+    // END, DEBUG TEXT UPDATING & RENDERING
 
-
-    ren.update();
-    // SDL_Delay(1000);
+    
+    ren.update(); // update the screen
+    // SDL_Delay(1000); // <= sometimes used for debuggning issues
   }
 
 
