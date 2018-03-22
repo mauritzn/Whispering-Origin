@@ -16,6 +16,7 @@
  * 
  * ## Tested on ##
  *  - Ubuntu 17.10.1
+ *  - KDE Neon (Ubuntu with 16.04.1)
  */
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
@@ -254,6 +255,7 @@ int main() {
     
     
     debug_ticks.update(ren, "Ticks: " + format_number(fps.ticks()));
+    cout << "Ticks: " << format_number(fps.ticks()) << endl;
     debug_ticks.render(ren);
     
     if((fps.ticks() % 500) < 250) {
