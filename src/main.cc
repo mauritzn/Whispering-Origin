@@ -144,7 +144,7 @@ int main() {
 /*
   trees[0]->set_x(win, constrain_png_width(936, win, *trees[0]));
   trees[0]->set_y(win, constrain_png_height(25, win, *trees[0]));
-  
+
   trees[1]->set_x(win, constrain_png_width(1093, win, *trees[1]));
   trees[1]->set_y(win, constrain_png_height(36, win, *trees[1]));
 
@@ -260,7 +260,6 @@ int main() {
 
 
     debug_ticks.update(ren, "Ticks: " + format_number(fps.ticks()));
-    cout << "Ticks: " << format_number(fps.ticks()) << endl;
     debug_ticks.render(ren);
 
     if((fps.ticks() % 500) < 250) {
