@@ -7,8 +7,8 @@
 CC      = g++
 CFLAGS  = -Wall -std=c++14
 TARGET  = SDL_testing
-SRC     = main.cc
-HEADER  = window.h renderer.h images.h
+SRC     = main.cc classes/fps.cc
+HEADER  = classes/fps.h classes/images.h classes/renderer.h classes/text.h classes/window.h
 
 # Linker flags
 LFLAGS = -lSDL2 -lSDL2_ttf -lSDL2_image
