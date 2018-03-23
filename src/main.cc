@@ -127,21 +127,33 @@ int main() {
   SDL_SetWindowIcon(win.get(), icon);
 
 
-  BMP demo_720p_map(win, ren, "images/simple_720p_map_2.bmp", 0, 0);
+  BMP demo_720p_map(win, ren, "images/simple_720p_map_3.bmp", 0, 0);
 
   //BMP test_char(win, ren, "images/test_char_2.bmp", -50, -50); // -50 => centered, -100 => bottom aligned / right aligned
   PNG test_char(win, ren, "images/test_char_3.png", -50, -50); // -50 => centered, -100 => bottom aligned / right aligned
 
 
   vector<PNG*> trees;
-  const int tree_count = 1;
+  const int tree_count = 5;
 
   for(int i = 0; i < tree_count; i++) {
     trees.push_back(new PNG(win, ren, "images/tree.png", -50, -50));
   }
 
-  trees[0]->set_x(win, constrain_png_width(609, win, *trees[0]));
-  trees[0]->set_y(win, constrain_png_height(221, win, *trees[0]));
+  trees[0]->set_x(win, constrain_png_width(545, win, *trees[0]));
+  trees[0]->set_y(win, constrain_png_height(125, win, *trees[0]));
+
+  trees[1]->set_x(win, constrain_png_width(929, win, *trees[1]));
+  trees[1]->set_y(win, constrain_png_height(157, win, *trees[1]));
+
+  trees[2]->set_x(win, constrain_png_width(801, win, *trees[2]));
+  trees[2]->set_y(win, constrain_png_height(189, win, *trees[2]));
+
+  trees[3]->set_x(win, constrain_png_width(321, win, *trees[3]));
+  trees[3]->set_y(win, constrain_png_height(285, win, *trees[3]));
+
+  trees[4]->set_x(win, constrain_png_width(865, win, *trees[4]));
+  trees[4]->set_y(win, constrain_png_height(317, win, *trees[4]));
 
 /*
   trees[0]->set_x(win, constrain_png_width(936, win, *trees[0]));
