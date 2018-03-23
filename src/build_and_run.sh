@@ -9,6 +9,6 @@ done
 clear
 
 make
-#printf "g++ main.o -L/usr/local/lib -lSDL2 -Wl,-rpath=/usr/local/lib -o SDL_testing"
+#printf "g++ main.o -L/usr/local/lib -lSDL2 -Wl,-rpath=/usr/local/lib -o Whispering\ Origin"
 printf "============================================================================\n\n"
-./SDL_testing
+./Whispering\ Origin

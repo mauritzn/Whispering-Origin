@@ -77,11 +77,15 @@ string to_fixed(float number_to_fix) {
 int main() {
   bool debug_mode = true;
   
+  const int window_width = 1280;
+  const int window_height = 720;
+  
+  const string map = "images/simple_720p_map_3.bmp";
+  
+  
   FPS fps;
   uint32_t frames = 0;
 
-  const int window_width = 1280;
-  const int window_height = 720;
 
   if(SDL_Init(SDL_INIT_VIDEO) != 0) {
     cout << "SDL_Init Error: " << SDL_GetError() << endl;
@@ -120,14 +124,14 @@ int main() {
 
 
 
-  Window win("Hello World!", ((display_width / 2) - (window_width / 2)), ((display_height / 2) - (window_height / 2)), window_width, window_height);
+  Window win("Whispering Origin", ((display_width / 2) - (window_width / 2)), ((display_height / 2) - (window_height / 2)), window_width, window_height);
   Renderer ren(win, background_color);
 
   SDL_Surface* icon = IMG_Load("images/icon.png");
   SDL_SetWindowIcon(win.get(), icon);
 
 
-  BMP demo_720p_map(win, ren, "images/simple_720p_map_3.bmp", 0, 0);
+  BMP demo_720p_map(win, ren, map, 0, 0);
 
   //BMP test_char(win, ren, "images/test_char_2.bmp", -50, -50); // -50 => centered, -100 => bottom aligned / right aligned
   PNG test_char(win, ren, "images/test_char_3.png", -50, -50); // -50 => centered, -100 => bottom aligned / right aligned

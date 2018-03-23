@@ -1,3 +1,3 @@
 rm -rf main.o
-rm -rf SDL_testing
+rm -rf Whispering\ Origin
 printf ">> Done <<\n\n"
