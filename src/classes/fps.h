@@ -1,3 +1,6 @@
+#ifndef FPS_H
+#define FPS_H
+
 class FPS {
   private:
     float _alpha = 0.2;
@@ -25,3 +28,5 @@ class FPS {
     float get();
     float get_prev();
 };
+
+#endif

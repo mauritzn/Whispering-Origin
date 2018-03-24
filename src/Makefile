@@ -7,7 +7,7 @@
 CC      = g++
 CFLAGS  = -Wall -std=c++14
 TARGET  = Whispering\ Origin
-SRC     = main.cc classes/fps.cc
+SRC     = main.cc classes/fps.cc classes/images.cc classes/renderer.cc classes/text.cc classes/window.cc
 HEADER  = classes/fps.h classes/images.h classes/renderer.h classes/text.h classes/window.h
 
 # Linker flags

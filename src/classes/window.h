@@ -1,8 +1,7 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
-#include <SDL2/SDL_image.h>
+#ifndef WINDOW_H
+#define WINDOW_H
 
-#include <iostream>
+#include <SDL2/SDL.h>
 #include <string>
 using namespace std;
 
@@ -14,34 +13,14 @@ class Window {
     int _height = 0;
 
   public:
-    Window(string title, int x, int y, int width, int height) {
-      _width = width;
-      _height = height;
-      
-      _win = SDL_CreateWindow(title.c_str(), x, y, _width, _height, SDL_WINDOW_SHOWN);
-      
-      
-      if(_win == NULL) {
-        cout << "SDL_CreateWindow Error: " << SDL_GetError() << endl;
-        SDL_Quit();
-      }
-    }
-    
-    ~Window() {
-      SDL_DestroyWindow(_win);
-    }
+    Window(string, int, int, int, int);
+    ~Window();
     
     
-    SDL_Window* get() {
-      return _win;
-    }
+    SDL_Window* get();
     
-    
-    int width() {
-      return _width;
-    }
-    
-    int height() {
-      return _height;
-    }
+    int width();
+    int height();
 };
+
+#endif

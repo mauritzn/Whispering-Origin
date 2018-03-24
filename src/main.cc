@@ -80,7 +80,7 @@ int main() {
   const int window_width = 1280;
   const int window_height = 720;
   
-  const string map = "images/simple_720p_map_3.bmp";
+  const string map = "images/map/texture.png";
   
   
   FPS fps;
@@ -131,7 +131,7 @@ int main() {
   SDL_SetWindowIcon(win.get(), icon);
 
 
-  BMP demo_720p_map(win, ren, map, 0, 0);
+  PNG demo_720p_map(win, ren, map, 0, 0);
 
   //BMP test_char(win, ren, "images/test_char_2.bmp", -50, -50); // -50 => centered, -100 => bottom aligned / right aligned
   PNG test_char(win, ren, "images/test_char_3.png", -50, -50); // -50 => centered, -100 => bottom aligned / right aligned
