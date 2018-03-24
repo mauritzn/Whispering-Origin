@@ -80,7 +80,7 @@ int main() {
   const int window_width = 1280;
   const int window_height = 720;
   
-  const string map = "images/map/texture.png";
+  const string map = "images/maps/main_texture.png";
   
   
   FPS fps;
