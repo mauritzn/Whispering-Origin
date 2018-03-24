@@ -10,6 +10,7 @@
 
 
 ### Features
+<<<<<<< Updated upstream
 - Map parsing *(parsing for collision "tiles" and item placements "tiles")*. _[HP]_
 - World movement *(“char movement”)*. _[HP]_
 - Collision handling. _[HP]_
@@ -18,3 +19,14 @@
 - XP System. _[MP]_
 - Installer. _[LP]_
 - Cross-platform support. _[LP]_
+=======
+- Map parsing [HP]
+- Collision handling [HP]
+- Dialog creation [LP]
+- World movement (“char movement”) [HP]
+- Multi-threading [MP]
+- Inventory System [MP]
+- XP System [MP]
+- Installer [LP]
+- Cross-platform support [LP]
+>>>>>>> Stashed changes

@@ -116,10 +116,10 @@ int main() {
   cout << "Window Size: " << window_width << "x" << window_height << endl << endl;
 
 
-  TTF_Font* debug_font = TTF_OpenFont("fonts/Ubuntu_C.ttf", 20);
-  TTF_Font* Ubuntu_font = TTF_OpenFont("fonts/Ubuntu_C.ttf", 24);
+  TTF_Font* debug_font = TTF_OpenFont("fonts/Cinzel-Bold.ttf", 20);
+  TTF_Font* Ubuntu_font = TTF_OpenFont("fonts/Cinzel-Regular.ttf", 24);
   SDL_Color background_color = { 240, 240, 240 };
-  SDL_Color text_color = { 0, 0, 0 };
+  SDL_Color text_color = { 255, 255, 255 };
 
 
 
