@@ -49,7 +49,7 @@ enum fish_ids {
 bool get_RGB(SDL_Color& color, SDL_Surface* surface, int x, int y) {
   if(surface->format->BitsPerPixel == 32) {
     uint32_t* pixels = (uint32_t*) surface->pixels;
-    uint32_t pixel = pixels[(y * surface->w) + x]; // , 224, 192
+    uint32_t pixel = pixels[(y * surface->w) + x];
     
     SDL_GetRGB(pixel, surface->format, &(color.r), &(color.g), &(color.b));
     return true;
@@ -88,6 +88,15 @@ int to_grid_col(int x, int grid_size) {
 }
 
 
+int to_grid_x(int col, int grid_size) {
+  return (col * grid_size);
+}
+
+int to_grid_y(int row, int grid_size) {
+  return (row * grid_size);
+}
+
+
 
 int main() {
   const string map_to_use = "images/maps/main_data.bmp";
@@ -111,35 +120,9 @@ int main() {
     const int map_height = surface->h;
     const int grid_size = 32;
     
-
-    /*
-     // x: 0, y: 0 (water)
-     // x: 223, y: 191 (collider)
-     // x: 224, y: 192 (grass)
-    const int x = 224;
-    const int y = 192;
     
-    
-    SDL_Color color = { 255, 255, 255 };
-    if(get_RGB(color, surface, x, y)) {
-      if(concat_RGB(color) == WATER) cout << "Pixel at \"" << x << ", " << y << "\" is Water!" << endl;
-      else if(concat_RGB(color) == GRASS) cout << "Pixel at \"" << x << ", " << y << "\" is Grass!" << endl;
-      else if(concat_RGB(color) == COLLIDER) cout << "Pixel at \"" << x << ", " << y << "\" is Collider!" << endl;
-      
-      
-      cout << "R: " << (unsigned) (color.r)
-          << ", G: " << (unsigned) (color.g)
-          << ", B: " << (unsigned) (color.b)
-          << " || RGB: " << concat_RGB(color)
-          << endl << endl;
-    } else {
-      cout << "Image is invalid, a 32-bit image is required, the surface is " << (unsigned) surface->format->BitsPerPixel << "-bit" << endl;
-    }
-    */
-    
-    
-    map_file << map_width << "x" << map_height << endl
-             << grid_size << "x" << grid_size << endl;
+    map_file << map_width << "x" << map_height
+             << ":" << grid_size << endl;
     
     
     

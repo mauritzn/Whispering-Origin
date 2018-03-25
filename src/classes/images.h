@@ -17,8 +17,8 @@ class BMP {
     SDL_Surface* _bmp;
     SDL_Texture* _tex;
     
-    SDL_Rect _src_rect;
-    SDL_Rect _dest_rect;
+    SDL_Rect _src_rect;  // defines the images position inside the container
+    SDL_Rect _dest_rect; // defines the images position inside the window
     
     int _width = 0;
     int _height = 0;
@@ -26,24 +26,19 @@ class BMP {
     
   public:
     BMP(Window&, Renderer&, string, int, int);
-    ~BMP();
+    ~BMP(); // free textures when the object is destroyed
     
     
-    SDL_Texture* get();
+    int width();  // get image width
+    int height(); // get image height
     
-    int width();
-    int height();
+    void set_x(int); // set the images x position
+    void set_y(int); // set the images y position
     
-    SDL_Rect& src_rect();
-    SDL_Rect& dest_rect();
+    int get_x(); // get the images x position
+    int get_y(); // get the images y position
     
-    void set_x(int);
-    void set_y(int);
-    
-    int get_x();
-    int get_y();
-    
-    void render();
+    void render(); // render the texture to the renderer (-> window)
 };
 
 
@@ -60,8 +55,8 @@ class PNG {
     SDL_Surface* _png;
     SDL_Texture* _tex;
     
-    SDL_Rect _src_rect;
-    SDL_Rect _dest_rect;
+    SDL_Rect _src_rect;  // defines the images position inside the container
+    SDL_Rect _dest_rect; // defines the images position inside the window
     
     int _width = 0;
     int _height = 0;
@@ -69,24 +64,19 @@ class PNG {
     
   public:
     PNG(Window&, Renderer&, string, int, int);
-    ~PNG();
+    ~PNG(); // free textures when the object is destroyed
     
     
-    SDL_Texture* get();
+    int width();  // get image width
+    int height(); // get image height
     
-    int width();
-    int height();
+    void set_x(int); // set the images x position
+    void set_y(int); // set the images y position
     
-    SDL_Rect& src_rect();
-    SDL_Rect& dest_rect();
+    int get_x(); // get the images x position
+    int get_y(); // get the images y position
     
-    void set_x(int);
-    void set_y(int);
-    
-    int get_x();
-    int get_y();
-    
-    void render();
+    void render(); // render the texture to the renderer (-> window)
 };
 
 #endif

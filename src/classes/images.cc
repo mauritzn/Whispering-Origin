@@ -50,10 +50,6 @@ BMP::~BMP() {
 }
 
 
-SDL_Texture* BMP::get() {
-  return _tex;
-}
-
 
 int BMP::width() {
   return _width;
@@ -63,14 +59,6 @@ int BMP::height() {
   return _height;
 }
 
-
-SDL_Rect& BMP::src_rect() {
-  return _src_rect;
-}
-
-SDL_Rect& BMP::dest_rect() {
-  return _dest_rect;
-}
 
 void BMP::set_x(int x) {
   if(x == -50) x = ((_win->width() / 2) - (_width / 2));
@@ -149,10 +137,6 @@ PNG::~PNG() {
 }
 
 
-SDL_Texture* PNG::get() {
-  return _tex;
-}
-
 
 int PNG::width() {
   return _width;
@@ -162,14 +146,6 @@ int PNG::height() {
   return _height;
 }
 
-
-SDL_Rect& PNG::src_rect() {
-  return _src_rect;
-}
-
-SDL_Rect& PNG::dest_rect() {
-  return _dest_rect;
-}
 
 void PNG::set_x(int x) {
   if(x == -50) x = ((_win->width() / 2) - (_width / 2));

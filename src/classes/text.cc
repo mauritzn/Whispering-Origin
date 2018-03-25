@@ -49,13 +49,6 @@ Text::~Text() {
 }
 
 
-SDL_Texture* Text::get() {
-  return _text;
-}
-
-SDL_Rect& Text::dest_rect() {
-  return _dest_rect;
-}
 
 void Text::update(string text) {
   _surface = TTF_RenderText_Solid(_font, text.c_str(), _color);

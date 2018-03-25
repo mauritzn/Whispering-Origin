@@ -36,21 +36,18 @@ class Text {
     
   public:
     Text(Window&, Renderer&, TTF_Font*, SDL_Color, string, int, int);
-    ~Text();
+    ~Text(); // free the textures when the object is destroyed
     
     
-    SDL_Texture* get();
-    SDL_Rect& dest_rect();
+    void update(string); // change the text value
     
-    void update(string);
+    void set_x(int); // set the texts x position
+    void set_y(int); // set the texts y position
     
-    void set_x(int);
-    void set_y(int);
+    int get_x(); // get the texts x position
+    int get_y(); // get the texts y position
     
-    int get_x();
-    int get_y();
-    
-    void render();
+    void render(); // render the text to the renderer (-> window)
 };
 
 #endif

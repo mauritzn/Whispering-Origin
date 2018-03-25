@@ -14,19 +14,19 @@ class FPS {
     float _fps_last = 0.0;
     float _delta_time = 0.0;
 
-    void calculate();
+    void calculate(); // unnecessary (remove in the future?, would be moved to update())
 
 
   public:
     FPS();
-    void update();
+    void update(); // recalculate values (eg. FPS, delta time)
 
-    uint32_t ticks();
-    uint32_t ticks_prev();
+    uint32_t ticks(); // get the current SDL Tick count
+    uint32_t ticks_prev(); // get the previous SDL Tick count
 
-    float delta_time();
-    float get();
-    float get_prev();
+    float delta_time(); // get current delta time
+    float get(); // get the current FPS count
+    float get_prev(); // get the previous FPS count
 };
 
 #endif

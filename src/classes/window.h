@@ -14,13 +14,13 @@ class Window {
 
   public:
     Window(string, int, int, int, int);
-    ~Window();
+    ~Window(); // free the SDL_Window instance when the object is destroyed
     
     
-    SDL_Window* get();
+    SDL_Window* get(); // get the SDL_Window instance
     
-    int width();
-    int height();
+    int width();  // get the windows width
+    int height(); // get the windows height
 };
 
 #endif
