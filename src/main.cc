@@ -144,43 +144,43 @@ int main() {
     trees.push_back(new PNG(win, ren, "images/tree.png", -50, -50));
   }
 
-  trees[0]->set_x(win, constrain_png_width(545, win, *trees[0]));
-  trees[0]->set_y(win, constrain_png_height(125, win, *trees[0]));
+  trees[0]->set_x(constrain_png_width(545, win, *trees[0]));
+  trees[0]->set_y(constrain_png_height(125, win, *trees[0]));
 
-  trees[1]->set_x(win, constrain_png_width(929, win, *trees[1]));
-  trees[1]->set_y(win, constrain_png_height(157, win, *trees[1]));
+  trees[1]->set_x(constrain_png_width(929, win, *trees[1]));
+  trees[1]->set_y(constrain_png_height(157, win, *trees[1]));
 
-  trees[2]->set_x(win, constrain_png_width(801, win, *trees[2]));
-  trees[2]->set_y(win, constrain_png_height(189, win, *trees[2]));
+  trees[2]->set_x(constrain_png_width(801, win, *trees[2]));
+  trees[2]->set_y(constrain_png_height(189, win, *trees[2]));
 
-  trees[3]->set_x(win, constrain_png_width(321, win, *trees[3]));
-  trees[3]->set_y(win, constrain_png_height(285, win, *trees[3]));
+  trees[3]->set_x(constrain_png_width(321, win, *trees[3]));
+  trees[3]->set_y(constrain_png_height(285, win, *trees[3]));
 
-  trees[4]->set_x(win, constrain_png_width(865, win, *trees[4]));
-  trees[4]->set_y(win, constrain_png_height(317, win, *trees[4]));
+  trees[4]->set_x(constrain_png_width(865, win, *trees[4]));
+  trees[4]->set_y(constrain_png_height(317, win, *trees[4]));
 
 /*
-  trees[0]->set_x(win, constrain_png_width(936, win, *trees[0]));
-  trees[0]->set_y(win, constrain_png_height(25, win, *trees[0]));
+  trees[0]->set_x(constrain_png_width(936, win, *trees[0]));
+  trees[0]->set_y(constrain_png_height(25, win, *trees[0]));
 
-  trees[1]->set_x(win, constrain_png_width(1093, win, *trees[1]));
-  trees[1]->set_y(win, constrain_png_height(36, win, *trees[1]));
+  trees[1]->set_x(constrain_png_width(1093, win, *trees[1]));
+  trees[1]->set_y(constrain_png_height(36, win, *trees[1]));
 
-  trees[2]->set_x(win, constrain_png_width(986, win, *trees[2]));
-  trees[2]->set_y(win, constrain_png_height(200, win, *trees[2]));
+  trees[2]->set_x(constrain_png_width(986, win, *trees[2]));
+  trees[2]->set_y(constrain_png_height(200, win, *trees[2]));
 
-  trees[3]->set_x(win, constrain_png_width(1161, win, *trees[3]));
-  trees[3]->set_y(win, constrain_png_height(168, win, *trees[3]));
+  trees[3]->set_x(constrain_png_width(1161, win, *trees[3]));
+  trees[3]->set_y(constrain_png_height(168, win, *trees[3]));
 
-  trees[4]->set_x(win, constrain_png_width(1103, win, *trees[4]));
-  trees[4]->set_y(win, constrain_png_height(342, win, *trees[4]));
+  trees[4]->set_x(constrain_png_width(1103, win, *trees[4]));
+  trees[4]->set_y(constrain_png_height(342, win, *trees[4]));
   */
 
 
 
 
   Text hello_text(win, ren, Ubuntu_font, text_color, "<text will be updated ;) >", -50, -100); // -50 => centered, -100 => bottom aligned / right aligned
-  hello_text.set_y(win, (hello_text.get_y() - 25));
+  hello_text.set_y((hello_text.get_y() - 25));
 
   Text debug_ticks(win, ren, debug_font, text_color, "Ticks: 0", 25, 25);
   Text debug_frame_count(win, ren, debug_font, text_color, "Frames: 0", 25, 50);
@@ -247,52 +247,52 @@ int main() {
     //float temp_vel = (vel * 0.015000);
     // down and right seem a bit slower than up and left?
     if(up_is_down) {
-      test_char.set_y(win, constrain((test_char.get_y() - temp_vel), 0, (window_height - test_char.height())));
+      test_char.set_y(constrain((test_char.get_y() - temp_vel), 0, (window_height - test_char.height())));
     }
     if(down_is_down) {
-      test_char.set_y(win, constrain((test_char.get_y() + temp_vel), 0, (window_height - test_char.height())));
+      test_char.set_y(constrain((test_char.get_y() + temp_vel), 0, (window_height - test_char.height())));
     }
 
     if(left_is_down) {
-      test_char.set_x(win, constrain((test_char.get_x() - temp_vel), 0, (window_width - test_char.width())));
+      test_char.set_x(constrain((test_char.get_x() - temp_vel), 0, (window_width - test_char.width())));
     }
     if(right_is_down) {
-      test_char.set_x(win, constrain((test_char.get_x() + temp_vel), 0, (window_width - test_char.width())));
+      test_char.set_x(constrain((test_char.get_x() + temp_vel), 0, (window_width - test_char.width())));
     }
 
 
     ren.clear();
-    demo_720p_map.render(ren);
+    demo_720p_map.render();
 
-    hello_text.render(ren);
-    test_char.render(ren);
+    hello_text.render();
+    test_char.render();
 
     for(int i = 0; i < tree_count; i++) {
-      trees[i]->render(ren);
+      trees[i]->render();
     }
     
     
     if(fps.ticks() > 1000) {
-      hello_text.update(ren, "Use arrow keys or WASD to move \"the character\" (up, down, left, right), F4 to toggle debug menu"); // will not mess up alignment ;)
+      hello_text.update("Use arrow keys or WASD to move \"the character\" (up, down, left, right), F4 to toggle debug menu"); // will not mess up alignment ;)
     }
     
     
     
     // BEGIN, DEBUG TEXT UPDATING & RENDERING
-    debug_frame_count.update(ren, "Frames: " + format_number(frames++));
-    debug_ticks.update(ren, "Ticks: " + format_number(fps.ticks()));
+    debug_frame_count.update("Frames: " + format_number(frames++));
+    debug_ticks.update("Ticks: " + format_number(fps.ticks()));
     
     if((fps.ticks() % 500) < 250) {
-      debug_fps.update(ren, "FPS: " + to_fixed(fps.get()));
+      debug_fps.update("FPS: " + to_fixed(fps.get()));
     }
     
-    debug_delta_time.update(ren, "Delta Time: " + to_string(fps.delta_time()));
+    debug_delta_time.update("Delta Time: " + to_string(fps.delta_time()));
     
     if(debug_mode) {
-      debug_frame_count.render(ren);
-      debug_ticks.render(ren);
-      debug_fps.render(ren);
-      debug_delta_time.render(ren);
+      debug_frame_count.render();
+      debug_ticks.render();
+      debug_fps.render();
+      debug_delta_time.render();
     }
     // END, DEBUG TEXT UPDATING & RENDERING
 

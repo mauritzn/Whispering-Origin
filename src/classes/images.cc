@@ -4,6 +4,9 @@ using namespace std;
 
 
 BMP::BMP(Window& win, Renderer& ren, string path_to_image, int x, int y) {
+  _win = &win;
+  _ren = &ren;
+  
   _bmp = SDL_LoadBMP(path_to_image.c_str());
   if(_bmp == NULL) {
     cout << "SDL_LoadBMP Error: " << SDL_GetError() << endl;
@@ -12,7 +15,7 @@ BMP::BMP(Window& win, Renderer& ren, string path_to_image, int x, int y) {
     _width = _bmp->w;
     _height = _bmp->h;
     
-    _tex = SDL_CreateTextureFromSurface(ren.get(), _bmp);
+    _tex = SDL_CreateTextureFromSurface(_ren->get(), _bmp);
     SDL_FreeSurface(_bmp);
   }
   
@@ -27,11 +30,11 @@ BMP::BMP(Window& win, Renderer& ren, string path_to_image, int x, int y) {
     _src_rect.h = _height;
     
     
-    if(x == -50) x = ((win.width() / 2) - (_width / 2));
-    if(y == -50) y = ((win.height() / 2) - (_height / 2));
+    if(x == -50) x = ((_win->width() / 2) - (_width / 2));
+    if(y == -50) y = ((_win->height() / 2) - (_height / 2));
     
-    if(x == -100) x = (win.width() - _width);
-    if(y == -100) y = (win.height() - _height);
+    if(x == -100) x = (_win->width() - _width);
+    if(y == -100) y = (_win->height() - _height);
     
     // defines container positions
     _dest_rect.x = x;
@@ -69,17 +72,17 @@ SDL_Rect& BMP::dest_rect() {
   return _dest_rect;
 }
 
-void BMP::set_x(Window& win, int x) {
-  if(x == -50) x = ((win.width() / 2) - (_width / 2));
-  if(x == -100) x = (win.width() - _width);
+void BMP::set_x(int x) {
+  if(x == -50) x = ((_win->width() / 2) - (_width / 2));
+  if(x == -100) x = (_win->width() - _width);
   
   // defines container position
   _dest_rect.x = x;
 }
 
-void BMP::set_y(Window& win, int y) {
-  if(y == -50) y = ((win.height() / 2) - (_height / 2));
-  if(y == -100) y = (win.height() - _height);
+void BMP::set_y(int y) {
+  if(y == -50) y = ((_win->height() / 2) - (_height / 2));
+  if(y == -100) y = (_win->height() - _height);
   
   // defines container position
   _dest_rect.y = y;
@@ -88,8 +91,8 @@ void BMP::set_y(Window& win, int y) {
 int BMP::get_x() { return _dest_rect.x; }
 int BMP::get_y() { return _dest_rect.y; }
 
-void BMP::render(Renderer& ren) {
-  SDL_RenderCopy(ren.get(), _tex, &_src_rect, &_dest_rect);
+void BMP::render() {
+  SDL_RenderCopy(_ren->get(), _tex, &_src_rect, &_dest_rect);
 }
 
 
@@ -100,6 +103,9 @@ void BMP::render(Renderer& ren) {
 
 
 PNG::PNG(Window& win, Renderer& ren, string path_to_image, int x, int y) {
+  _win = &win;
+  _ren = &ren;
+  
   _png = IMG_Load(path_to_image.c_str());
   if(_png == NULL) {
     cout << "IMG_Load Error: " << IMG_GetError() << endl;
@@ -108,7 +114,7 @@ PNG::PNG(Window& win, Renderer& ren, string path_to_image, int x, int y) {
     _width = _png->w;
     _height = _png->h;
     
-    _tex = SDL_CreateTextureFromSurface(ren.get(), _png);
+    _tex = SDL_CreateTextureFromSurface(_ren->get(), _png);
     SDL_FreeSurface(_png);
   }
   
@@ -123,11 +129,11 @@ PNG::PNG(Window& win, Renderer& ren, string path_to_image, int x, int y) {
     _src_rect.h = _height;
     
     
-    if(x == -50) x = ((win.width() / 2) - (_width / 2));
-    if(y == -50) y = ((win.height() / 2) - (_height / 2));
+    if(x == -50) x = ((_win->width() / 2) - (_width / 2));
+    if(y == -50) y = ((_win->height() / 2) - (_height / 2));
     
-    if(x == -100) x = (win.width() - _width);
-    if(y == -100) y = (win.height() - _height);
+    if(x == -100) x = (_win->width() - _width);
+    if(y == -100) y = (_win->height() - _height);
     
     // defines container positions
     _dest_rect.x = x;
@@ -165,17 +171,17 @@ SDL_Rect& PNG::dest_rect() {
   return _dest_rect;
 }
 
-void PNG::set_x(Window& win, int x) {
-  if(x == -50) x = ((win.width() / 2) - (_width / 2));
-  if(x == -100) x = (win.width() - _width);
+void PNG::set_x(int x) {
+  if(x == -50) x = ((_win->width() / 2) - (_width / 2));
+  if(x == -100) x = (_win->width() - _width);
   
   // defines container position
   _dest_rect.x = x;
 }
 
-void PNG::set_y(Window& win, int y) {
-  if(y == -50) y = ((win.height() / 2) - (_height / 2));
-  if(y == -100) y = (win.height() - _height);
+void PNG::set_y(int y) {
+  if(y == -50) y = ((_win->height() / 2) - (_height / 2));
+  if(y == -100) y = (_win->height() - _height);
   
   // defines container position
   _dest_rect.y = y;
@@ -184,6 +190,6 @@ void PNG::set_y(Window& win, int y) {
 int PNG::get_x() { return _dest_rect.x; }
 int PNG::get_y() { return _dest_rect.y; }
 
-void PNG::render(Renderer& ren) {
-  SDL_RenderCopy(ren.get(), _tex, &_src_rect, &_dest_rect);
+void PNG::render() {
+  SDL_RenderCopy(_ren->get(), _tex, &_src_rect, &_dest_rect);
 }

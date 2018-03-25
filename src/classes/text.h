@@ -12,6 +12,9 @@ using namespace std;
 
 class Text {
   private:
+    Window* _win;
+    Renderer* _ren;
+    
     SDL_Surface* _surface;
     SDL_Texture* _text;
     
@@ -39,15 +42,15 @@ class Text {
     SDL_Texture* get();
     SDL_Rect& dest_rect();
     
-    void update(Renderer& ren, string text);
+    void update(string);
     
-    void set_x(Window& win, int x);
-    void set_y(Window& win, int y);
+    void set_x(int);
+    void set_y(int);
     
     int get_x();
     int get_y();
     
-    void render(Renderer& ren);
+    void render();
 };
 
 #endif

@@ -11,6 +11,9 @@
 
 class BMP {
   private:
+    Window* _win;
+    Renderer* _ren;
+    
     SDL_Surface* _bmp;
     SDL_Texture* _tex;
     
@@ -34,13 +37,13 @@ class BMP {
     SDL_Rect& src_rect();
     SDL_Rect& dest_rect();
     
-    void set_x(Window&, int);
-    void set_y(Window&, int);
+    void set_x(int);
+    void set_y(int);
     
     int get_x();
     int get_y();
     
-    void render(Renderer&);
+    void render();
 };
 
 
@@ -51,6 +54,9 @@ class BMP {
 
 class PNG {
   private:
+    Window* _win;
+    Renderer* _ren;
+    
     SDL_Surface* _png;
     SDL_Texture* _tex;
     
@@ -74,13 +80,13 @@ class PNG {
     SDL_Rect& src_rect();
     SDL_Rect& dest_rect();
     
-    void set_x(Window&, int);
-    void set_y(Window&, int);
+    void set_x(int);
+    void set_y(int);
     
     int get_x();
     int get_y();
     
-    void render(Renderer&);
+    void render();
 };
 
 #endif
