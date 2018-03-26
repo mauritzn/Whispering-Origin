@@ -139,17 +139,27 @@ int main() {
     int ores_found = 0;
     int fish_found = 0;
     
+    stringstream player;
+    player << "P:"; // Player
+    
+    stringstream NPCs;
+    NPCs << "N:"; // NPCs (unused ATM)
+    
+    stringstream monsters;
+    monsters << "M:"; // Monsters (unused ATM)
+    
+    
     stringstream colliders;
-    colliders << "C:";
+    colliders << "C:"; // Colliders
     
     stringstream trees;
-    trees << "T:";
+    trees << "T:"; // Trees
     
     stringstream ores;
-    ores << "O:";
+    ores << "O:"; // Ores
     
     stringstream fish;
-    fish << "F:";
+    fish << "F:"; // Fish
     
     
     
@@ -213,20 +223,33 @@ int main() {
     
     
     map_file << endl;
-    if(!player_pos_found) {
+    if(player_pos_found) {
+      player << to_grid_row(player_pos_y, grid_size) << "x" << to_grid_col(player_pos_x, grid_size);
+    } else {
       // add check to see if the default (center) pos is on ground
     }
-    map_file << to_grid_row(player_pos_y, grid_size) << "x" << to_grid_col(player_pos_x, grid_size) << endl << endl;
+    
+    
+    
+    player << endl;
+    NPCs << endl;
+    monsters << endl << endl;
     
     colliders << endl;
     trees << endl;
     ores << endl;
     fish << endl;
     
+    
+    map_file << player.str();
+    map_file << NPCs.str();
+    map_file << monsters.str();
+    
     map_file << colliders.str();
     map_file << trees.str();
     map_file << ores.str();
     map_file << fish.str();
+    
     
     
     cout << "Colliders found: " << coliders_found << endl
