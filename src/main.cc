@@ -131,7 +131,8 @@ int main() {
   SDL_SetWindowIcon(win.get(), icon);
 
 
-  PNG demo_720p_map(win, ren, map, 0, 0);
+  PNG demo_1080p_map(win, ren, map, -50, -50);
+  demo_1080p_map.set_y((demo_1080p_map.get_y() + (32 * 2)));
 
   //BMP test_char(win, ren, "images/test_char_2.bmp", -50, -50); // -50 => centered, -100 => bottom aligned / right aligned
   PNG test_char(win, ren, "images/test_char_3.png", -50, -50); // -50 => centered, -100 => bottom aligned / right aligned
@@ -262,7 +263,7 @@ int main() {
 
 
     ren.clear();
-    demo_720p_map.render();
+    demo_1080p_map.render();
 
     hello_text.render();
     test_char.render();

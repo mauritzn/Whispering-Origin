@@ -115,6 +115,8 @@ int main() {
     cout << "SDL_LoadBMP Error: " << SDL_GetError() << endl;
     SDL_Quit();
   } else {
+    cout << "Extracting map data from image..." << endl << endl;
+    
     map_file.open(save_to.c_str());
     const int map_width = surface->w;
     const int map_height = surface->h;
