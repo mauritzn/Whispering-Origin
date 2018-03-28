@@ -7,6 +7,7 @@
 
 #include <string>
 #include <iostream>
+#include "math.h"
 #include "window.h"
 #include "renderer.h"
 
@@ -25,13 +26,15 @@ class Character
         int _char_exp;
         int _level;
         int _money;
-    
+        int _xp_rate[50];
+
     public:
         // Constructor
         Character(Window&, Renderer&);
         // Destructor
         // more functions to come.
-        int exp_left();
+        int levels();
+        int exp_rate();
         int health();
         int char_exp();
         int level();

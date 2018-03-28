@@ -17,8 +17,20 @@ Character::Character(Window& win, Renderer& ren)
     _level = 1;
     _money = 0;
 
+    for(int i = 1; i <= 50; i++) {
+       _xp_rate[i] = pow((i * 2), 3);
+    }
 }
 
+int Character::exp_rate()
+{
+    return _xp_rate[_level];
+}
+
+int Character::levels()
+{
+    return sizeof(_xp_rate) / sizeof(_xp_rate[0]);
+}
 int Character::health()
 {
     return _health;

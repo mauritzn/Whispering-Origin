@@ -297,8 +297,10 @@ int main() {
     
     // Char-specific text-update
     debug_health.update("Health: " + format_number(test_boi.health()));
-    debug_exp.update("Exp: " + format_number(test_boi.char_exp()));
-    debug_level.update("Level: " + format_number(test_boi.level()));
+    debug_exp.update("Exp: " + format_number(test_boi.char_exp()) + "/" 
+            + format_number(test_boi.exp_rate()));
+    debug_level.update("Level: " + format_number(test_boi.level()) + "/" 
+            + format_number(test_boi.levels()));
     debug_posx.update("Pos X: " + format_number(test_char.get_x()));
     debug_posy.update("Pos Y: " + format_number(test_char.get_y()));
     
