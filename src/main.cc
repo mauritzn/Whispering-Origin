@@ -77,12 +77,6 @@ string to_fixed(float number_to_fix) {
 
 
 int main() {
-  bool debug_mode = true;
-  
-  const int window_width = 1280;
-  const int window_height = 720;
-
-  
   FPS fps;
   uint32_t frames = 0;
 
@@ -97,8 +91,8 @@ int main() {
     return 1;
   }
 
-  int imgFlags = IMG_INIT_PNG;
-  if(!(IMG_Init(imgFlags) & imgFlags)) {
+  int SDL_image_flags = IMG_INIT_PNG;
+  if(!(IMG_Init(SDL_image_flags) & SDL_image_flags)) {
     cout << "IMG_Init Error: " << SDL_GetError() << endl;
     return 1;
   }
@@ -108,8 +102,6 @@ int main() {
   SDL_GetCurrentDisplayMode(0, &DM);
   int display_width = DM.w;
   int display_height = DM.h;
-
-  const int vel = 250;
 
 
   cout << "Display Size: " << display_width << "x" << display_height << endl;
@@ -131,11 +123,11 @@ int main() {
   SDL_SetWindowIcon(win.get(), icon);
 
 
-  PNG demo_1080p_map(win, ren, map_texture_path, -50, -50);
-  demo_1080p_map.set_y((demo_1080p_map.get_y() + (32 * 2)));
+  PNG demo_1080p_world(win, ren, world_texture_path, -50, -50);
+  demo_1080p_world.set_y((demo_1080p_world.get_y() + (32 * 2)));
 
   //BMP test_char(win, ren, "images/test_char_2.bmp", -50, -50); // -50 => centered, -100 => bottom aligned / right aligned
-  PNG test_char(win, ren, char_image_path, -50, -50); // -50 => centered, -100 => bottom aligned / right aligned
+  PNG test_char(win, ren, character_image_path, -50, -50); // -50 => centered, -100 => bottom aligned / right aligned
 
 
   vector<PNG*> trees;
@@ -250,8 +242,8 @@ int main() {
     fps.update();
 
     
-    float temp_vel = (vel * fps.delta_time());
-    //float temp_vel = (vel * 0.015000);
+    float temp_vel = (velocity * fps.delta_time());
+    //float temp_vel = (velocity * 0.015000);
     // down and right seem a bit slower than up and left?
     if(up_is_down) {
       test_char.set_y(constrain((test_char.get_y() - temp_vel), 0, (window_height - test_char.height())));
@@ -269,7 +261,7 @@ int main() {
 
 
     ren.clear();
-    demo_1080p_map.render();
+    demo_1080p_world.render();
 
     hello_text.render();
     test_char.render();
