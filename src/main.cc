@@ -33,6 +33,7 @@
 #include "classes/images.h"
 #include "classes/text.h"
 #include "classes/fps.h"
+#include "classes/character.h"
 using namespace std;
 
 
@@ -116,8 +117,8 @@ int main() {
   cout << "Window Size: " << window_width << "x" << window_height << endl << endl;
 
 
-  TTF_Font* debug_font = TTF_OpenFont("fonts/Cinzel-Bold.ttf", 20);
-  TTF_Font* Ubuntu_font = TTF_OpenFont("fonts/Cinzel-Regular.ttf", 24);
+  TTF_Font* debug_font = TTF_OpenFont("fonts/Ubuntu_C.ttf", 20);
+  TTF_Font* Ubuntu_font = TTF_OpenFont("fonts/Ubuntu_C.ttf", 20);
   SDL_Color background_color = { 240, 240, 240 };
   SDL_Color text_color = { 255, 255, 255 };
 
@@ -177,8 +178,8 @@ int main() {
   trees[4]->set_y(constrain_png_height(342, win, *trees[4]));
   */
 
-
-
+  // Character test start
+  Character test_boi(win, ren);
 
   Text hello_text(win, ren, Ubuntu_font, text_color, "<text will be updated ;) >", -50, -100); // -50 => centered, -100 => bottom aligned / right aligned
   hello_text.set_y((hello_text.get_y() - 25));
@@ -187,7 +188,12 @@ int main() {
   Text debug_frame_count(win, ren, debug_font, text_color, "Frames: 0", 25, 50);
   Text debug_fps(win, ren, debug_font, text_color, "FPS: 0", 25, 75);
   Text debug_delta_time(win, ren, debug_font, text_color, "Delta Time: 0", 25, 100);
-
+  // Character-specific debug
+  Text debug_health(win, ren, debug_font, text_color, "Health: ", 25, 150);
+  Text debug_level(win, ren, debug_font, text_color, "Level: ", 25, 175);
+  Text debug_exp(win, ren, debug_font, text_color, "Exp: ", 25, 200);
+  Text debug_posx(win, ren, debug_font, text_color, "Pos X: ", 25, 225);
+  Text debug_posy(win, ren, debug_font, text_color, "Pos Y: ", 25, 250);
 
 
 
@@ -289,11 +295,24 @@ int main() {
     
     debug_delta_time.update("Delta Time: " + to_string(fps.delta_time()));
     
+    // Char-specific text-update
+    debug_health.update("Health: " + format_number(test_boi.health()));
+    debug_exp.update("Exp: " + format_number(test_boi.char_exp()));
+    debug_level.update("Level: " + format_number(test_boi.level()));
+    debug_posx.update("Pos X: " + format_number(test_char.get_x()));
+    debug_posy.update("Pos Y: " + format_number(test_char.get_y()));
+    
     if(debug_mode) {
       debug_frame_count.render();
       debug_ticks.render();
       debug_fps.render();
       debug_delta_time.render();
+
+      debug_health.render();
+      debug_exp.render();
+      debug_level.render();
+      debug_posx.render();
+      debug_posy.render();
     }
     // END, DEBUG TEXT UPDATING & RENDERING
 

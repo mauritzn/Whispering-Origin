@@ -1,29 +1,41 @@
 #include <iostream>
 
 #include "character.h"
+#include "images.h"
 
 using namespace std;
 
-Character::Character() 
+Character::Character(Window& win, Renderer& ren) 
 {
+    // Win & Ren for future sprite
+    _win = &win;
+    _ren = &ren;
+    
     //Set base health and base level
-    health = 10;
-    char_exp = 0;
-    level = 1;
-    isAlive = true;
-    money = 0;
-    // experiencerequired = exp_rate - experience;
+    _health = 10;
+    _char_exp = 0;
+    _level = 1;
+    _money = 0;
+
 }
 
-void Character::setPlayerName()
+int Character::health()
 {
-    // Setting playerName to come at later point.
-    
+    return _health;
 }
-void Character::alive()
+
+int Character::char_exp()
 {
-    if(health == 0)
-    {
-        isAlive = false;
-    }
+    return _char_exp;
 }
+
+int Character::level()
+{
+    return _level;
+}
+
+int Character::money()
+{
+    return _money;
+}
+
