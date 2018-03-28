@@ -5,11 +5,8 @@
 
 using namespace std;
 
-Character::Character(Window& win, Renderer& ren) 
+Character::Character() 
 {
-    // Win & Ren for future sprite
-    _win = &win;
-    _ren = &ren;
     
     //Set base health and base level
     _health = 10;
@@ -29,7 +26,7 @@ int Character::exp_rate()
 
 int Character::levels()
 {
-    return sizeof(_xp_rate) / sizeof(_xp_rate[0]);
+    return sizeof(_xp_rate) / sizeof(_xp_rate[0]) - 1;
 }
 int Character::health()
 {
@@ -51,3 +48,7 @@ int Character::money()
     return _money;
 }
 
+Character::~Character()
+{
+
+}

@@ -81,9 +81,7 @@ int main() {
   
   const int window_width = 1280;
   const int window_height = 720;
-  
-  //const string map = "images/maps/main_texture.png";
-  
+
   
   FPS fps;
   uint32_t frames = 0;
@@ -180,7 +178,7 @@ int main() {
   */
 
   // Character test start
-  Character test_boi(win, ren);
+  Character test_boi;
 
   Text hello_text(win, ren, Ubuntu_font, text_color, "<text will be updated ;) >", -50, -100); // -50 => centered, -100 => bottom aligned / right aligned
   hello_text.set_y((hello_text.get_y() - 25));
@@ -190,6 +188,7 @@ int main() {
   Text debug_fps(win, ren, debug_font, text_color, "FPS: 0", 25, 75);
   Text debug_delta_time(win, ren, debug_font, text_color, "Delta Time: 0", 25, 100);
   // Character-specific debug
+ 
   Text debug_health(win, ren, debug_font, text_color, "Health: ", 25, 150);
   Text debug_level(win, ren, debug_font, text_color, "Level: ", 25, 175);
   Text debug_exp(win, ren, debug_font, text_color, "Exp: ", 25, 200);
@@ -304,7 +303,8 @@ int main() {
             + format_number(test_boi.levels()));
     debug_posx.update("Pos X: " + format_number(test_char.get_x()));
     debug_posy.update("Pos Y: " + format_number(test_char.get_y()));
-    
+
+
     if(debug_mode) {
       debug_frame_count.render();
       debug_ticks.render();
@@ -316,6 +316,7 @@ int main() {
       debug_level.render();
       debug_posx.render();
       debug_posy.render();
+
     }
     // END, DEBUG TEXT UPDATING & RENDERING
 
