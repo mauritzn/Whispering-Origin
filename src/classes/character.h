@@ -6,6 +6,7 @@
 #include <SDL2/SDL_image.h>
 
 #include <string>
+#include <vector>
 #include <iostream>
 #include "math.h"
 
@@ -18,7 +19,7 @@ class Character
         int _char_exp;
         int _level;
         int _money;
-        int _xp_rate[51];
+        vector<int> _xp_rate;
 
     public:
         // Constructor
