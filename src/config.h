@@ -5,24 +5,31 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#include <iostream>
 #include <string>
 
 using namespace std;
 
-// Map
-const string map = "images/maps/main_texture.png";
 
-// Font
-const char* font = "fonts/Ubuntu_C.ttf";
-
+// General
 const char* game_name = "Whispering Origin";
+const char* icon_path = "images/icon.png";
 
-const char* icon_location = "images/icon.png";
 
-const char* char_location = "images/test_char_3.png";
+// Fonts
+const char* main_font = "fonts/Ubuntu_C.ttf";
 
-const char* tree_location = "images/tree.png";
+
+// Map
+const string map_texture_path = "images/maps/main_texture.png";
+
+
+// Entity images
+const char* char_image_path = "images/test_char_3.png";
+const char* tree_image_path = "images/tree.png";
+
+
+// Player
+const int max_level = 50;
 
 
 #endif
