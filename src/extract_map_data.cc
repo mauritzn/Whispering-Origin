@@ -23,26 +23,26 @@
 using namespace std;
 
 
-enum grid_types {
+enum grid_type {
   PLAYER = 20522057,
   COLLIDER = 245245245,
-  GRASS = 6517051,
-  WATER = 21108153
+  GRASS = 6517051, // unused
+  WATER = 21108153 // unused
 };
-enum item_types {
+enum item_type {
   TREE = 7617580,
   ORE = 25119245,
   FISH = 33150243
 };
 
-enum tree_ids {
-  OAK = 6381181
+enum tree_id {
+  TREE_OAK = 6381181
 };
-enum ore_ids {
-  COPPER = 6381181
+enum ore_id {
+  ORE_COPPER = 6381181
 };
-enum fish_ids {
-  SALMON = 6381181
+enum fish_id {
+  FISH_SALMON = 6381181
 };
 
 
@@ -133,8 +133,8 @@ int main() {
     int player_pos_x = floor(map_width / 2);
     int player_pos_y = floor(map_height / 2);
     
-    grid_types current_grid_type;
-    item_types current_item_type;
+    grid_type current_grid_type;
+    item_type current_item_type;
     
     int coliders_found = 0;
     int trees_found = 0;
@@ -167,30 +167,30 @@ int main() {
     
     while(parsing) {
       if(get_RGB(current_color, surface, current_x, current_y)) {
-        current_grid_type = (grid_types) concat_RGB(current_color);
+        current_grid_type = (grid_type) concat_RGB(current_color);
         
         if(current_grid_type == COLLIDER) {
           if(get_RGB(current_color, surface, (current_x + 1), (current_y + 1))) {
             if(is_item(concat_RGB(current_color))) {
-              current_item_type = (item_types) concat_RGB(current_color);
+              current_item_type = (item_type) concat_RGB(current_color);
               
               if(get_RGB(current_color, surface, (current_x + 2), (current_y + 1))) {
                 if(current_item_type == TREE) {
                   if(trees_found > 0) trees << "|";
                   trees << to_grid_row(current_y, grid_size) << "x" << to_grid_col(current_x, grid_size)
-                        << ":" << ((tree_ids) concat_RGB(current_color));
+                        << ":" << ((tree_id) concat_RGB(current_color));
                   
                   trees_found++;
                 } else if(current_item_type == ORE) {
                   if(ores_found > 0) ores << "|";
                   ores << to_grid_row(current_y, grid_size) << "x" << to_grid_col(current_x, grid_size)
-                        << ":" << ((ore_ids) concat_RGB(current_color));
+                        << ":" << ((ore_id) concat_RGB(current_color));
                   
                   ores_found++;
                 } else if(current_item_type == FISH) {
                   if(fish_found > 0) fish << "|";
                   fish << to_grid_row(current_y, grid_size) << "x" << to_grid_col(current_x, grid_size)
-                        << ":" << ((fish_ids) concat_RGB(current_color));
+                        << ":" << ((fish_id) concat_RGB(current_color));
                   
                   fish_found++;
                 }
