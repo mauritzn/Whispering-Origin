@@ -28,6 +28,7 @@
 #include <sstream>
 #include <vector>
 
+#include "config.h"
 #include "classes/window.h"
 #include "classes/renderer.h"
 #include "classes/images.h"
@@ -81,7 +82,7 @@ int main() {
   const int window_width = 1280;
   const int window_height = 720;
   
-  const string map = "images/maps/main_texture.png";
+  //const string map = "images/maps/main_texture.png";
   
   
   FPS fps;
@@ -117,18 +118,18 @@ int main() {
   cout << "Window Size: " << window_width << "x" << window_height << endl << endl;
 
 
-  TTF_Font* debug_font = TTF_OpenFont("fonts/Ubuntu_C.ttf", 20);
-  TTF_Font* Ubuntu_font = TTF_OpenFont("fonts/Ubuntu_C.ttf", 20);
+  TTF_Font* debug_font = TTF_OpenFont(font, 20);
+  TTF_Font* Ubuntu_font = TTF_OpenFont(font, 20);
   SDL_Color background_color = { 240, 240, 240 };
   SDL_Color text_color = { 255, 255, 255 };
 
 
 
 
-  Window win("Whispering Origin", ((display_width / 2) - (window_width / 2)), ((display_height / 2) - (window_height / 2)), window_width, window_height);
+  Window win(game_name, ((display_width / 2) - (window_width / 2)), ((display_height / 2) - (window_height / 2)), window_width, window_height);
   Renderer ren(win, background_color);
 
-  SDL_Surface* icon = IMG_Load("images/icon.png");
+  SDL_Surface* icon = IMG_Load(icon_location);
   SDL_SetWindowIcon(win.get(), icon);
 
 
@@ -136,14 +137,14 @@ int main() {
   demo_1080p_map.set_y((demo_1080p_map.get_y() + (32 * 2)));
 
   //BMP test_char(win, ren, "images/test_char_2.bmp", -50, -50); // -50 => centered, -100 => bottom aligned / right aligned
-  PNG test_char(win, ren, "images/test_char_3.png", -50, -50); // -50 => centered, -100 => bottom aligned / right aligned
+  PNG test_char(win, ren, char_location, -50, -50); // -50 => centered, -100 => bottom aligned / right aligned
 
 
   vector<PNG*> trees;
   const int tree_count = 5;
 
   for(int i = 0; i < tree_count; i++) {
-    trees.push_back(new PNG(win, ren, "images/tree.png", -50, -50));
+    trees.push_back(new PNG(win, ren, tree_location, -50, -50));
   }
 
   trees[0]->set_x(constrain_png_width(545, win, *trees[0]));
