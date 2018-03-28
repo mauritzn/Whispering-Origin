@@ -1,7 +1,8 @@
 #include <iostream>
-
-#include "character.h"
 #include <vector>
+
+#include "../config.h"
+#include "character.h"
 #include "images.h"
 
 using namespace std;
@@ -14,8 +15,8 @@ Character::Character()
     _char_exp = 0;
     _level = 1;
     _money = 0;
-
-    for(int i = 1; i <= 50; i++) {
+    
+    for(int i = 1; i <= max_level; i++) {
        _xp_rate.push_back(pow((i * 2), 3));
     }
 }

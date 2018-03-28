@@ -6,30 +6,29 @@
 #define CONFIG_H
 
 #include <string>
-
 using namespace std;
 
 
 // General
-const char* game_name = "Whispering Origin";
-const char* icon_path = "images/icon.png";
+extern const char* game_name;
+extern const char* icon_path;
 
 
 // Fonts
-const char* main_font = "fonts/Ubuntu_C.ttf";
+extern const char* main_font;
 
 
 // Map
-const string map_texture_path = "images/maps/main_texture.png";
+extern const string map_texture_path;
 
 
 // Entity images
-const char* char_image_path = "images/test_char_3.png";
-const char* tree_image_path = "images/tree.png";
+extern const char* char_image_path;
+extern const char* tree_image_path;
 
 
 // Player
-const int max_level = 50;
+extern const int max_level;
 
 
 #endif
