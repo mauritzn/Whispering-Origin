@@ -19,7 +19,7 @@ Player::Player(Window& win, Renderer& ren)
     _character = new PNG(*_win, *_ren, character_image_path, 0, 300);
 
     
-    for(int i = 1; i <= max_level; i++) {
+    for(int i = 1; i < max_level; i++) {
        _xp_rates.push_back(pow((i * 2), 3));
     }
 }
@@ -110,19 +110,35 @@ void Player::set_money(int amount)
 
 
 int Player::xp_to_level() {
-  return _xp_rates[_player_level - 1];
+  if(_player_level == max_level) {
+    return _xp_rates[_player_level - 2];
+  } else {
+    return _xp_rates[_player_level - 1];
+  }
 }
 
 void Player::increase_xp(int amount)
 {
+  bool check_for_level_up = true;
+  
+  if(_player_level < max_level) {
     if(amount > 0) _player_xp += amount;
     
-    if(_player_xp >= this->xp_to_level()) {
-        if(_player_level <= max_level) {
+    while(check_for_level_up) {
+      if(_player_level < max_level) {
+        if(_player_xp >= this->xp_to_level()) {
             _player_level++;
             _leveled_up_at = SDL_GetTicks();
+            
+            if(_player_level == max_level) _player_xp = this->xp_to_level();
+        } else {
+          check_for_level_up = false;
         }
+      } else {
+        check_for_level_up = false;
+      }
     }
+  }
 }
 
 bool Player::has_leveled_up() {
@@ -141,4 +157,3 @@ void Player::render()
 {
     _character->render();
 }
-

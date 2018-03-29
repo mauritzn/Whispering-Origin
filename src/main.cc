@@ -184,7 +184,7 @@ int main() {
   */
 
   
-  Text level_up(win, ren, Level_font, text_color, "You have leveled up! You are now level ", -50, -50);
+  Text level_up(win, ren, Level_font, text_color, "Level up! You are now level ", -50, -50);
   level_up.set_y((level_up.get_y() - 55));
 
 
@@ -241,7 +241,7 @@ int main() {
         if(event.key.keysym.sym == SDLK_RIGHT) right_is_down = true;
         if(event.key.keysym.sym == SDLK_d) right_is_down = true;
         
-        if(event.key.keysym.sym == SDLK_F5) test_player.increase_xp(10);
+        if(event.key.keysym.sym == SDLK_F5) test_player.increase_xp(10000);
         if(event.key.keysym.sym == SDLK_F4) debug_mode = !debug_mode;
       } else if(event.type == SDL_KEYUP) {
         if(event.key.keysym.sym == SDLK_UP) up_is_down = false;
@@ -308,7 +308,7 @@ int main() {
     
     
     if(test_player.has_leveled_up()) {
-        level_up.update("You have leveled up! You are now level " + format_number(test_player.level()));
+        level_up.update("Level up! You are now level " + format_number(test_player.level()));
         level_up.render();
     }
     

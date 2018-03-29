@@ -55,7 +55,6 @@ class Player
         bool has_leveled_up();
 
         void render();
-
 };
 
 #endif
