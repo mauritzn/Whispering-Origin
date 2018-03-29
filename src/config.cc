@@ -10,7 +10,7 @@ const int window_height = 720;
 const char* game_name = "Whispering Origin";
 const char* icon_path = "images/icon.png";
 
-bool debug_mode = false;
+bool debug_mode = true;
 
 
 // Fonts
