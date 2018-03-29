@@ -122,6 +122,7 @@ int main() {
 
   TTF_Font* debug_font = TTF_OpenFont(main_font, 20);
   TTF_Font* Ubuntu_font = TTF_OpenFont(main_font, 20);
+  TTF_Font* Level_font = TTF_OpenFont(main_font, 32);
   SDL_Color background_color = { 240, 240, 240 };
   SDL_Color text_color = { 255, 255, 255 };
 
@@ -183,7 +184,7 @@ int main() {
   */
 
   
-  Text level_up(win, ren, Ubuntu_font, text_color, "!! LEVEL UP !!", -50, -100);
+  Text level_up(win, ren, Level_font, text_color, "You have leveled up! You are now level ", -50, -50);
   level_up.set_y((level_up.get_y() - 55));
 
 
@@ -307,7 +308,8 @@ int main() {
     
     
     if(test_player.has_leveled_up()) {
-      level_up.render();
+        level_up.update("You have leveled up! You are now level " + format_number(test_player.level()));
+        level_up.render();
     }
     
     
