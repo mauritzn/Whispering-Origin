@@ -59,7 +59,7 @@ void Player::damage(int amount)
 {
   if(amount > 0) {
     if(_hp > 0) {
-      if((_hp - amount) >= 0) {
+      if(amount <= _hp) {
         _hp -= amount;
       } else {
         _hp = 0;

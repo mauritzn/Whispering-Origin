@@ -309,6 +309,7 @@ int main() {
         hello_text.update("Use arrow keys or WASD to move \"the character\" (up, down, left, right), F4 to toggle debug menu"); // will not mess up alignment ;)
         
         test_player.decrease_money(50);
+        test_player.damage(5);
       }
     }
     
