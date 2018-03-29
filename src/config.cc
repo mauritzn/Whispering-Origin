@@ -23,8 +23,8 @@ const int velocity = 250;
 
 
 // Entity images
-const char* character_image_path = "images/test_char_3.png";
-const char* tree_image_path = "images/tree.png";
+const string character_image_path = "images/test_char_3.png";
+const string tree_image_path = "images/tree.png";
 
 
 // Player

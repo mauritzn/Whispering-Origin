@@ -36,6 +36,7 @@
 #include "classes/text.h"
 #include "classes/fps.h"
 #include "classes/character.h"
+#include "classes/player.h"
 using namespace std;
 
 
@@ -140,6 +141,7 @@ int main() {
 
   //BMP test_char(win, ren, "images/test_char_2.bmp", -50, -50); // -50 => centered, -100 => bottom aligned / right aligned
   PNG test_char(win, ren, character_image_path, -50, -50); // -50 => centered, -100 => bottom aligned / right aligned
+  Player test_player(win, ren);
 
 
   vector<PNG*> trees;

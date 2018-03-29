@@ -12,7 +12,8 @@ Player::Player(Window& win, Renderer& ren)
     _win = &win;
     _ren = &ren;
 
-    _character(_win, _ren, character_image_path, -50, -50);
+    PNG local_char(win, ren, character_image_path, -50, -50);
+    _character = &local_char;
 
 }
 
@@ -43,35 +44,52 @@ void Player::heal(int amount)
 
 void Player::damage(int amount)
 {
-    if(_hp > 0)
+  if(amount > 0) {
+    if(_hp > 0) {
+      if((_hp - amount >= 0)) {
         _hp -= amount;
+      } else {
+        _hp = 0;
+      }
+    }
+  }
 }
 
 bool Player::is_alive()
 {
-    if(_hp > 0)
-    {
-        return true;
-    }
-    return false;
+    if(_hp > 0) return true;
+    else return false;
 }
 
 void Player::increase_money(int amount)
 {
-   if(_money < max_money)
-       if((_money += amount) != max_money)
-           _money += amount;
+   if(amount > 0) {
+      if(_money < max_money) {
+          if((_money + amount) <= max_money) {
+              _money += amount;
+          } else {
+            _money = max_money;
+          }
+      }
+   }
 }
 
 void Player::decrease_money(int amount)
 {
-   if(amount > 0)
-       if((_money -= amount) != (uint32_t) -1)
-           _money -= amount;
+  if(amount > 0) {
+    if(_money > 0) {
+      if((_money - amount >= 0)) {
+        _money -= amount;
+      } else {
+        _money = 0;
+      }
+    }
+  }
 }
 
 void Player::set_money(int amount)
 {
+    if((unsigned) amount > max_money) amount = max_money;
     _money = amount;
 }
 
@@ -80,10 +98,18 @@ void Player::increase_xp(int amount)
     if(amount > 0) _player_xp += amount;
 }
 
+// Should be removed, should be inside increase_xp (with checks to see if the XP is now above the new level threshold)
 void Player::increase_level(int amount)
 {
-    if((_player_level += amount) != max_level)
-        _player_level += amount;
+  if(amount > 0) {
+    if(_player_level < max_level) {
+      if((_player_level + amount) <= max_level) {
+          _player_level += amount;
+      } else {
+        _player_level = max_level;
+      }
+    }
+  }
 }
 
 void Player::render()
