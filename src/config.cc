@@ -30,3 +30,5 @@ const string tree_image_path = "images/tree.png";
 // Player
 const int max_level = 50;
 const uint32_t max_money = 2400000;
+
+const int time_to_display_level_up_message = 3500;

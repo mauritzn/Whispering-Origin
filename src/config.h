@@ -39,5 +39,7 @@ extern const string tree_image_path; // define where the TEMP tree image is stor
 extern const int max_level; // define how far the player can level
 extern const uint32_t max_money; // define how much money the player can have
 
+extern const int time_to_display_level_up_message; // define how long the level up message should be shown (in milliseconds)
+
 
 #endif

@@ -127,7 +127,7 @@ void Player::increase_xp(int amount)
 
 bool Player::has_leveled_up() {
   if(_leveled_up_at > 0) {
-    if((SDL_GetTicks() - _leveled_up_at) < 2500) {
+    if((SDL_GetTicks() - _leveled_up_at) <= (unsigned) time_to_display_level_up_message) {
       return true;
     } else {
       return false;
