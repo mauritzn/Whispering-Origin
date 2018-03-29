@@ -16,7 +16,16 @@ Player::Player(Window& win, Renderer& ren)
     _win = &win;
     _ren = &ren;
 
-    _character = new PNG(*_win, *_ren, character_image_path, -50, -50);
+    _character = new PNG(*_win, *_ren, character_image_path, 0, 0);
+    _character->set_container_width(character_grid_size);
+    _character->set_container_height(character_grid_size);
+    _character->set_image_width(character_grid_size);
+    _character->set_image_height(character_grid_size);
+    
+    _character->set_absolute_x((window_width / 2) - (character_grid_size / 2)); // center
+    _character->set_absolute_y((window_height / 2) - (character_grid_size / 2)); // center
+    
+    _character->set_image_y(SOUTH);
 
     
     for(int i = 1; i < max_level; i++) {
@@ -30,6 +39,10 @@ int Player::get_y() { return _character->get_y(); }
 
 void Player::set_x(int new_x) { _character->set_x(new_x); }
 void Player::set_y(int new_y) { _character->set_y(new_y); }
+
+void Player::set_direction(player_direction new_direction) {
+  _character->set_image_y(new_direction);
+}
 
 
 int Player::health()

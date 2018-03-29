@@ -146,6 +146,12 @@ int PNG::height() {
   return _height;
 }
 
+void PNG::set_image_width(int new_width) { _src_rect.w = new_width; }
+void PNG::set_image_height(int new_height) { _src_rect.h = new_height; }
+
+void PNG::set_container_width(int new_width) { _dest_rect.w = new_width; }
+void PNG::set_container_height(int new_height) { _dest_rect.h = new_height; }
+
 
 void PNG::set_absolute_x(int x) {
   // defines image position
@@ -156,6 +162,10 @@ void PNG::set_absolute_y(int y) {
   // defines image position
   _dest_rect.y = y;
 }
+
+void PNG::set_image_x(int x) { _src_rect.x = x; }
+void PNG::set_image_y(int y) { _src_rect.y = y; }
+
 
 void PNG::set_x(int x) {
   if(x == -50) x = ((_win->width() / 2) - (_width / 2));

@@ -62,22 +62,26 @@ void World::update() {
   float delta_velocity = (world_velocity * _fps->delta_time());
   
   if(_moving_up) {
+    _player->set_direction(NORTH);
     _y += delta_velocity;
     _texture->set_absolute_y((int) _y);
   }
   
   if(_moving_down) {
+    _player->set_direction(SOUTH);
     _y -= delta_velocity;
     _texture->set_absolute_y((int) _y);
   }
 
   
   if(_moving_left) {
+    _player->set_direction(WEST);
     _x += delta_velocity;
     _texture->set_absolute_x((int) _x);
   }
   
   if(_moving_right) {
+    _player->set_direction(EAST);
     _x -= delta_velocity;
     _texture->set_absolute_x((int) _x);
   }

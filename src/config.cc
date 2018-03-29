@@ -10,7 +10,7 @@ const int window_height = 720;
 const char* game_name = "Whispering Origin";
 const char* icon_path = "images/icon.png";
 
-bool debug_mode = true;
+bool debug_mode = false;
 
 
 // Fonts
@@ -23,7 +23,8 @@ const int world_velocity = 250;
 
 
 // Entity images
-const string character_image_path = "images/test_char_3.png";
+const string character_image_path = "images/char.png";
+const int character_grid_size = 64;
 const string tree_image_path = "images/tree.png";
 
 

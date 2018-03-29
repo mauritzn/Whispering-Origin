@@ -13,6 +13,13 @@
 
 using namespace std;
 
+enum player_direction {
+  NORTH = 0,
+  SOUTH = 128,
+  WEST = 64,
+  EAST = 192
+};
+
 class Player
 {
     private:
@@ -36,6 +43,8 @@ class Player
         int get_y();
         void set_x(int);
         void set_y(int);
+        
+        void set_direction(player_direction);
         
         int health();
         uint32_t money();
