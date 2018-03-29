@@ -43,13 +43,13 @@ void Player::heal(int amount)
 
 void Player::damage(int amount)
 {
-    if(_hp != 0)
+    if(_hp > 0)
         _hp -= amount;
 }
 
 bool Player::is_alive()
 {
-    if(_hp != 0)
+    if(_hp > 0)
     {
         return true;
     }
