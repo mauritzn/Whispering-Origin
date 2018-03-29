@@ -35,7 +35,6 @@
 #include "classes/images.h"
 #include "classes/text.h"
 #include "classes/fps.h"
-#include "classes/character.h"
 #include "classes/player.h"
 using namespace std;
 
@@ -183,8 +182,6 @@ int main() {
   trees[4]->set_y(constrain_png_height(342, win, *trees[4]));
   */
 
-  // Character test start
-  Character test_boi;
 
   Text hello_text(win, ren, Ubuntu_font, text_color, "<text will be updated ;) >", -50, -100); // -50 => centered, -100 => bottom aligned / right aligned
   hello_text.set_y((hello_text.get_y() - 25));
@@ -216,6 +213,8 @@ int main() {
   bool down_is_down = false;
   bool left_is_down = false;
   bool right_is_down = false;
+  
+  int debug_player_vel = 5; // for debug movment only (wont be used in the future
 
 
 
@@ -279,7 +278,22 @@ int main() {
 
     hello_text.render();
     test_char.render();
+    
+    
+    
+    test_player.render();
+    
+    // just for testing that get_ and set_ works
+    if(test_player.get_x() > (window_width - (25 + 25))) {
+      if(debug_player_vel > 0) debug_player_vel = debug_player_vel * -1;
+    } else if(test_player.get_x() < 25) {
+      if(debug_player_vel < 0) debug_player_vel = debug_player_vel * -1;
+    }
+      
+    test_player.set_x(test_player.get_x() + debug_player_vel);
 
+    
+    
     for(int i = 0; i < tree_count; i++) {
       trees[i]->render();
     }
@@ -302,13 +316,12 @@ int main() {
     debug_delta_time.update("Delta Time: " + to_string(fps.delta_time()));
     
     // Char-specific text-update
-    debug_health.update("Health: " + format_number(test_boi.health()));
-    debug_exp.update("Exp: " + format_number(test_boi.char_exp()) + "/" 
-            + format_number(test_boi.exp_rate()));
-    debug_level.update("Level: " + format_number(test_boi.level()) + "/" 
-            + format_number(test_boi.levels()));
-    debug_posx.update("Pos X: " + format_number(test_char.get_x()));
-    debug_posy.update("Pos Y: " + format_number(test_char.get_y()));
+    debug_health.update("Health: " + format_number(test_player.health()));
+    debug_exp.update("Exp: " + format_number(test_player.xp()) + "/" + format_number(test_player.xp_to_level()));
+    debug_level.update("Level: " + format_number(test_player.level()) + "/" 
+            + to_string(max_level));
+    debug_posx.update("Pos X: " + format_number(test_player.get_x()));
+    debug_posy.update("Pos Y: " + format_number(test_player.get_y()));
 
 
     if(debug_mode) {

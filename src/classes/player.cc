@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <vector>
+#include <cmath>
 
 #include "player.h"
 #include "images.h"
@@ -12,10 +14,21 @@ Player::Player(Window& win, Renderer& ren)
     _win = &win;
     _ren = &ren;
 
-    PNG local_char(win, ren, character_image_path, -50, -50);
-    _character = &local_char;
+    _character = new PNG(*_win, *_ren, character_image_path, 0, 300);
 
+    
+    for(int i = 1; i <= max_level; i++) {
+       _xp_rates.push_back(pow((i * 2), 3));
+    }
 }
+
+
+int Player::get_x() { return _character->get_x(); }
+int Player::get_y() { return _character->get_y(); }
+
+void Player::set_x(int new_x) { _character->set_x(new_x); }
+void Player::set_y(int new_y) { _character->set_y(new_y); }
+
 
 int Player::health()
 {
@@ -91,6 +104,11 @@ void Player::set_money(int amount)
 {
     if((unsigned) amount > max_money) amount = max_money;
     _money = amount;
+}
+
+
+int Player::xp_to_level() {
+  return _xp_rates[_player_level - 1];
 }
 
 void Player::increase_xp(int amount)
