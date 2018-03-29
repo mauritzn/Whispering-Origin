@@ -236,6 +236,7 @@ int main() {
         if(event.key.keysym.sym == SDLK_RIGHT) right_is_down = true;
         if(event.key.keysym.sym == SDLK_d) right_is_down = true;
         
+        if(event.key.keysym.sym == SDLK_F5) test_player.increase_xp(10);
         if(event.key.keysym.sym == SDLK_F4) debug_mode = !debug_mode;
       } else if(event.type == SDL_KEYUP) {
         if(event.key.keysym.sym == SDLK_UP) up_is_down = false;
