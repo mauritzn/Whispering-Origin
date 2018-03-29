@@ -29,6 +29,7 @@
 #include <vector>
 
 #include "config.h"
+#include "items.h"
 #include "classes/window.h"
 #include "classes/renderer.h"
 #include "classes/images.h"
@@ -80,7 +81,18 @@ int main() {
   FPS fps;
   uint32_t frames = 0;
 
-
+  
+  /*
+  int id_to_check = 6381181;
+  cout << "Tree ID '" << id_to_check << "' is ";
+  if(item_exists(id_to_check, trees)) {
+    cout << "valid, and it's name is: " << get_item_name(id_to_check, trees) << endl << endl;
+  } else {
+    cout << "NOT a valid ID valid" << endl << endl;
+  }
+  */
+  
+  
   if(SDL_Init(SDL_INIT_VIDEO) != 0) {
     cout << "SDL_Init Error: " << SDL_GetError() << endl;
     return 1;
