@@ -24,6 +24,7 @@ class Player
         int _hp = 10;
         uint32_t _money = 10;
 
+        uint32_t _leveled_up_at = 0;
         int _player_level = 1;
         int _player_xp = 0;
         vector<int> _xp_rates;
@@ -51,6 +52,7 @@ class Player
 
         int xp_to_level();
         void increase_xp(int);
+        bool has_leveled_up();
 
         void render();
 

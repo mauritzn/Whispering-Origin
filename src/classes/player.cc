@@ -1,3 +1,5 @@
+#include <SDL2/SDL.h>
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -118,8 +120,21 @@ void Player::increase_xp(int amount)
     if(_player_xp >= this->xp_to_level()) {
         if(_player_level <= max_level) {
             _player_level++;
+            _leveled_up_at = SDL_GetTicks();
         }
     }
+}
+
+bool Player::has_leveled_up() {
+  if(_leveled_up_at > 0) {
+    if((SDL_GetTicks() - _leveled_up_at) < 2500) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
 }
 
 void Player::render()

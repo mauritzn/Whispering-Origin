@@ -182,6 +182,10 @@ int main() {
   trees[4]->set_y(constrain_png_height(342, win, *trees[4]));
   */
 
+  
+  Text level_up(win, ren, Ubuntu_font, text_color, "!! LEVEL UP !!", -50, -100);
+  level_up.set_y((level_up.get_y() - 55));
+
 
   Text hello_text(win, ren, Ubuntu_font, text_color, "<text will be updated ;) >", -50, -100); // -50 => centered, -100 => bottom aligned / right aligned
   hello_text.set_y((hello_text.get_y() - 25));
@@ -294,13 +298,16 @@ int main() {
     }
       
     test_player.set_x(test_player.get_x() + debug_player_vel);
-    //if(test_player.get_x() > 300 && test_player.get_x() < 350) {
-    //}
 
     
     
     for(int i = 0; i < tree_count; i++) {
       trees[i]->render();
+    }
+    
+    
+    if(test_player.has_leveled_up()) {
+      level_up.render();
     }
     
     
