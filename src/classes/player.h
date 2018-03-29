@@ -22,7 +22,7 @@ class Player
         PNG* _character;
     
         int _hp = 10;
-        uint32_t _money = 0;
+        uint32_t _money = 10;
 
         int _player_level = 1;
         int _player_xp = 0;

@@ -197,6 +197,7 @@ int main() {
   Text debug_exp(win, ren, debug_font, text_color, "Exp: ", 25, 200);
   Text debug_posx(win, ren, debug_font, text_color, "Pos X: ", 25, 225);
   Text debug_posy(win, ren, debug_font, text_color, "Pos Y: ", 25, 250);
+  Text debug_money(win, ren, debug_font, text_color, "Money: ", 25, 270);
 
 
 
@@ -214,6 +215,7 @@ int main() {
   bool left_is_down = false;
   bool right_is_down = false;
   
+  bool debug_test_refresh_done = false;
   int debug_player_vel = 5; // for debug movment only (wont be used in the future
 
 
@@ -291,6 +293,8 @@ int main() {
     }
       
     test_player.set_x(test_player.get_x() + debug_player_vel);
+    //if(test_player.get_x() > 300 && test_player.get_x() < 350) {
+    //}
 
     
     
@@ -299,8 +303,13 @@ int main() {
     }
     
     
-    if(fps.ticks() > 1000) {
-      hello_text.update("Use arrow keys or WASD to move \"the character\" (up, down, left, right), F4 to toggle debug menu"); // will not mess up alignment ;)
+    if(fps.ticks() >= 1000) {
+      if(!debug_test_refresh_done) {
+        debug_test_refresh_done = true;
+        hello_text.update("Use arrow keys or WASD to move \"the character\" (up, down, left, right), F4 to toggle debug menu"); // will not mess up alignment ;)
+        
+        test_player.decrease_money(50);
+      }
     }
     
     
@@ -322,6 +331,7 @@ int main() {
             + to_string(max_level));
     debug_posx.update("Pos X: " + format_number(test_player.get_x()));
     debug_posy.update("Pos Y: " + format_number(test_player.get_y()));
+    debug_money.update("Money: " + format_number(test_player.money()));
 
 
     if(debug_mode) {
@@ -335,6 +345,7 @@ int main() {
       debug_level.render();
       debug_posx.render();
       debug_posy.render();
+      debug_money.render();
 
     }
     // END, DEBUG TEXT UPDATING & RENDERING

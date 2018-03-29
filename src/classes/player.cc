@@ -91,7 +91,7 @@ void Player::decrease_money(int amount)
 {
   if(amount > 0) {
     if(_money > 0) {
-      if((_money - amount) >= 0) {
+      if((unsigned) amount <= _money) {
         _money -= amount;
       } else {
         _money = 0;
