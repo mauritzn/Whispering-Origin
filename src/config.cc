@@ -19,7 +19,7 @@ const char* main_font = "fonts/Ubuntu_C.ttf";
 
 // World
 const string world_texture_path = "images/maps/main_texture.png";
-const int velocity = 250;
+const int world_velocity = 250;
 
 
 // Entity images

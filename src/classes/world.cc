@@ -30,6 +30,9 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
   // min value is 0
   // max value is -360 ((window_height / 2) * -1)
   _texture->set_absolute_y((window_height / 4) * -1); // center
+  
+  _x = (float) _texture->get_x();
+  _y = (float) _texture->get_y();
 }
 
 
@@ -56,28 +59,27 @@ void World::key_released(SDL_Keycode key){
 
 
 void World::update() {
-  //float temp_vel = (velocity * fps.delta_time());
-  float temp_vel = 5;
-  // down and right seem a bit slower than up and left?
+  float delta_velocity = (world_velocity * _fps->delta_time());
+  
   if(_moving_up) {
-    _texture->set_absolute_y((_texture->get_y() + temp_vel));
-    // _texture->set_absolute_y(constrain((_texture->get_y() + temp_vel), ((window_height / 2) * -1), 0));
+    _y += delta_velocity;
+    _texture->set_absolute_y((int) _y);
   }
   
   if(_moving_down) {
-    _texture->set_absolute_y((_texture->get_y() - temp_vel));
-    // _texture->set_absolute_y(constrain((_texture->get_y() - temp_vel), ((window_height / 2) * -1), 0));
+    _y -= delta_velocity;
+    _texture->set_absolute_y((int) _y);
   }
 
   
   if(_moving_left) {
-    _texture->set_absolute_x((_texture->get_x() + temp_vel));
-    // _texture->set_absolute_x(constrain((_texture->get_x() + temp_vel), ((window_width / 2) * -1), 0));
+    _x += delta_velocity;
+    _texture->set_absolute_x((int) _x);
   }
   
   if(_moving_right) {
-    _texture->set_absolute_x((_texture->get_x() - temp_vel));
-    // _texture->set_absolute_x(constrain((_texture->get_x() - temp_vel), ((window_width / 2) * -1), 0));
+    _x -= delta_velocity;
+    _texture->set_absolute_x((int) _x);
   }
 }
 

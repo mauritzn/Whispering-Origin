@@ -20,6 +20,8 @@ class World {
     Player* _player; // (will be) used to change the player sprite
 
     PNG* _texture;
+    float _x = 0;
+    float _y = 0;
     
     bool _moving_up = false;
     bool _moving_down = false;

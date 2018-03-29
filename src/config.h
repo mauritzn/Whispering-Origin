@@ -27,7 +27,7 @@ extern const char* main_font; // define where the main font is stored [TTF]
 
 // World
 extern const string world_texture_path; // define where the main world's texture image is stored [PNG]
-extern const int velocity; // defines how fast the world moves around
+extern const int world_velocity; // defines how fast the world moves around
 
 
 // Entity images
