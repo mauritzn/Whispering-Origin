@@ -114,20 +114,12 @@ int Player::xp_to_level() {
 void Player::increase_xp(int amount)
 {
     if(amount > 0) _player_xp += amount;
-}
-
-// Should be removed, should be inside increase_xp (with checks to see if the XP is now above the new level threshold)
-void Player::increase_level(int amount)
-{
-  if(amount > 0) {
-    if(_player_level < max_level) {
-      if((_player_level + amount) <= max_level) {
-          _player_level += amount;
-      } else {
-        _player_level = max_level;
-      }
+    
+    if(_player_xp > this->xp_to_level()) {
+        if(_player_level <= max_level) {
+            _player_level++;
+        }
     }
-  }
 }
 
 void Player::render()

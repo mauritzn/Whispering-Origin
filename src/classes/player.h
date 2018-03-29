@@ -51,7 +51,6 @@ class Player
 
         int xp_to_level();
         void increase_xp(int);
-        void increase_level(int);
 
         void render();
 
