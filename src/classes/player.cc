@@ -115,7 +115,7 @@ void Player::increase_xp(int amount)
 {
     if(amount > 0) _player_xp += amount;
     
-    if(_player_xp > this->xp_to_level()) {
+    if(_player_xp >= this->xp_to_level()) {
         if(_player_level <= max_level) {
             _player_level++;
         }
