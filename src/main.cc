@@ -24,54 +24,19 @@
 
 #include <iostream>
 #include <string>
-#include <iomanip>
-#include <sstream>
 #include <vector>
 
 #include "config.h"
 #include "items.h"
 #include "classes/window.h"
 #include "classes/renderer.h"
+#include "classes/functions.h"
 #include "classes/images.h"
 #include "classes/text.h"
 #include "classes/fps.h"
 #include "classes/player.h"
+#include "classes/world.h"
 using namespace std;
-
-
-int constrain(int number, int min, int max) {
-  if(number < min) number = min;
-  if(number > max) number = max;
-
-  return number;
-}
-
-
-int constrain_png_width(int number, Window& win, PNG& png) {
-  return constrain(number, 0, (win.width() - png.width()));
-}
-
-int constrain_png_height(int number, Window& win, PNG& png) {
-  return constrain(number, 0, (win.height() - png.height()));
-}
-
-
-string format_number(int number_to_format) {
-  stringstream formatted_number;
-
-  formatted_number.imbue(locale(""));
-  formatted_number << fixed << number_to_format;
-
-  return formatted_number.str();
-}
-
-string to_fixed(float number_to_fix) {
-  stringstream fixed_number;
-  fixed_number << fixed << setprecision(2) << number_to_fix;
-
-  return fixed_number.str();
-}
-
 
 
 
@@ -123,7 +88,7 @@ int main() {
   TTF_Font* debug_font = TTF_OpenFont(main_font, 20);
   TTF_Font* Ubuntu_font = TTF_OpenFont(main_font, 20);
   TTF_Font* Level_font = TTF_OpenFont(main_font, 32);
-  SDL_Color background_color = { 240, 240, 240 };
+  SDL_Color background_color = { 21, 108, 153 };
   SDL_Color text_color = { 255, 255, 255 };
 
 
@@ -136,12 +101,11 @@ int main() {
   SDL_SetWindowIcon(win.get(), icon);
 
 
-  PNG demo_1080p_world(win, ren, world_texture_path, -50, -50);
-  demo_1080p_world.set_y((demo_1080p_world.get_y() + (32 * 2)));
 
   //BMP test_char(win, ren, "images/test_char_2.bmp", -50, -50); // -50 => centered, -100 => bottom aligned / right aligned
-  PNG test_char(win, ren, character_image_path, -50, -50); // -50 => centered, -100 => bottom aligned / right aligned
   Player test_player(win, ren);
+  
+  World test_world(win, ren, fps, test_player);
 
 
   vector<PNG*> trees;
@@ -151,20 +115,20 @@ int main() {
     trees.push_back(new PNG(win, ren, tree_image_path, -50, -50));
   }
 
-  trees[0]->set_x(constrain_png_width(545, win, *trees[0]));
-  trees[0]->set_y(constrain_png_height(125, win, *trees[0]));
+  trees[0]->set_x(545);
+  trees[0]->set_y(125);
 
-  trees[1]->set_x(constrain_png_width(929, win, *trees[1]));
-  trees[1]->set_y(constrain_png_height(157, win, *trees[1]));
+  trees[1]->set_x(929);
+  trees[1]->set_y(157);
 
-  trees[2]->set_x(constrain_png_width(801, win, *trees[2]));
-  trees[2]->set_y(constrain_png_height(189, win, *trees[2]));
+  trees[2]->set_x(801);
+  trees[2]->set_y(189);
 
-  trees[3]->set_x(constrain_png_width(321, win, *trees[3]));
-  trees[3]->set_y(constrain_png_height(285, win, *trees[3]));
+  trees[3]->set_x(321);
+  trees[3]->set_y(285);
 
-  trees[4]->set_x(constrain_png_width(865, win, *trees[4]));
-  trees[4]->set_y(constrain_png_height(317, win, *trees[4]));
+  trees[4]->set_x(865);
+  trees[4]->set_y(317);
 
 /*
   trees[0]->set_x(constrain_png_width(936, win, *trees[0]));
@@ -199,10 +163,8 @@ int main() {
   // Character-specific debug
   Text debug_health(win, ren, debug_font, text_color, "Health: ", 25, 150);
   Text debug_level(win, ren, debug_font, text_color, "Level: ", 25, 175);
-  Text debug_exp(win, ren, debug_font, text_color, "Exp: ", 25, 200);
-  Text debug_posx(win, ren, debug_font, text_color, "Pos X: ", 25, 225);
-  Text debug_posy(win, ren, debug_font, text_color, "Pos Y: ", 25, 250);
-  Text debug_money(win, ren, debug_font, text_color, "Money: ", 25, 270);
+  Text debug_exp(win, ren, debug_font, text_color, "XP: ", 25, 200);
+  Text debug_money(win, ren, debug_font, text_color, "Money: ", 25, 225);
 
 
 
@@ -215,13 +177,12 @@ int main() {
   SDL_Event event;
   bool running = true;
 
-  bool up_is_down = false;
-  bool down_is_down = false;
-  bool left_is_down = false;
-  bool right_is_down = false;
+//   bool up_is_down = false;
+//   bool down_is_down = false;
+//   bool left_is_down = false;
+//   bool right_is_down = false;
   
   bool debug_test_refresh_done = false;
-  int debug_player_vel = 5; // for debug movment only (wont be used in the future
 
 
 
@@ -229,77 +190,47 @@ int main() {
     while(SDL_PollEvent(&event)) {
       if(event.type == SDL_QUIT) running = false;
       else if(event.type == SDL_KEYDOWN) {
-        if(event.key.keysym.sym == SDLK_UP) up_is_down = true;
-        if(event.key.keysym.sym == SDLK_w) up_is_down = true;
-
-        if(event.key.keysym.sym == SDLK_DOWN) down_is_down = true;
-        if(event.key.keysym.sym == SDLK_s) down_is_down = true;
-
-        if(event.key.keysym.sym == SDLK_LEFT) left_is_down = true;
-        if(event.key.keysym.sym == SDLK_a) left_is_down = true;
-
-        if(event.key.keysym.sym == SDLK_RIGHT) right_is_down = true;
-        if(event.key.keysym.sym == SDLK_d) right_is_down = true;
-        
-        if(event.key.keysym.sym == SDLK_F5) test_player.increase_xp(10000);
-        if(event.key.keysym.sym == SDLK_F4) debug_mode = !debug_mode;
+        if(event.key.keysym.sym == SDLK_F5) test_player.increase_xp(5);
+        else if(event.key.keysym.sym == SDLK_F4) debug_mode = !debug_mode;
+        else {
+          test_world.key_pressed(event.key.keysym.sym);
+        }
       } else if(event.type == SDL_KEYUP) {
-        if(event.key.keysym.sym == SDLK_UP) up_is_down = false;
-        if(event.key.keysym.sym == SDLK_w) up_is_down = false;
-
-        if(event.key.keysym.sym == SDLK_DOWN) down_is_down = false;
-        if(event.key.keysym.sym == SDLK_s) down_is_down = false;
-
-        if(event.key.keysym.sym == SDLK_LEFT) left_is_down = false;
-        if(event.key.keysym.sym == SDLK_a) left_is_down = false;
-
-        if(event.key.keysym.sym == SDLK_RIGHT) right_is_down = false;
-        if(event.key.keysym.sym == SDLK_d) right_is_down = false;
+        test_world.key_released(event.key.keysym.sym);
       } else {
         //if(event.type != 1024 && event.type != 512) cout << ">> Event: " << event.type << endl;
       }
     }
     
     fps.update();
-
+    test_world.update();
     
-    float temp_vel = (velocity * fps.delta_time());
-    //float temp_vel = (velocity * 0.015000);
-    // down and right seem a bit slower than up and left?
-    if(up_is_down) {
-      test_char.set_y(constrain((test_char.get_y() - temp_vel), 0, (window_height - test_char.height())));
-    }
-    if(down_is_down) {
-      test_char.set_y(constrain((test_char.get_y() + temp_vel), 0, (window_height - test_char.height())));
-    }
-
-    if(left_is_down) {
-      test_char.set_x(constrain((test_char.get_x() - temp_vel), 0, (window_width - test_char.width())));
-    }
-    if(right_is_down) {
-      test_char.set_x(constrain((test_char.get_x() + temp_vel), 0, (window_width - test_char.width())));
-    }
-
 
     ren.clear();
-    demo_1080p_world.render();
+    test_world.render();
 
     hello_text.render();
-    test_char.render();
-    
     
     
     test_player.render();
-    
-    // just for testing that get_ and set_ works
-    if(test_player.get_x() > (window_width - (25 + 25))) {
-      if(debug_player_vel > 0) debug_player_vel = debug_player_vel * -1;
-    } else if(test_player.get_x() < 25) {
-      if(debug_player_vel < 0) debug_player_vel = debug_player_vel * -1;
-    }
-      
-    test_player.set_x(test_player.get_x() + debug_player_vel);
 
+    
+    
+    
+    trees[0]->set_absolute_x(865 + test_world.get_x());
+    trees[0]->set_absolute_y(189 + test_world.get_y());
+
+    trees[1]->set_absolute_x(1249 + test_world.get_x());
+    trees[1]->set_absolute_y(221 + test_world.get_y());
+
+    trees[2]->set_absolute_x(1121 + test_world.get_x());
+    trees[2]->set_absolute_y(253 + test_world.get_y());
+
+    trees[3]->set_absolute_x(641 + test_world.get_x());
+    trees[3]->set_absolute_y(349 + test_world.get_y());
+
+    trees[4]->set_absolute_x(1185 + test_world.get_x());
+    trees[4]->set_absolute_y(381 + test_world.get_y());
     
     
     for(int i = 0; i < tree_count; i++) {
@@ -316,7 +247,7 @@ int main() {
     if(fps.ticks() >= 1000) {
       if(!debug_test_refresh_done) {
         debug_test_refresh_done = true;
-        hello_text.update("Use arrow keys or WASD to move \"the character\" (up, down, left, right), F4 to toggle debug menu"); // will not mess up alignment ;)
+        hello_text.update("Use WASD to move \"the character\" (up, down, left, right), F4 to toggle debug menu, F5 to give 5 xp"); // will not mess up alignment ;)
         
         test_player.decrease_money(50);
         test_player.damage(5);
@@ -337,11 +268,9 @@ int main() {
     
     // Char-specific text-update
     debug_health.update("Health: " + format_number(test_player.health()));
-    debug_exp.update("Exp: " + format_number(test_player.xp()) + "/" + format_number(test_player.xp_to_level()));
+    debug_exp.update("XP: " + format_number(test_player.xp()) + "/" + format_number(test_player.xp_to_level()));
     debug_level.update("Level: " + format_number(test_player.level()) + "/" 
             + to_string(max_level));
-    debug_posx.update("Pos X: " + format_number(test_player.get_x()));
-    debug_posy.update("Pos Y: " + format_number(test_player.get_y()));
     debug_money.update("Money: " + format_number(test_player.money()));
 
 
@@ -354,8 +283,6 @@ int main() {
       debug_health.render();
       debug_exp.render();
       debug_level.render();
-      debug_posx.render();
-      debug_posy.render();
       debug_money.render();
 
     }

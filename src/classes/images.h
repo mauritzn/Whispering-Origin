@@ -70,11 +70,13 @@ class PNG {
     int width();  // get image width
     int height(); // get image height
     
-    void set_x(int); // set the images x position
-    void set_y(int); // set the images y position
+    void set_absolute_x(int); // set the image's x position (without centering check)
+    void set_absolute_y(int); // set the image's y position (without centering check)
+    void set_x(int); // set the image's x position
+    void set_y(int); // set the image's y position
     
-    int get_x(); // get the images x position
-    int get_y(); // get the images y position
+    int get_x(); // get the image's x position
+    int get_y(); // get the image's y position
     
     void render(); // render the texture to the renderer (-> window)
 };

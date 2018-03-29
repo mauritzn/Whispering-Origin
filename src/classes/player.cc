@@ -16,7 +16,7 @@ Player::Player(Window& win, Renderer& ren)
     _win = &win;
     _ren = &ren;
 
-    _character = new PNG(*_win, *_ren, character_image_path, 0, 300);
+    _character = new PNG(*_win, *_ren, character_image_path, -50, -50);
 
     
     for(int i = 1; i < max_level; i++) {

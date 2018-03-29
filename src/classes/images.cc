@@ -147,6 +147,16 @@ int PNG::height() {
 }
 
 
+void PNG::set_absolute_x(int x) {
+  // defines image position
+  _dest_rect.x = x;
+}
+
+void PNG::set_absolute_y(int y) {
+  // defines image position
+  _dest_rect.y = y;
+}
+
 void PNG::set_x(int x) {
   if(x == -50) x = ((_win->width() / 2) - (_width / 2));
   if(x == -100) x = (_win->width() - _width);
@@ -165,6 +175,7 @@ void PNG::set_y(int y) {
 
 int PNG::get_x() { return _dest_rect.x; }
 int PNG::get_y() { return _dest_rect.y; }
+
 
 void PNG::render() {
   SDL_RenderCopy(_ren->get(), _tex, &_src_rect, &_dest_rect);
