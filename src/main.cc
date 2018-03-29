@@ -191,8 +191,8 @@ int main() {
   Text debug_frame_count(win, ren, debug_font, text_color, "Frames: 0", 25, 50);
   Text debug_fps(win, ren, debug_font, text_color, "FPS: 0", 25, 75);
   Text debug_delta_time(win, ren, debug_font, text_color, "Delta Time: 0", 25, 100);
+
   // Character-specific debug
- 
   Text debug_health(win, ren, debug_font, text_color, "Health: ", 25, 150);
   Text debug_level(win, ren, debug_font, text_color, "Level: ", 25, 175);
   Text debug_exp(win, ren, debug_font, text_color, "Exp: ", 25, 200);

@@ -19,22 +19,20 @@ class Player
         Renderer* _ren;
 
         PNG* _character;
-        int _x;
-        int _y;
-
+    
         int _hp = 10;
         uint32_t _money = 0;
+
+        int _player_level = 1;
+        int _player_xp = 0;
 
     public:
         Player(Window&, Renderer&);
         
-        int get_x();
-        int get_y();
-        void set_x(int);
-        void set_y(int);
-        
         int health();
         uint32_t money();
+        int level();
+        int xp();
 
         void heal(int);
         void damage(int);
@@ -44,7 +42,11 @@ class Player
         void decrease_money(int);
         void set_money(int);
 
-        void render();
-        ~Player();
-}
+        void increase_xp(int);
+        void increase_level(int);
 
+        void render();
+
+};
+
+#endif
