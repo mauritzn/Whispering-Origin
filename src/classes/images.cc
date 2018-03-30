@@ -117,12 +117,6 @@ PNG::PNG(Window& win, Renderer& ren, string path_to_image, int x, int y) {
     _src_rect.h = _height;
     
     
-    if(x == -50) x = ((_win->width() / 2) - (_width / 2));
-    if(y == -50) y = ((_win->height() / 2) - (_height / 2));
-    
-    if(x == -100) x = (_win->width() - _width);
-    if(y == -100) y = (_win->height() - _height);
-    
     // defines container positions
     _dest_rect.x = x;
     _dest_rect.y = y;
@@ -149,39 +143,58 @@ int PNG::height() {
 void PNG::set_image_width(int new_width) { _src_rect.w = new_width; }
 void PNG::set_image_height(int new_height) { _src_rect.h = new_height; }
 
-void PNG::set_container_width(int new_width) { _dest_rect.w = new_width; }
-void PNG::set_container_height(int new_height) { _dest_rect.h = new_height; }
-
-
-void PNG::set_absolute_x(int x) {
-  // defines image position
-  _dest_rect.x = x;
+void PNG::set_container_width(int new_width) {
+  _width = new_width;
+  _dest_rect.w = new_width;
+}
+void PNG::set_container_height(int new_height) {
+  _height = new_height;
+  _dest_rect.h = new_height;
 }
 
-void PNG::set_absolute_y(int y) {
-  // defines image position
-  _dest_rect.y = y;
+
+
+void PNG::align_center() {
+  // defines container positions
+  _dest_rect.x = ((_win->width() / 2) - (_width / 2));
+  _dest_rect.y = ((_win->height() / 2) - (_height / 2));
 }
+void PNG::align_center_x() {
+  // defines container position
+  _dest_rect.x = ((_win->width() / 2) - (_width / 2));
+}
+void PNG::align_center_y() {
+  // defines container position
+  _dest_rect.y = ((_win->height() / 2) - (_height / 2));
+}
+
+void PNG::align_top() {
+  // defines container position
+  _dest_rect.y = 0;
+}
+
+void PNG::align_bottom() {
+  // defines container position
+  _dest_rect.y = (_win->height() - _height);
+}
+
+void PNG::align_left() {
+  // defines container position
+  _dest_rect.x = 0;
+}
+
+void PNG::align_right() {
+  // defines container position
+  _dest_rect.x = (_win->width() - _width);
+}
+
+
 
 void PNG::set_image_x(int x) { _src_rect.x = x; }
 void PNG::set_image_y(int y) { _src_rect.y = y; }
 
-
-void PNG::set_x(int x) {
-  if(x == -50) x = ((_win->width() / 2) - (_width / 2));
-  if(x == -100) x = (_win->width() - _width);
-  
-  // defines container position
-  _dest_rect.x = x;
-}
-
-void PNG::set_y(int y) {
-  if(y == -50) y = ((_win->height() / 2) - (_height / 2));
-  if(y == -100) y = (_win->height() - _height);
-  
-  // defines container position
-  _dest_rect.y = y;
-}
+void PNG::set_x(int x) { _dest_rect.x = x; }
+void PNG::set_y(int y) { _dest_rect.y = y; }
 
 int PNG::get_x() { return _dest_rect.x; }
 int PNG::get_y() { return _dest_rect.y; }

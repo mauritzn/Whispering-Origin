@@ -41,6 +41,17 @@ class Text {
     
     void update(string); // change the text value
     
+    
+    void align_center();
+    void align_center_x();
+    void align_center_y();
+
+    void align_top();
+    void align_bottom();
+    void align_left();
+    void align_right();
+    
+    
     void set_x(int); // set the texts x position
     void set_y(int); // set the texts y position
     

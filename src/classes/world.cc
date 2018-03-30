@@ -25,11 +25,11 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
   
   // min value is 0
   // max value is -640 ((window_width / 2) * -1)
-  _texture->set_absolute_x((window_width / 4) * -1); // center
+  _texture->set_x((window_width / 4) * -1); // center
   
   // min value is 0
   // max value is -360 ((window_height / 2) * -1)
-  _texture->set_absolute_y((window_height / 4) * -1); // center
+  _texture->set_y((window_height / 4) * -1); // center
   
   _x = (float) _texture->get_x();
   _y = (float) _texture->get_y();
@@ -64,26 +64,26 @@ void World::update() {
   if(_moving_up) {
     _player->set_direction(NORTH);
     _y += delta_velocity;
-    _texture->set_absolute_y((int) _y);
+    _texture->set_y((int) _y);
   }
   
   if(_moving_down) {
     _player->set_direction(SOUTH);
     _y -= delta_velocity;
-    _texture->set_absolute_y((int) _y);
+    _texture->set_y((int) _y);
   }
 
   
   if(_moving_left) {
     _player->set_direction(WEST);
     _x += delta_velocity;
-    _texture->set_absolute_x((int) _x);
+    _texture->set_x((int) _x);
   }
   
   if(_moving_right) {
     _player->set_direction(EAST);
     _x -= delta_velocity;
-    _texture->set_absolute_x((int) _x);
+    _texture->set_x((int) _x);
   }
 }
 

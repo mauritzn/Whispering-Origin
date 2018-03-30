@@ -77,8 +77,15 @@ class PNG {
     void set_container_height(int);
     
     
-    void set_absolute_x(int); // set the container's x position (without centering check)
-    void set_absolute_y(int); // set the container's y position (without centering check)
+    void align_center();
+    void align_center_x();
+    void align_center_y();
+
+    void align_top();
+    void align_bottom();
+    void align_left();
+    void align_right();
+    
     
     void set_image_x(int); // set the image's x position (without centering check)
     void set_image_y(int); // set the image's y position (without centering check)

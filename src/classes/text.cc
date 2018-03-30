@@ -83,25 +83,67 @@ void Text::update(string text) {
 }
 
 
+
+void Text::align_center() {
+  _x_alignment = 0;
+  
+  // defines container positions
+  _x = ((_win->width() / 2) - (_width / 2));
+  _y = ((_win->height() / 2) - (_height / 2));
+  
+  _dest_rect.x = _x;
+  _dest_rect.y = _y;
+}
+void Text::align_center_x() {
+  _x_alignment = 0;
+  
+  // defines container position
+  _x = ((_win->width() / 2) - (_width / 2));
+  _dest_rect.x = _x;
+}
+void Text::align_center_y() {
+  // defines container position
+  _y = ((_win->height() / 2) - (_height / 2));
+  _dest_rect.y = _y;
+}
+
+void Text::align_top() {
+  // defines container position
+  _y = 0;
+  _dest_rect.y = _y;
+}
+
+void Text::align_bottom() {
+  // defines container position
+  _y = (_win->height() - _height);
+  _dest_rect.y = _y;
+}
+
+void Text::align_left() {
+  _x_alignment = -1;
+  
+  // defines container position
+  _x = 0;
+  _dest_rect.x = _x;
+}
+
+void Text::align_right() {
+  _x_alignment = 1;
+  
+  // defines container position
+  _x = (_win->width() - _width);
+  _dest_rect.x = _x;
+}
+
+
+
 void Text::set_x(int x) {
-  if(x == -50) _x_alignment = 0;
-  else if(x == -100) _x_alignment = 1;
-  
-  if(x == -50) x = ((_win->width() / 2) - (_width / 2));
-  if(x == -100) x = (_win->width() - _width);
-  
   // defines container position
   _x = x;
   _dest_rect.x = x;
 }
 
 void Text::set_y(int y) {
-  if(y == -50) _y_alignment = 0;
-  else if(y == -100) _y_alignment = 1;
-  
-  if(y == -50) y = ((_win->height() / 2) - (_height / 2));
-  if(y == -100) y = (_win->height() - _height);
-  
   // defines container position
   _y = y;
   _dest_rect.y = y;

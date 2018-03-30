@@ -102,7 +102,7 @@ int main() {
 
 
 
-  //BMP test_char(win, ren, "images/test_char_2.bmp", -50, -50); // -50 => centered, -100 => bottom aligned / right aligned
+  //BMP test_char(win, ren, "images/test_char_2.bmp", 0, 0);
   Player test_player(win, ren);
   
   World test_world(win, ren, fps, test_player);
@@ -112,7 +112,7 @@ int main() {
   const int tree_count = 5;
 
   for(int i = 0; i < tree_count; i++) {
-    trees.push_back(new PNG(win, ren, tree_image_path, -50, -50));
+    trees.push_back(new PNG(win, ren, tree_image_path, 0, 0));
   }
 
   trees[0]->set_x(545);
@@ -148,11 +148,14 @@ int main() {
   */
 
   
-  Text level_up(win, ren, Level_font, text_color, "Level up! You are now level ", -50, -50);
+  Text level_up(win, ren, Level_font, text_color, "Level up! You are now level ", 0, 0);
+  level_up.align_center();
   level_up.set_y((level_up.get_y() - 55));
 
 
-  Text hello_text(win, ren, Ubuntu_font, text_color, "<text will be updated ;) >", -50, -100); // -50 => centered, -100 => bottom aligned / right aligned
+  Text hello_text(win, ren, Ubuntu_font, text_color, "<text will be updated ;) >", 0, 0);
+  hello_text.align_center_x();
+  hello_text.align_bottom();
   hello_text.set_y((hello_text.get_y() - 25));
 
   Text debug_ticks(win, ren, debug_font, text_color, "Ticks: 0", 25, 25);
@@ -217,20 +220,20 @@ int main() {
     
     
     
-    trees[0]->set_absolute_x(865 + test_world.get_x());
-    trees[0]->set_absolute_y(189 + test_world.get_y());
+    trees[0]->set_x(865 + test_world.get_x());
+    trees[0]->set_y(189 + test_world.get_y());
 
-    trees[1]->set_absolute_x(1249 + test_world.get_x());
-    trees[1]->set_absolute_y(221 + test_world.get_y());
+    trees[1]->set_x(1249 + test_world.get_x());
+    trees[1]->set_y(221 + test_world.get_y());
 
-    trees[2]->set_absolute_x(1121 + test_world.get_x());
-    trees[2]->set_absolute_y(253 + test_world.get_y());
+    trees[2]->set_x(1121 + test_world.get_x());
+    trees[2]->set_y(253 + test_world.get_y());
 
-    trees[3]->set_absolute_x(641 + test_world.get_x());
-    trees[3]->set_absolute_y(349 + test_world.get_y());
+    trees[3]->set_x(641 + test_world.get_x());
+    trees[3]->set_y(349 + test_world.get_y());
 
-    trees[4]->set_absolute_x(1185 + test_world.get_x());
-    trees[4]->set_absolute_y(381 + test_world.get_y());
+    trees[4]->set_x(1185 + test_world.get_x());
+    trees[4]->set_y(381 + test_world.get_y());
     
     
     for(int i = 0; i < tree_count; i++) {

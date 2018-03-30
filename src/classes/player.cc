@@ -22,8 +22,9 @@ Player::Player(Window& win, Renderer& ren)
     _character->set_image_width(character_grid_size);
     _character->set_image_height(character_grid_size);
     
-    _character->set_absolute_x((window_width / 2) - (character_grid_size / 2)); // center
-    _character->set_absolute_y((window_height / 2) - (character_grid_size / 2)); // center
+    //_character->set_absolute_x((window_width / 2) - (character_grid_size / 2)); // center
+    //_character->set_absolute_y((window_height / 2) - (character_grid_size / 2)); // center
+    _character->align_center();
     
     _character->set_image_y(SOUTH);
 
