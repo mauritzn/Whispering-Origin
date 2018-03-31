@@ -18,6 +18,7 @@ const char* main_font = "fonts/Ubuntu_C.ttf";
 
 
 // World
+const string world_data_path = "maps/main.map";
 const string world_texture_path = "images/maps/main_texture.png";
 const int world_velocity = 250;
 

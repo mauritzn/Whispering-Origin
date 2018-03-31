@@ -15,7 +15,16 @@ struct grid_pos {
   int row;
   int col;
 };
-typedef grid_pos GRID;
+typedef grid_pos TEMP_TEST_GRID;
+
+struct grid_cell {
+  int row;
+  int col;
+  int id;
+};
+
+typedef struct grid_cell CELL;
+typedef vector<CELL> GRID;
   
 
 class World {
@@ -28,15 +37,22 @@ class World {
     PNG* _texture;
     float _x = 0;
     float _y = 0;
-    int _grid_size = 32;
+    
+    int _map_width = 0;
+    int _map_height = 0;
+    int _grid_size = 0;
     
     bool _moving_up = false;
     bool _moving_down = false;
     bool _moving_left = false;
     bool _moving_right = false;
     
-    vector<GRID> _test_collisions;
-    vector<PNG*> _trees;
+    GRID _colliders;
+    GRID _trees;
+    GRID _ores;
+    GRID _fish;
+    
+    vector<PNG*> _trees_to_render;
 
 
   public:

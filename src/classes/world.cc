@@ -2,8 +2,9 @@
 
 #include <iostream>
 #include <cmath>
-// #include <string>
+#include <string>
 #include <vector>
+#include <fstream>
 
 #include "world.h"
 #include "functions.h"
@@ -24,20 +25,65 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
   _texture = new PNG(*_win, *_ren, world_texture_path, 0, 0);
   
   
-  _test_collisions = {
-    {2, 15}, {2, 16}, {2, 17}, {3, 15}, {3, 17}, {3, 25}, {3, 26}, {3, 27}, {3, 28}, {3, 29}, {3, 30}, {3, 31}, {3, 32}, {4, 12}, {4, 13}, {4, 14}, {4, 15}, {4, 17}, {4, 24}, {4, 25}, {4, 28}, {4, 29}, {4, 32}, {4, 33}, {4, 46}, {4, 47}, {4, 48}, {4, 49}, {5, 9}, {5, 10}, {5, 11}, {5, 12}, {5, 17}, {5, 18}, {5, 19}, {5, 20}, {5, 23}, {5, 24}, {5, 33}, {5, 34}, {5, 35}, {5, 36}, {5, 37}, {5, 38}, {5, 39}, {5, 45}, {5, 46}, {5, 49}, {5, 50}, {6, 8}, {6, 9}, {6, 18}, {6, 19}, {6, 20}, {6, 21}, {6, 22}, {6, 23}, {6, 39}, {6, 40}, {6, 41}, {6, 42}, {6, 44}, {6, 45}, {6, 50}, {6, 51}, {6, 52}, {7, 7}, {7, 8}, {7, 42}, {7, 43}, {7, 44}, {7, 52}, {7, 53}, {7, 54}, {8, 6}, {8, 7}, {8, 54}, {8, 55}, {9, 4}, {9, 5}, {9, 6}, {9, 55}, {10, 3}, {10, 4}, {10, 55}, {10, 56}, {11, 3}, {11, 56}, {12, 3}, {12, 56}, {12, 57}, {13, 3}, {13, 57}, {14, 2}, {14, 3}, {14, 57}, {15, 2}, {15, 3}, {15, 53}, {15, 54}, {15, 55}, {15, 56}, {15, 57}, {16, 3}, {16, 52}, {16, 53}, {16, 55}, {16, 56}, {17, 3}, {17, 51}, {17, 52}, {18, 2}, {18, 3}, {18, 51}, {19, 2}, {19, 3}, {19, 51}, {19, 52}, {20, 3}, {20, 51}, {20, 52}, {21, 3}, {21, 4}, {21, 50}, {21, 51}, {22, 4}, {22, 50}, {23, 4}, {23, 5}, {23, 50}, {24, 5}, {24, 50}, {25, 5}, {25, 6}, {25, 50}, {26, 6}, {26, 50}, {26, 51}, {27, 6}, {27, 7}, {27, 50}, {27, 51}, {28, 7}, {28, 8}, {28, 9}, {28, 11}, {28, 12}, {28, 13}, {28, 19}, {28, 20}, {28, 21}, {28, 22}, {28, 25}, {28, 26}, {28, 27}, {28, 28}, {28, 29}, {28, 30}, {28, 33}, {28, 34}, {28, 35}, {28, 50}, {29, 9}, {29, 10}, {29, 11}, {29, 13}, {29, 14}, {29, 15}, {29, 16}, {29, 17}, {29, 18}, {29, 19}, {29, 22}, {29, 23}, {29, 24}, {29, 25}, {29, 30}, {29, 31}, {29, 32}, {29, 33}, {29, 35}, {29, 36}, {29, 50}, {30, 36}, {30, 37}, {30, 38}, {30, 39}, {30, 40}, {30, 41}, {30, 42}, {30, 45}, {30, 46}, {30, 47}, {30, 48}, {30, 49}, {30, 50}, {31, 42}, {31, 43}, {31, 44}, {31, 45}, {31, 48}, {31, 49}, // colliders
+  string line;
+  string data;
+  vector<string> cells_to_add;
+  
+  ifstream map_data(world_data_path);
+  
+  if(map_data.fail()) {
+    cout << "!! FAILED TO READ MAP DATA (using default grid size) !!" << endl;
+    _grid_size = 32;
+  } else {
+    int line_nr = 1;
+    while(getline(map_data, line)) {
+      //cout << line << endl;
+      
+      if(line_nr == 1) {
+        vector<string> map_header = explode_string(line, ':');
+        vector<string> map_size = explode_string(map_header[0], 'x');
+        
+        _map_width = stoi(map_size[0]);
+        _map_height = stoi(map_size[1]);
+        _grid_size = stoi(map_header[1]);
+      } else {
+        if(line.length() > 2) {
+          data = line.substr(2); // remove data type
+          cells_to_add = explode_string(data, '|');
+          
+          for(string const& value: cells_to_add) {
+            if(line[0] == 'C') {
+              add_cell_to_grid(value, _colliders);
+            } else if(line[0] == 'T') {
+              add_cell_to_grid(value, _trees);
+            } else if(line[0] == 'O') {
+              add_cell_to_grid(value, _ores);
+            } else if(line[0] == 'F') {
+              add_cell_to_grid(value, _fish);
+            }
+          }
+        }
+      }
+      
+      line_nr++;
+    }
     
-    {10, 29}, {11, 41}, {12, 37}, {15, 22}, {16, 39} // trees
-  };
+    map_data.close();
+  }
   
   
-  _trees.push_back(new PNG(*_win, *_ren, tree_image_path, 897, 221));
-  _trees.push_back(new PNG(*_win, *_ren, tree_image_path, 1281, 253));
-  _trees.push_back(new PNG(*_win, *_ren, tree_image_path, 1153, 285));
-  _trees.push_back(new PNG(*_win, *_ren, tree_image_path, 673, 381));
-  _trees.push_back(new PNG(*_win, *_ren, tree_image_path, 1217, 413));
-  
-  
+  for(CELL const& value: _trees) {
+    //                                    TREE_WIDTH
+    int tree_x = (value.col * _grid_size) - ((94 / 2) - (_grid_size / 2));
+    //                                    TREE_HEIGHT
+    int tree_y = (value.row * _grid_size) - (132 - _grid_size);
+    tree_y += 1; // fix 1 px error
+    
+    /*cout << "X: " << tree_x << ", Y: " << tree_y << " || "
+         << value.row << "x" << value.col << endl;*/
+    
+    _trees_to_render.push_back(new PNG(*_win, *_ren, tree_image_path, tree_x, tree_y));
+  }
   
   // min value is 0
   // max value is -640 ((window_width / 2) * -1)
@@ -85,6 +131,7 @@ int World::get_player_col() {
 }
 
 
+
 void World::key_pressed(SDL_Keycode key) {
   if(key == SDLK_w) _moving_up = true;
   if(key == SDLK_s) _moving_down = true;
@@ -98,6 +145,7 @@ void World::key_released(SDL_Keycode key){
   if(key == SDLK_a) _moving_left = false;
   if(key == SDLK_d) _moving_right = false;
 }
+
 
 
 void World::update() {
@@ -131,7 +179,9 @@ void World::update() {
   }
   
   
-  for(GRID const& value: _test_collisions) {
+  
+  // This needs to be cleaned up and done better, but for now it works...
+  for(CELL const& value: _colliders) {
     if(this->get_player_row() == value.row && this->get_player_col() == value.col) {
       if(_moving_up || _moving_down) {
         _y = temp_y;
@@ -144,6 +194,22 @@ void World::update() {
       }
     }
   }
+  
+  
+  for(CELL const& value: _trees) {
+    if(this->get_player_row() == value.row && this->get_player_col() == value.col) {
+      if(_moving_up || _moving_down) {
+        _y = temp_y;
+        _texture->set_y((int) temp_y);
+      }
+      
+      if(_moving_left || _moving_right) {
+        _x = temp_x;
+        _texture->set_x((int) temp_x);
+      }
+    }
+  }
+  
   
   
   if(this->get_player_row() < 0) {
@@ -168,20 +234,20 @@ void World::update() {
   }
 }
 
+
 void World::render() {
   _texture->render();
   
-  for(int i = 0; i < (signed) _trees.size(); i++) {
-    _trees[i]->set_x(_trees[i]->get_original_x() + this->get_x());
-    _trees[i]->set_y(_trees[i]->get_original_y() + this->get_y());
+  for(PNG* const& tree: _trees_to_render) {
+    tree->set_x(tree->get_original_x() + this->get_x());
+    tree->set_y(tree->get_original_y() + this->get_y());
   }
-  
   
   for(int row = 0; row < (this->width() / _grid_size); row++) {
     if(this->get_player_row() == row) _player->render();
     
-    for(int i = 0; i < (signed) _trees.size(); i++) {
-      if(floor((_trees[i]->get_original_y() + 100) / 32) == row) _trees[i]->render();
+    for(PNG* const& tree: _trees_to_render) {
+      if(floor((tree->get_original_y() + 100) / 32) == row) tree->render();
     }
   }
 }
