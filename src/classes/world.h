@@ -11,6 +11,12 @@
 
 using namespace std;
 
+struct grid_pos {
+  int row;
+  int col;
+};
+typedef grid_pos GRID;
+  
 
 class World {
   private:
@@ -28,6 +34,8 @@ class World {
     bool _moving_down = false;
     bool _moving_left = false;
     bool _moving_right = false;
+    
+    vector<GRID> _test_collisions;
 
 
   public:
