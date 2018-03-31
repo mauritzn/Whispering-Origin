@@ -11,11 +11,10 @@
 
 using namespace std;
 
-struct grid_pos {
-  int row;
-  int col;
+enum tree_state {
+  UNCUT = 0,
+  CUT = 160
 };
-typedef grid_pos TEMP_TEST_GRID;
 
 struct grid_cell {
   int row;

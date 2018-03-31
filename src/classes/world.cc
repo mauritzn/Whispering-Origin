@@ -79,7 +79,16 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
     /*cout << "X: " << tree_x << ", Y: " << tree_y << " || "
          << value.row << "x" << value.col << endl;*/
     
+    
     _trees_to_render.push_back(new PNG(*_win, *_ren, tree_image_path, tree_x, tree_y));
+    
+    _trees_to_render.back()->set_container_width(tree_grid_size);
+    _trees_to_render.back()->set_container_height(tree_grid_size);
+    _trees_to_render.back()->set_image_width(tree_grid_size);
+    _trees_to_render.back()->set_image_height(tree_grid_size);
+    
+    _trees_to_render.back()->set_image_x(UNCUT);
+    _trees_to_render.back()->set_image_y(0);
   }
   
   // min value is 0

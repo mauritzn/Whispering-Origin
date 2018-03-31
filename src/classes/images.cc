@@ -202,6 +202,9 @@ void PNG::set_y(int y) { _dest_rect.y = y; }
 int PNG::get_x() { return _dest_rect.x; }
 int PNG::get_y() { return _dest_rect.y; }
 
+int PNG::get_image_x() { return _src_rect.x; }
+int PNG::get_image_y() { return _src_rect.y; }
+
 int PNG::get_original_x() { return _original_x; }
 int PNG::get_original_y() { return _original_y; }
 

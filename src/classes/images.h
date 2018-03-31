@@ -100,6 +100,9 @@ class PNG {
     int get_x(); // get the container's x position
     int get_y(); // get the container's y position
     
+    int get_image_x(); // get the image's x position
+    int get_image_y(); // get the image's y position
+    
     // TEMP (only used until ITEM class is completed)
     int get_original_x(); // get the container's original x position
     int get_original_y(); // get the container's original y position
