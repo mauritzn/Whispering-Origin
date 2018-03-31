@@ -46,6 +46,11 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
 }
 
 
+int World::width() { return _texture->width(); }
+int World::height() { return _texture->height(); }
+int World::grid_size() { return _grid_size; }
+
+
 int World::get_x() { return _texture->get_x(); }
 int World::get_y() { return _texture->get_y(); }
 

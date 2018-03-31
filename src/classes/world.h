@@ -41,6 +41,10 @@ class World {
   public:
     World(Window&, Renderer&, FPS&, Player&);
     
+    int width();
+    int height();
+    int grid_size();
+    
     int get_x();
     int get_y();
     

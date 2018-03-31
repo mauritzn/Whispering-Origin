@@ -25,6 +25,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cmath>
 
 #include "config.h"
 #include "items.h"
@@ -204,17 +205,23 @@ int main() {
     hello_text.render();
     
     
-    test_player.render();
-
-    
     
     
     for(int i = 0; i < tree_count; i++) {
       trees[i]->set_x(trees[i]->get_original_x() + test_world.get_x());
       trees[i]->set_y(trees[i]->get_original_y() + test_world.get_y());
-    
-      trees[i]->render();
     }
+    
+    
+    
+    for(int row = 0; row < (test_world.width() / test_world.grid_size()); row++) {
+      if(test_world.get_player_row() == row) test_player.render();
+      
+      for(int i = 0; i < tree_count; i++) {
+        if(floor((trees[i]->get_original_y() + 100) / 32) == row) trees[i]->render();
+      }
+    }
+    
     
     
     if(test_player.has_leveled_up()) {
