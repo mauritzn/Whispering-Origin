@@ -16,6 +16,10 @@ enum tree_state {
   CUT = 160
 };
 
+enum tree_type {
+  OAK = 0
+};
+
 struct grid_cell {
   int row;
   int col;

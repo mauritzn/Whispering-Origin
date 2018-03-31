@@ -88,7 +88,7 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
     _trees_to_render.back()->set_image_height(tree_grid_size);
     
     _trees_to_render.back()->set_image_x(UNCUT);
-    _trees_to_render.back()->set_image_y(0);
+    _trees_to_render.back()->set_image_y(OAK);
   }
   
   // min value is 0
