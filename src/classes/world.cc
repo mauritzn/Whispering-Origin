@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 
 #include <iostream>
+#include <cmath>
 // #include <string>
 // #include <vector>
 
@@ -25,11 +26,13 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
   
   // min value is 0
   // max value is -640 ((window_width / 2) * -1)
-  _texture->set_x((window_width / 4) * -1); // center
+  //_texture->set_x((window_width / 4) * -1); // center
+  _texture->set_x(304 * -1); // center
   
   // min value is 0
   // max value is -360 ((window_height / 2) * -1)
-  _texture->set_y((window_height / 4) * -1); // center
+  //_texture->set_y((window_height / 4) * -1); // center
+  _texture->set_y(184 * -1); // center
   
   _x = (float) _texture->get_x();
   _y = (float) _texture->get_y();
@@ -41,6 +44,25 @@ int World::get_y() { return _texture->get_y(); }
 
 void World::set_x(int new_x) { _texture->set_x(new_x); }
 void World::set_y(int new_y) { _texture->set_y(new_y); }
+
+
+int World::get_player_x() {
+  int test_x = this->get_x() - (window_width / 2) + (32 / 2);
+  test_x *= -1;
+  return test_x;
+}
+int World::get_player_y() {
+  int test_y = this->get_y() - (window_height / 2);
+  test_y *= -1;
+  return test_y;
+}
+
+int World::get_player_row() {
+  return round(this->get_player_y() / 32.0);
+}
+int World::get_player_col() {
+  return round(this->get_player_x() / 32.0);
+}
 
 
 void World::key_pressed(SDL_Keycode key) {

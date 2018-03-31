@@ -60,6 +60,10 @@ class PNG {
     
     int _width = 0;
     int _height = 0;
+    
+    // TEMP (only used until ITEM class is completed)
+    int _original_x = 0;
+    int _original_y = 0;
 
     
   public:
@@ -95,6 +99,10 @@ class PNG {
     
     int get_x(); // get the container's x position
     int get_y(); // get the container's y position
+    
+    // TEMP (only used until ITEM class is completed)
+    int get_original_x(); // get the container's original x position
+    int get_original_y(); // get the container's original y position
     
     void render(); // render the texture to the renderer (-> window)
 };

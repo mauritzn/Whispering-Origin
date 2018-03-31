@@ -110,25 +110,12 @@ int main() {
 
   vector<PNG*> trees;
   const int tree_count = 5;
-
-  for(int i = 0; i < tree_count; i++) {
-    trees.push_back(new PNG(win, ren, tree_image_path, 0, 0));
-  }
-
-  trees[0]->set_x(545);
-  trees[0]->set_y(125);
-
-  trees[1]->set_x(929);
-  trees[1]->set_y(157);
-
-  trees[2]->set_x(801);
-  trees[2]->set_y(189);
-
-  trees[3]->set_x(321);
-  trees[3]->set_y(285);
-
-  trees[4]->set_x(865);
-  trees[4]->set_y(317);
+  
+  trees.push_back(new PNG(win, ren, tree_image_path, 897, 221));
+  trees.push_back(new PNG(win, ren, tree_image_path, 1281, 253));
+  trees.push_back(new PNG(win, ren, tree_image_path, 1153, 285));
+  trees.push_back(new PNG(win, ren, tree_image_path, 673, 381));
+  trees.push_back(new PNG(win, ren, tree_image_path, 1217, 413));
 
 /*
   trees[0]->set_x(constrain_png_width(936, win, *trees[0]));
@@ -168,6 +155,8 @@ int main() {
   Text debug_level(win, ren, debug_font, text_color, "Level: ", 25, 175);
   Text debug_exp(win, ren, debug_font, text_color, "XP: ", 25, 200);
   Text debug_money(win, ren, debug_font, text_color, "Money: ", 25, 225);
+  Text debug_xy(win, ren, debug_font, text_color, "X: , Y: ", 25, 250);
+  Text debug_pos(win, ren, debug_font, text_color, "Position (ROW x COL): ", 25, 275);
 
 
 
@@ -220,23 +209,10 @@ int main() {
     
     
     
-    trees[0]->set_x(865 + test_world.get_x());
-    trees[0]->set_y(189 + test_world.get_y());
-
-    trees[1]->set_x(1249 + test_world.get_x());
-    trees[1]->set_y(221 + test_world.get_y());
-
-    trees[2]->set_x(1121 + test_world.get_x());
-    trees[2]->set_y(253 + test_world.get_y());
-
-    trees[3]->set_x(641 + test_world.get_x());
-    trees[3]->set_y(349 + test_world.get_y());
-
-    trees[4]->set_x(1185 + test_world.get_x());
-    trees[4]->set_y(381 + test_world.get_y());
-    
-    
     for(int i = 0; i < tree_count; i++) {
+      trees[i]->set_x(trees[i]->get_original_x() + test_world.get_x());
+      trees[i]->set_y(trees[i]->get_original_y() + test_world.get_y());
+    
       trees[i]->render();
     }
     
@@ -275,6 +251,8 @@ int main() {
     debug_level.update("Level: " + format_number(test_player.level()) + "/" 
             + to_string(max_level));
     debug_money.update("Money: " + format_number(test_player.money()));
+    debug_xy.update("X: " + to_string(test_world.get_player_x()) + ", Y: " + to_string(test_world.get_player_y()));
+    debug_pos.update("Position (ROW x COL): " + to_string(test_world.get_player_row()) + "x"  + to_string(test_world.get_player_col()));
 
 
     if(debug_mode) {
@@ -287,6 +265,8 @@ int main() {
       debug_exp.render();
       debug_level.render();
       debug_money.render();
+      debug_xy.render();
+      debug_pos.render();
 
     }
     // END, DEBUG TEXT UPDATING & RENDERING

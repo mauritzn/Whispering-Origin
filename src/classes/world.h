@@ -34,8 +34,17 @@ class World {
     
     int get_x();
     int get_y();
+    
     void set_x(int);
     void set_y(int);
+    
+    
+    int get_player_x();
+    int get_player_y();
+    
+    int get_player_row();
+    int get_player_col();
+    
     
     void key_pressed(SDL_Keycode);
     void key_released(SDL_Keycode);

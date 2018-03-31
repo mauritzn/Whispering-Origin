@@ -116,6 +116,9 @@ PNG::PNG(Window& win, Renderer& ren, string path_to_image, int x, int y) {
     _src_rect.w = _width;
     _src_rect.h = _height;
     
+    // TEMP (only used until ITEM class is completed)
+    _original_x = x;
+    _original_y = y;
     
     // defines container positions
     _dest_rect.x = x;
@@ -198,6 +201,9 @@ void PNG::set_y(int y) { _dest_rect.y = y; }
 
 int PNG::get_x() { return _dest_rect.x; }
 int PNG::get_y() { return _dest_rect.y; }
+
+int PNG::get_original_x() { return _original_x; }
+int PNG::get_original_y() { return _original_y; }
 
 
 void PNG::render() {
