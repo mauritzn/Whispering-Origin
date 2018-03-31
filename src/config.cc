@@ -18,12 +18,12 @@ const char* main_font = "fonts/Ubuntu_C.ttf";
 
 
 // World
-const string world_texture_path = "images/maps/main_texture_debug.png";
+const string world_texture_path = "images/maps/main_texture.png";
 const int world_velocity = 250;
 
 
 // Entity images
-const string character_image_path = "images/char_debug.png";
+const string character_image_path = "images/char.png";
 const int character_grid_size = 64;
 const string tree_image_path = "images/tree.png";
 
