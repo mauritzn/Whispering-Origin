@@ -109,15 +109,6 @@ int main() {
   World test_world(win, ren, fps, test_player);
 
 
-  vector<PNG*> trees;
-  const int tree_count = 5;
-  
-  trees.push_back(new PNG(win, ren, tree_image_path, 897, 221));
-  trees.push_back(new PNG(win, ren, tree_image_path, 1281, 253));
-  trees.push_back(new PNG(win, ren, tree_image_path, 1153, 285));
-  trees.push_back(new PNG(win, ren, tree_image_path, 673, 381));
-  trees.push_back(new PNG(win, ren, tree_image_path, 1217, 413));
-
 /*
   trees[0]->set_x(constrain_png_width(936, win, *trees[0]));
   trees[0]->set_y(constrain_png_height(25, win, *trees[0]));
@@ -205,22 +196,6 @@ int main() {
     hello_text.render();
     
     
-    
-    
-    for(int i = 0; i < tree_count; i++) {
-      trees[i]->set_x(trees[i]->get_original_x() + test_world.get_x());
-      trees[i]->set_y(trees[i]->get_original_y() + test_world.get_y());
-    }
-    
-    
-    
-    for(int row = 0; row < (test_world.width() / test_world.grid_size()); row++) {
-      if(test_world.get_player_row() == row) test_player.render();
-      
-      for(int i = 0; i < tree_count; i++) {
-        if(floor((trees[i]->get_original_y() + 100) / 32) == row) trees[i]->render();
-      }
-    }
     
     
     

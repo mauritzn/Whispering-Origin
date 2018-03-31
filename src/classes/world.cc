@@ -31,6 +31,14 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
   };
   
   
+  _trees.push_back(new PNG(*_win, *_ren, tree_image_path, 897, 221));
+  _trees.push_back(new PNG(*_win, *_ren, tree_image_path, 1281, 253));
+  _trees.push_back(new PNG(*_win, *_ren, tree_image_path, 1153, 285));
+  _trees.push_back(new PNG(*_win, *_ren, tree_image_path, 673, 381));
+  _trees.push_back(new PNG(*_win, *_ren, tree_image_path, 1217, 413));
+  
+  
+  
   // min value is 0
   // max value is -640 ((window_width / 2) * -1)
   //_texture->set_x((window_width / 4) * -1); // center
@@ -162,4 +170,18 @@ void World::update() {
 
 void World::render() {
   _texture->render();
+  
+  for(int i = 0; i < (signed) _trees.size(); i++) {
+    _trees[i]->set_x(_trees[i]->get_original_x() + this->get_x());
+    _trees[i]->set_y(_trees[i]->get_original_y() + this->get_y());
+  }
+  
+  
+  for(int row = 0; row < (this->width() / _grid_size); row++) {
+    if(this->get_player_row() == row) _player->render();
+    
+    for(int i = 0; i < (signed) _trees.size(); i++) {
+      if(floor((_trees[i]->get_original_y() + 100) / 32) == row) _trees[i]->render();
+    }
+  }
 }

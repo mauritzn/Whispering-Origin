@@ -36,6 +36,7 @@ class World {
     bool _moving_right = false;
     
     vector<GRID> _test_collisions;
+    vector<PNG*> _trees;
 
 
   public:
