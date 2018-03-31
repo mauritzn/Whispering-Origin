@@ -47,7 +47,7 @@ void World::set_y(int new_y) { _texture->set_y(new_y); }
 
 
 int World::get_player_x() {
-  int test_x = this->get_x() - (window_width / 2) + (32 / 2);
+  int test_x = this->get_x() - (window_width / 2) + (_grid_size / 2);
   test_x *= -1;
   return test_x;
 }
@@ -58,10 +58,10 @@ int World::get_player_y() {
 }
 
 int World::get_player_row() {
-  return round(this->get_player_y() / 32.0);
+  return round(this->get_player_y() / (float) _grid_size);
 }
 int World::get_player_col() {
-  return round(this->get_player_x() / 32.0);
+  return round(this->get_player_x() / (float) _grid_size);
 }
 
 
@@ -82,6 +82,8 @@ void World::key_released(SDL_Keycode key){
 
 void World::update() {
   float delta_velocity = (world_velocity * _fps->delta_time());
+  float temp_x = _x;
+  float temp_y = _y;
   
   if(_moving_up) {
     _player->set_direction(NORTH);
@@ -106,6 +108,29 @@ void World::update() {
     _player->set_direction(EAST);
     _x -= delta_velocity;
     _texture->set_x((int) _x);
+  }
+  
+  
+  
+  if(this->get_player_row() < 0) {
+    _y = temp_y;
+    _texture->set_y((int) temp_y);
+  }
+  
+  if(this->get_player_col() < 0) {
+    _x = temp_x;
+    _texture->set_x((int) temp_x);
+  }
+  
+  
+  if(this->get_player_row() > ((_texture->height() / _grid_size) - 1)) {
+    _y = temp_y;
+    _texture->set_y((int) temp_y);
+  }
+  
+  if(this->get_player_col() > ((_texture->width() / _grid_size) - 1)) {
+    _x = temp_x;
+    _texture->set_x((int) temp_x);
   }
 }
 

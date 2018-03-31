@@ -22,6 +22,7 @@ class World {
     PNG* _texture;
     float _x = 0;
     float _y = 0;
+    int _grid_size = 32;
     
     bool _moving_up = false;
     bool _moving_down = false;
