@@ -26,7 +26,9 @@ const int world_velocity = 250;
 // Entity images
 const string character_image_path = "images/char.png";
 const int character_grid_size = 64;
-const string tree_image_path = "images/tree.png";
+
+const string tree_image_path = "images/trees.png";
+const int tree_grid_size = 160;
 
 
 // Player

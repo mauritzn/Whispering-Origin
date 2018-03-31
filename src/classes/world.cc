@@ -73,11 +73,8 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
   
   
   for(CELL const& value: _trees) {
-    //                                    TREE_WIDTH
-    int tree_x = (value.col * _grid_size) - ((94 / 2) - (_grid_size / 2));
-    //                                    TREE_HEIGHT
-    int tree_y = (value.row * _grid_size) - (132 - _grid_size);
-    tree_y += 1; // fix 1 px error
+    int tree_x = (value.col * _grid_size) - (tree_grid_size / 2) + (_grid_size / 2);
+    int tree_y = (value.row * _grid_size) - (tree_grid_size - _grid_size);
     
     /*cout << "X: " << tree_x << ", Y: " << tree_y << " || "
          << value.row << "x" << value.col << endl;*/
