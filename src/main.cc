@@ -89,8 +89,8 @@ int main() {
   TTF_Font* debug_font = TTF_OpenFont(main_font, 20);
   TTF_Font* Ubuntu_font = TTF_OpenFont(main_font, 20);
   TTF_Font* Level_font = TTF_OpenFont(main_font, 32);
-  SDL_Color background_color = { 21, 108, 153 };
-  SDL_Color text_color = { 255, 255, 255 };
+  SDL_Color background_color = { 21, 108, 153, 1};
+  SDL_Color text_color = { 255, 255, 255, 1};
 
 
 
