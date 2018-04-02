@@ -128,7 +128,7 @@ int main() {
     
     
     
-    SDL_Color current_color = { 255, 255, 255 };
+    SDL_Color current_color = { 255, 255, 255, 1};
     bool player_pos_found = false;
     int player_pos_x = floor(map_width / 2);
     int player_pos_y = floor(map_height / 2);

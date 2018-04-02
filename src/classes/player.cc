@@ -72,7 +72,7 @@ void Player::heal(int amount)
     _hp += amount;
 }
 
-void Player::damage(int amount)
+void Player::take_damage(int amount)
 {
   if(amount > 0) {
     if(_hp > 0) {

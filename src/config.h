@@ -38,12 +38,15 @@ extern const int character_grid_size; // define how big one character image is (
 extern const string tree_image_path; // define where the TEMP tree image is stored [PNG]
 extern const int tree_grid_size; // define how big one tree image is (used for sprites)
 
+extern const string monster_image_path; // define where TEMP monster image is stored [PNG]
+extern const int monster_grid_size;
 
 // Player
 extern const int max_level; // define how far the player can level
 extern const uint32_t max_money; // define how much money the player can have
 
 extern const int time_to_display_level_up_message; // define how long the level up message should be shown (in milliseconds)
+
 
 
 #endif

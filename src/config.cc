@@ -30,6 +30,8 @@ const int character_grid_size = 64;
 const string tree_image_path = "images/trees.png";
 const int tree_grid_size = 160;
 
+const string monster_image_path = "images/beetle5.PNG";
+// const int monster_grid_size = ?;
 
 // Player
 const int max_level = 50;

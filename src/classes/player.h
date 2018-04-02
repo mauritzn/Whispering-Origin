@@ -30,6 +30,8 @@ class Player
     
         int _hp = 10;
         uint32_t _money = 10;
+        int _acc = 7;   // Player Accuracy
+        
 
         uint32_t _leveled_up_at = 0;
         int _player_level = 1;
@@ -57,7 +59,8 @@ class Player
         int xp();
 
         void heal(int);
-        void damage(int);
+        int deal_damage();
+        void take_damage(int);
         bool is_alive();
 
         void increase_money(int);
