@@ -33,10 +33,10 @@ extern const int world_velocity; // defines how fast the world moves around
 
 // Entity images
 extern const string character_image_path; // define where the player's character image is stored [PNG]
-extern const int character_grid_size;
+extern const int character_grid_size; // define how big one character image is (used for sprites)
 
 extern const string tree_image_path; // define where the TEMP tree image is stored [PNG]
-extern const int tree_grid_size;
+extern const int tree_grid_size; // define how big one tree image is (used for sprites)
 
 
 // Player
