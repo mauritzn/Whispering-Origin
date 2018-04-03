@@ -2,6 +2,9 @@
 #define WORLD_H
 
 #include <SDL2/SDL.h>
+#include <string>
+#include <vector>
+#include <map>
 
 #include "window.h"
 #include "renderer.h"
@@ -21,6 +24,7 @@ enum tree_type {
 };
 
 struct grid_cell {
+  string row_and_col;
   int row;
   int col;
   int id;
@@ -28,6 +32,7 @@ struct grid_cell {
 
 typedef struct grid_cell CELL;
 typedef vector<CELL> GRID;
+typedef map<string, const CELL*> COLLISIONS;
   
 
 class World {
@@ -54,6 +59,8 @@ class World {
     GRID _trees;
     GRID _ores;
     GRID _fish;
+    
+    COLLISIONS _collisions;
     
     vector<PNG*> _trees_to_render;
 

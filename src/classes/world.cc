@@ -4,7 +4,9 @@
 #include <cmath>
 #include <string>
 #include <vector>
+#include <map>
 #include <fstream>
+#include <sstream>
 
 #include "world.h"
 #include "functions.h"
@@ -33,7 +35,7 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
   
   if(map_data.fail()) {
     cout << "!! FAILED TO READ MAP DATA (using default grid size) !!" << endl;
-    _grid_size = 32;
+    _grid_size = 32; // default back to 32 to avoid error with dividing a float by 0
   } else {
     int line_nr = 1;
     while(getline(map_data, line)) {
@@ -70,6 +72,18 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
     
     map_data.close();
   }
+  
+  
+  
+  // add all the collisions to a map
+  for(CELL const& value: _colliders) {
+    _collisions[value.row_and_col] = &value;
+  }
+  
+  for(CELL const& value: _trees) {
+    _collisions[value.row_and_col] = &value;
+  }
+  
   
   
   for(CELL const& value: _trees) {
@@ -186,33 +200,20 @@ void World::update() {
   
   
   
-  // This needs to be cleaned up and done better, but for now it works...
-  for(CELL const& value: _colliders) {
-    if(this->get_player_row() == value.row && this->get_player_col() == value.col) {
-      if(_moving_up || _moving_down) {
-        _y = temp_y;
-        _texture->set_y((int) temp_y);
-      }
-      
-      if(_moving_left || _moving_right) {
-        _x = temp_x;
-        _texture->set_x((int) temp_x);
-      }
+  stringstream row_and_col_string;
+  row_and_col_string << this->get_player_row() << "x" << this->get_player_col();
+  auto search = _collisions.find(row_and_col_string.str());
+  
+  // still needs to be improved
+  if(search != _collisions.end()) {
+    if(_moving_up || _moving_down) {
+      _y = temp_y;
+      _texture->set_y((int) temp_y);
     }
-  }
-  
-  
-  for(CELL const& value: _trees) {
-    if(this->get_player_row() == value.row && this->get_player_col() == value.col) {
-      if(_moving_up || _moving_down) {
-        _y = temp_y;
-        _texture->set_y((int) temp_y);
-      }
       
-      if(_moving_left || _moving_right) {
-        _x = temp_x;
-        _texture->set_x((int) temp_x);
-      }
+    if(_moving_left || _moving_right) {
+      _x = temp_x;
+      _texture->set_x((int) temp_x);
     }
   }
   
