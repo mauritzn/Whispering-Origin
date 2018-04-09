@@ -23,16 +23,16 @@ enum tree_type {
   OAK = 0
 };
 
-struct grid_cell {
+struct grid_tile {
   string row_and_col;
   int row;
   int col;
   int id;
 };
 
-typedef struct grid_cell CELL;
-typedef vector<CELL> GRID;
-typedef map<string, const CELL*> COLLISIONS;
+typedef struct grid_tile TILE;
+typedef vector<TILE> GRID;
+typedef map<string, const TILE*> COLLISIONS;
   
 
 class World {

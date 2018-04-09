@@ -23,7 +23,7 @@ extern string to_fixed(float);
 
 extern vector<string> explode_string(string const&, char);
 
-extern void add_cell_to_grid(string const&, GRID&);
+extern void add_tile_to_grid(string const&, GRID&);
 
 
 #endif

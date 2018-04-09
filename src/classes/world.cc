@@ -29,7 +29,7 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
   
   string line;
   string data;
-  vector<string> cells_to_add;
+  vector<string> tiles_to_add;
   
   ifstream map_data(world_data_path);
   
@@ -51,17 +51,17 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
       } else {
         if(line.length() > 2) {
           data = line.substr(2); // remove data type
-          cells_to_add = explode_string(data, '|');
+          tiles_to_add = explode_string(data, '|');
           
-          for(string const& value: cells_to_add) {
+          for(string const& value: tiles_to_add) {
             if(line[0] == 'C') {
-              add_cell_to_grid(value, _colliders);
+              add_tile_to_grid(value, _colliders);
             } else if(line[0] == 'T') {
-              add_cell_to_grid(value, _trees);
+              add_tile_to_grid(value, _trees);
             } else if(line[0] == 'O') {
-              add_cell_to_grid(value, _ores);
+              add_tile_to_grid(value, _ores);
             } else if(line[0] == 'F') {
-              add_cell_to_grid(value, _fish);
+              add_tile_to_grid(value, _fish);
             }
           }
         }
@@ -76,17 +76,17 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
   
   
   // add all the collisions to a map
-  for(CELL const& value: _colliders) {
+  for(TILE const& value: _colliders) {
     _collisions[value.row_and_col] = &value;
   }
   
-  for(CELL const& value: _trees) {
+  for(TILE const& value: _trees) {
     _collisions[value.row_and_col] = &value;
   }
   
   
   
-  for(CELL const& value: _trees) {
+  for(TILE const& value: _trees) {
     int tree_x = (value.col * _grid_size) - (tree_grid_size / 2) + (_grid_size / 2);
     int tree_y = (value.row * _grid_size) - (tree_grid_size - _grid_size);
     
@@ -173,6 +173,10 @@ void World::update() {
   float temp_x = _x;
   float temp_y = _y;
   
+  int temp_row = this->get_player_row();
+  int temp_col = this->get_player_col();
+  
+  
   if(_moving_up) {
     _player->set_direction(NORTH);
     _y += delta_velocity;
@@ -200,20 +204,41 @@ void World::update() {
   
   
   
-  stringstream row_and_col_string;
-  row_and_col_string << this->get_player_row() << "x" << this->get_player_col();
-  auto search = _collisions.find(row_and_col_string.str());
+  stringstream row_and_col_current;
+  stringstream row_and_col_north;
+  stringstream row_and_col_south;
+  stringstream row_and_col_west;
+  stringstream row_and_col_east;
+  
+  row_and_col_current << this->get_player_row() << "x" << this->get_player_col();
+  row_and_col_north << (temp_row - 1) << "x" << temp_col;
+  row_and_col_south << (temp_row + 1) << "x" << temp_col;
+  row_and_col_west << temp_row << "x" << (temp_col - 1);
+  row_and_col_east << temp_row << "x" << (temp_col + 1);
+  
+  
+  auto current_search = _collisions.find(row_and_col_current.str());
+  
+  auto north_search = _collisions.find(row_and_col_north.str());
+  auto south_search = _collisions.find(row_and_col_south.str());
+  auto west_search = _collisions.find(row_and_col_west.str());
+  auto east_search = _collisions.find(row_and_col_east.str());
+  
   
   // still needs to be improved
-  if(search != _collisions.end()) {
+  if(current_search != _collisions.end()) {
     if(_moving_up || _moving_down) {
-      _y = temp_y;
-      _texture->set_y((int) temp_y);
+      if(north_search != _collisions.end() || south_search != _collisions.end()) {
+        _y = temp_y;
+        _texture->set_y((int) temp_y);
+      }
     }
       
     if(_moving_left || _moving_right) {
-      _x = temp_x;
-      _texture->set_x((int) temp_x);
+      if(west_search != _collisions.end() || east_search != _collisions.end()) {
+        _x = temp_x;
+        _texture->set_x((int) temp_x);
+      }
     }
   }
   

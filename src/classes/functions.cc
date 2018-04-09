@@ -58,11 +58,11 @@ vector<string> explode_string(string const& string_to_explode, char delimiter) {
 }
 
 
-void add_cell_to_grid(string const& string_to_parse, GRID& grid) {
+void add_tile_to_grid(string const& string_to_parse, GRID& grid) {
   stringstream row_and_col_string;
   vector<string> exploded = explode_string(string_to_parse, 'x');
   
-  grid.push_back(*(new CELL()));
+  grid.push_back(*(new TILE()));
   grid.back().row = stoi(exploded[0]);
   
   
