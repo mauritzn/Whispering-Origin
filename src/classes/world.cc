@@ -55,13 +55,13 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
           
           for(string const& value: tiles_to_add) {
             if(line[0] == 'C') {
-              add_tile_to_grid(value, _colliders);
+              add_tile_to_grid(value, COLLIDER, _colliders);
             } else if(line[0] == 'T') {
-              add_tile_to_grid(value, _trees);
+              add_tile_to_grid(value, TREE, _trees);
             } else if(line[0] == 'O') {
-              add_tile_to_grid(value, _ores);
+              add_tile_to_grid(value, ORE, _ores);
             } else if(line[0] == 'F') {
-              add_tile_to_grid(value, _fish);
+              add_tile_to_grid(value, FISH, _fish);
             }
           }
         }
@@ -117,6 +117,14 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
   
   _x = (float) _texture->get_x();
   _y = (float) _texture->get_y();
+  
+  
+  current_tile.row = this->get_player_row();
+  current_tile.col = this->get_player_col();
+  current_tile.row_and_col = this->get_player_row_and_col();
+  
+  current_tile.type = GRASS;
+  current_tile.id = -1;
 }
 
 
@@ -148,6 +156,13 @@ int World::get_player_row() {
 }
 int World::get_player_col() {
   return round(this->get_player_x() / (float) _grid_size);
+}
+
+string World::get_player_row_and_col() {
+  stringstream row_and_col;
+  row_and_col << this->get_player_row() << "x" << this->get_player_col();
+  
+  return row_and_col.str();
 }
 
 
@@ -263,6 +278,16 @@ void World::update() {
   if(this->get_player_col() > ((_texture->width() / _grid_size) - 1)) {
     _x = temp_x;
     _texture->set_x((int) temp_x);
+  }
+  
+  
+  
+  if(this->get_player_row_and_col() != current_tile.row_and_col) {
+    current_tile.row = this->get_player_row();
+    current_tile.col = this->get_player_col();
+    current_tile.row_and_col = this->get_player_row_and_col();
+    
+    cout << "PLAYER moved to new tile (" << current_tile.row_and_col << ")" << endl;
   }
 }
 

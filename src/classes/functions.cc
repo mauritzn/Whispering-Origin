@@ -46,7 +46,7 @@ string to_fixed(float number_to_fix) {
 }
 
 
-vector<string> explode_string(string const& string_to_explode, char delimiter) {
+vector<string> explode_string(const string& string_to_explode, char delimiter) {
   vector<string> result;
   istringstream iss(string_to_explode);
 
@@ -58,7 +58,7 @@ vector<string> explode_string(string const& string_to_explode, char delimiter) {
 }
 
 
-void add_tile_to_grid(string const& string_to_parse, GRID& grid) {
+void add_tile_to_grid(const string& string_to_parse, const tile_type& type, GRID& grid) {
   stringstream row_and_col_string;
   vector<string> exploded = explode_string(string_to_parse, 'x');
   

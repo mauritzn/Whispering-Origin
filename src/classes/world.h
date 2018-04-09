@@ -14,6 +14,14 @@
 
 using namespace std;
 
+enum tile_type {
+  COLLIDER,
+  TREE,
+  ORE,
+  FISH,
+  GRASS
+};
+
 enum tree_state {
   UNCUT = 0,
   CUT = 160
@@ -25,8 +33,11 @@ enum tree_type {
 
 struct grid_tile {
   string row_and_col;
+  
   int row;
   int col;
+  
+  tile_type type;
   int id;
 };
 
@@ -54,6 +65,8 @@ class World {
     bool _moving_down = false;
     bool _moving_left = false;
     bool _moving_right = false;
+    
+    TILE current_tile;
     
     GRID _colliders;
     GRID _trees;
@@ -84,6 +97,7 @@ class World {
     
     int get_player_row();
     int get_player_col();
+    string get_player_row_and_col();
     
     
     void key_pressed(SDL_Keycode);

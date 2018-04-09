@@ -21,9 +21,9 @@ extern string format_number(int);
 extern string to_fixed(float);
 
 
-extern vector<string> explode_string(string const&, char);
+extern vector<string> explode_string(const string&, char);
 
-extern void add_tile_to_grid(string const&, GRID&);
+extern void add_tile_to_grid(const string&, const tile_type&, GRID&);
 
 
 #endif
