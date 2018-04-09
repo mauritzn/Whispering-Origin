@@ -30,6 +30,7 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
   string line;
   string data;
   vector<string> tiles_to_add;
+  for(int i = 0; i < 4; i++) _neighbor_tiles.push_back(new TILE());
   
   ifstream map_data(world_data_path);
   
@@ -55,13 +56,13 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
           
           for(string const& value: tiles_to_add) {
             if(line[0] == 'C') {
-              add_tile_to_grid(value, COLLIDER, _colliders);
+              this->add_to_grid(value, COLLIDER);
             } else if(line[0] == 'T') {
-              add_tile_to_grid(value, TREE, _trees);
+              this->add_to_grid(value, TREE);
             } else if(line[0] == 'O') {
-              add_tile_to_grid(value, ORE, _ores);
+              this->add_to_grid(value, ORE);
             } else if(line[0] == 'F') {
-              add_tile_to_grid(value, FISH, _fish);
+              this->add_to_grid(value, FISH);
             }
           }
         }
@@ -75,35 +76,31 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
   
   
   
-  // add all the collisions to a map
-  for(TILE const& value: _colliders) {
-    _collisions[value.row_and_col] = &value;
+  
+  for(TILE const& value: _items) {
+    if(value.type == TREE) {
+      int tree_x = (value.col * _grid_size) - (tree_grid_size / 2) + (_grid_size / 2);
+      int tree_y = (value.row * _grid_size) - (tree_grid_size - _grid_size);
+      
+      /*cout << "X: " << tree_x << ", Y: " << tree_y << " || "
+          << value.row << "x" << value.col << endl;*/
+      
+      
+      _to_render.push_back(new PNG(*_win, *_ren, tree_image_path, tree_x, tree_y));
+      
+      _to_render.back()->set_container_width(tree_grid_size);
+      _to_render.back()->set_container_height(tree_grid_size);
+      _to_render.back()->set_image_width(tree_grid_size);
+      _to_render.back()->set_image_height(tree_grid_size);
+      
+      _to_render.back()->set_image_x(UNCUT);
+      _to_render.back()->set_image_y(OAK);
+    } else {
+      //if(value.type != COLLIDER) _to_render.push_back(new PNG(*_win, *_ren, "images/debug_tile.png", value.x_start, value.y_start));
+    }
   }
   
-  for(TILE const& value: _trees) {
-    _collisions[value.row_and_col] = &value;
-  }
   
-  
-  
-  for(TILE const& value: _trees) {
-    int tree_x = (value.col * _grid_size) - (tree_grid_size / 2) + (_grid_size / 2);
-    int tree_y = (value.row * _grid_size) - (tree_grid_size - _grid_size);
-    
-    /*cout << "X: " << tree_x << ", Y: " << tree_y << " || "
-         << value.row << "x" << value.col << endl;*/
-    
-    
-    _trees_to_render.push_back(new PNG(*_win, *_ren, tree_image_path, tree_x, tree_y));
-    
-    _trees_to_render.back()->set_container_width(tree_grid_size);
-    _trees_to_render.back()->set_container_height(tree_grid_size);
-    _trees_to_render.back()->set_image_width(tree_grid_size);
-    _trees_to_render.back()->set_image_height(tree_grid_size);
-    
-    _trees_to_render.back()->set_image_x(UNCUT);
-    _trees_to_render.back()->set_image_y(OAK);
-  }
   
   // min value is 0
   // max value is -640 ((window_width / 2) * -1)
@@ -119,12 +116,8 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
   _y = (float) _texture->get_y();
   
   
-  current_tile.row = this->get_player_row();
-  current_tile.col = this->get_player_col();
-  current_tile.row_and_col = this->get_player_row_and_col();
-  
-  current_tile.type = GRASS;
-  current_tile.id = -1;
+  this->update_current_tile();
+  this->update_neighbors();
 }
 
 
@@ -151,6 +144,7 @@ int World::get_player_y() {
   return test_y;
 }
 
+
 int World::get_player_row() {
   return round(this->get_player_y() / (float) _grid_size);
 }
@@ -163,6 +157,114 @@ string World::get_player_row_and_col() {
   row_and_col << this->get_player_row() << "x" << this->get_player_col();
   
   return row_and_col.str();
+}
+
+
+
+void World::add_to_grid(const string& string_to_parse, const tile_type& type) {
+  stringstream row_and_col_string;
+  vector<string> exploded = explode_string(string_to_parse, 'x');
+  
+  _items.push_back(*(new TILE()));
+  _items.back().row = stoi(exploded[0]);
+  
+  
+  if(exploded[1].find(':') != string::npos) {
+    exploded = explode_string(exploded[1], ':');
+    _items.back().col = stoi(exploded[0]);
+    _items.back().id = stoi(exploded[1]);
+  } else {
+    _items.back().col = stoi(exploded[1]);
+    //_items.back().id = -1;
+  }
+  
+  
+  _items.back().x_start = (_items.back().col * _grid_size);
+  _items.back().x_end = (_items.back().x_start + _grid_size);
+  
+  _items.back().y_start = (_items.back().row * _grid_size);
+  _items.back().y_end = (_items.back().y_start + _grid_size);
+  
+  
+  _items.back().type = type;
+  
+  row_and_col_string << _items.back().row << "x" << _items.back().col;
+  _items.back().row_and_col = row_and_col_string.str();
+}
+
+
+
+void World::update_current_tile() {
+  _current_tile.row = this->get_player_row();
+  _current_tile.col = this->get_player_col();
+  _current_tile.row_and_col = this->get_player_row_and_col();
+}
+
+void World::update_neighbors() {
+  bool neighbor_found = false;
+  neighbor_direction n_dir = N_SOUTH;
+  
+  stringstream row_and_col_north;
+  stringstream row_and_col_south;
+  stringstream row_and_col_west;
+  stringstream row_and_col_east;
+  
+  row_and_col_north << (_current_tile.row - 1) << "x" << _current_tile.col;
+  row_and_col_south << (_current_tile.row + 1) << "x" << _current_tile.col;
+  row_and_col_west << _current_tile.row << "x" << (_current_tile.col - 1);
+  row_and_col_east << _current_tile.row << "x" << (_current_tile.col + 1);
+  
+  
+  // reset neighbors
+  for(int i = 0; i < 4; i++) {
+    _neighbor_tiles[i]->row_and_col = "0x0";
+    _neighbor_tiles[i]->row = 0;
+    _neighbor_tiles[i]->col = 0;
+    
+    _neighbor_tiles[i]->x_start = 0;
+    _neighbor_tiles[i]->x_end = 0;
+    _neighbor_tiles[i]->y_start = 0;
+    _neighbor_tiles[i]->y_end = 0;
+    
+    _neighbor_tiles[i]->type = TERRAIN;
+    _neighbor_tiles[i]->id = -1;
+  }
+  
+  
+  
+  for(TILE const& value: _items) {
+    if(value.type != TERRAIN) {
+      if(value.row_and_col == row_and_col_north.str()) {
+        n_dir = N_NORTH;
+        neighbor_found = true;
+      } else if(value.row_and_col == row_and_col_south.str()) {
+        n_dir = N_SOUTH;
+        neighbor_found = true;
+      } else if(value.row_and_col == row_and_col_west.str()) {
+        n_dir = N_WEST;
+        neighbor_found = true;
+      } else if(value.row_and_col == row_and_col_east.str()) {
+        n_dir = N_EAST;
+        neighbor_found = true;
+      } else {
+        neighbor_found = false;
+      }
+      
+      if(neighbor_found) {
+        _neighbor_tiles[n_dir]->row_and_col = value.row_and_col;
+        _neighbor_tiles[n_dir]->row = value.row;
+        _neighbor_tiles[n_dir]->col = value.col;
+        
+        _neighbor_tiles[n_dir]->x_start = value.x_start;
+        _neighbor_tiles[n_dir]->x_end = value.x_end;
+        _neighbor_tiles[n_dir]->y_start = value.y_start;
+        _neighbor_tiles[n_dir]->y_end = value.y_end;
+        
+        _neighbor_tiles[n_dir]->type = value.type;
+        _neighbor_tiles[n_dir]->id = value.id;
+      }
+    }
+  }
 }
 
 
@@ -185,109 +287,110 @@ void World::key_released(SDL_Keycode key){
 
 void World::update() {
   float delta_velocity = (world_velocity * _fps->delta_time());
-  float temp_x = _x;
-  float temp_y = _y;
+  //float temp_x = _x;
+  //float temp_y = _y;
   
-  int temp_row = this->get_player_row();
-  int temp_col = this->get_player_col();
+  //int temp_row = this->get_player_row();
+  //int temp_col = this->get_player_col();
   
   
   if(_moving_up) {
     _player->set_direction(NORTH);
-    _y += delta_velocity;
-    _texture->set_y((int) _y);
+    
+    if((this->get_player_y() - delta_velocity) > 0) {
+      if(_neighbor_tiles[N_NORTH]->type == TERRAIN) {
+        _y += delta_velocity;
+      } else {
+        if((this->get_player_y() - delta_velocity) > (_neighbor_tiles[N_NORTH]->y_end - 15)) {
+          _y += delta_velocity;
+        }
+      }
+    }
   }
   
   if(_moving_down) {
     _player->set_direction(SOUTH);
-    _y -= delta_velocity;
-    _texture->set_y((int) _y);
+    
+    if((this->get_player_y() + delta_velocity) < (_texture->height() - _grid_size)) {
+      if(_neighbor_tiles[N_SOUTH]->type == TERRAIN) {
+        _y -= delta_velocity;
+      } else {
+        if((this->get_player_y() + delta_velocity) < ((_neighbor_tiles[N_SOUTH]->y_start - _grid_size) + 0)) {
+          _y -= delta_velocity;
+        }
+      }
+    }
   }
 
   
   if(_moving_left) {
     _player->set_direction(WEST);
-    _x += delta_velocity;
-    _texture->set_x((int) _x);
+    
+    if((this->get_player_x() - delta_velocity) > 0) {
+      if(_neighbor_tiles[N_WEST]->type == TERRAIN) {
+        _x += delta_velocity;
+      } else {
+        if((this->get_player_x() - delta_velocity) > (_neighbor_tiles[N_WEST]->x_end - 10)) {
+          _x += delta_velocity;
+        }
+      }
+    }
   }
   
   if(_moving_right) {
     _player->set_direction(EAST);
-    _x -= delta_velocity;
+    
+    if((this->get_player_x() + delta_velocity) < (_texture->width() - _grid_size)) {
+      //_x -= delta_velocity;
+      
+      if(_neighbor_tiles[N_EAST]->type == TERRAIN) {
+        _x -= delta_velocity;
+      } else {
+        if((this->get_player_x() + delta_velocity) < ((_neighbor_tiles[N_EAST]->x_start - _grid_size) + 8)) {
+          _x -= delta_velocity;
+        }
+      }
+    }
+  }
+  
+  
+  if(_moving_up || _moving_down) {
+    _texture->set_y((int) _y);
+  }
+  
+  if(_moving_left || _moving_right) {
     _texture->set_x((int) _x);
   }
   
   
-  
-  stringstream row_and_col_current;
-  stringstream row_and_col_north;
-  stringstream row_and_col_south;
-  stringstream row_and_col_west;
-  stringstream row_and_col_east;
-  
-  row_and_col_current << this->get_player_row() << "x" << this->get_player_col();
-  row_and_col_north << (temp_row - 1) << "x" << temp_col;
-  row_and_col_south << (temp_row + 1) << "x" << temp_col;
-  row_and_col_west << temp_row << "x" << (temp_col - 1);
-  row_and_col_east << temp_row << "x" << (temp_col + 1);
-  
-  
-  auto current_search = _collisions.find(row_and_col_current.str());
-  
-  auto north_search = _collisions.find(row_and_col_north.str());
-  auto south_search = _collisions.find(row_and_col_south.str());
-  auto west_search = _collisions.find(row_and_col_west.str());
-  auto east_search = _collisions.find(row_and_col_east.str());
-  
-  
-  // still needs to be improved
-  if(current_search != _collisions.end()) {
-    if(_moving_up || _moving_down) {
-      if(north_search != _collisions.end() || south_search != _collisions.end()) {
-        _y = temp_y;
-        _texture->set_y((int) temp_y);
-      }
-    }
-      
-    if(_moving_left || _moving_right) {
-      if(west_search != _collisions.end() || east_search != _collisions.end()) {
-        _x = temp_x;
-        _texture->set_x((int) temp_x);
-      }
-    }
-  }
-  
-  
-  
-  if(this->get_player_row() < 0) {
-    _y = temp_y;
-    _texture->set_y((int) temp_y);
-  }
-  
-  if(this->get_player_col() < 0) {
-    _x = temp_x;
-    _texture->set_x((int) temp_x);
-  }
-  
-  
-  if(this->get_player_row() > ((_texture->height() / _grid_size) - 1)) {
-    _y = temp_y;
-    _texture->set_y((int) temp_y);
-  }
-  
-  if(this->get_player_col() > ((_texture->width() / _grid_size) - 1)) {
-    _x = temp_x;
-    _texture->set_x((int) temp_x);
-  }
-  
-  
-  
-  if(this->get_player_row_and_col() != current_tile.row_and_col) {
-    current_tile.row = this->get_player_row();
-    current_tile.col = this->get_player_col();
-    current_tile.row_and_col = this->get_player_row_and_col();
+  if(this->get_player_row_and_col() != _current_tile.row_and_col) {
+    this->update_current_tile();
+    this->update_neighbors();
     
-    cout << "PLAYER moved to new tile (" << current_tile.row_and_col << ")" << endl;
+    /*
+    if(debug_mode) {
+      string dir_text[4] = {
+        "North",
+        "East",
+        "South",
+        "West"
+      };
+      
+      string type_text[5] = {
+        "Collider",
+        "Tree",
+        "Ore",
+        "Fish",
+        "Terrain"
+      };
+      
+      cout << "PLAYER moved to new tile (" << _current_tile.row_and_col << ")" << endl;
+      for(int i = 0; i < 4; i++) {
+        cout << " > Neighbor " << dir_text[i] << ": " << _neighbor_tiles[i]->row_and_col << " => " << type_text[(_neighbor_tiles[i]->type)]
+             << " || x: " << _neighbor_tiles[i]->x_start << ", y: " << _neighbor_tiles[i]->y_start << endl;
+      }
+      cout << endl;
+    }*/
   }
 }
 
@@ -295,16 +398,19 @@ void World::update() {
 void World::render() {
   _texture->render();
   
-  for(PNG* const& tree: _trees_to_render) {
-    tree->set_x(tree->get_original_x() + this->get_x());
-    tree->set_y(tree->get_original_y() + this->get_y());
+  for(PNG* const& value: _to_render) {
+    value->set_x(value->get_original_x() + this->get_x());
+    value->set_y(value->get_original_y() + this->get_y());
   }
   
   for(int row = 0; row < (this->width() / _grid_size); row++) {
     if(this->get_player_row() == row) _player->render();
     
-    for(PNG* const& tree: _trees_to_render) {
-      if(floor((tree->get_original_y() + 100) / 32) == row) tree->render();
+    for(PNG* const& value: _to_render) {
+      // needs to be tweaked a bit
+      if(floor((value->get_original_y() + (value->height() - _grid_size)) / _grid_size) == row) {
+        value->render();
+      }
     }
   }
 }

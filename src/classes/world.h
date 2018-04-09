@@ -19,7 +19,14 @@ enum tile_type {
   TREE,
   ORE,
   FISH,
-  GRASS
+  TERRAIN
+};
+
+enum neighbor_direction {
+  N_NORTH,
+  N_EAST,
+  N_SOUTH,
+  N_WEST
 };
 
 enum tree_state {
@@ -32,13 +39,18 @@ enum tree_type {
 };
 
 struct grid_tile {
-  string row_and_col;
+  string row_and_col = "0x0";
   
-  int row;
-  int col;
+  int row = 0;
+  int col = 0;
   
-  tile_type type;
-  int id;
+  int x_start = 0;
+  int x_end = 0;
+  int y_start = 0;
+  int y_end = 0;
+  
+  tile_type type = TERRAIN;
+  int id = -1;
 };
 
 typedef struct grid_tile TILE;
@@ -66,16 +78,13 @@ class World {
     bool _moving_left = false;
     bool _moving_right = false;
     
-    TILE current_tile;
+    TILE _current_tile;
+    vector<TILE*> _neighbor_tiles;
     
-    GRID _colliders;
-    GRID _trees;
-    GRID _ores;
-    GRID _fish;
+    GRID _items;
+    //COLLISIONS _collisions;
     
-    COLLISIONS _collisions;
-    
-    vector<PNG*> _trees_to_render;
+    vector<PNG*> _to_render;
 
 
   public:
@@ -95,9 +104,17 @@ class World {
     int get_player_x();
     int get_player_y();
     
+    
     int get_player_row();
     int get_player_col();
     string get_player_row_and_col();
+    
+    
+    void add_to_grid(const string&, const tile_type&);
+    
+    
+    void update_current_tile();
+    void update_neighbors();
     
     
     void key_pressed(SDL_Keycode);
