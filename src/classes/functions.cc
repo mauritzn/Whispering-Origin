@@ -72,7 +72,7 @@ string combine_row_and_col(int row, int col) {
 }
 
 
-void add_tile_to_grid(const string& string_to_parse, const tile_type& type, GRID& grid) {
+/*void add_tile_to_grid(const string& string_to_parse, const tile_type& type, GRID& grid) {
   vector<string> exploded = explode_string(string_to_parse, 'x');
   
   grid.push_back(*(new TILE()));
@@ -89,7 +89,7 @@ void add_tile_to_grid(const string& string_to_parse, const tile_type& type, GRID
   }
   
   grid.back().row_and_col = combine_row_and_col(grid.back().row, grid.back().col);
-}
+}*/
 
 
 bool init_SDL() {

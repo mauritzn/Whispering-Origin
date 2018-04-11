@@ -48,6 +48,7 @@ class Player {
     void set_y(int);
     
     
+    player_direction get_direction();
     void set_direction(player_direction);
     
     int health();

@@ -38,6 +38,10 @@ void Player::set_x(int new_x) { _character->set_x(new_x); }
 void Player::set_y(int new_y) { _character->set_y(new_y); }
 
 
+player_direction Player::get_direction() {
+  return (player_direction) _character->get_image_y();
+}
+
 void Player::set_direction(player_direction new_direction) {
   _character->set_image_y(new_direction);
 }

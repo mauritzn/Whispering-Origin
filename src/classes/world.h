@@ -9,35 +9,14 @@
 #include "window.h"
 #include "renderer.h"
 #include "images.h"
+#include "../config.h"
 #include "fps.h"
 #include "player.h"
 #include "text.h"
+#include "item.h"
 
 using namespace std;
 
-enum tile_type {
-  COLLIDER,
-  TREE,
-  ORE,
-  FISH,
-  TERRAIN
-};
-
-enum neighbor_direction {
-  N_NORTH,
-  N_EAST,
-  N_SOUTH,
-  N_WEST
-};
-
-enum tree_state {
-  UNCUT = 0,
-  CUT = 160
-};
-
-enum tree_type {
-  OAK = 0
-};
 
 struct grid_tile {
   string row_and_col = "0x0";
@@ -54,9 +33,8 @@ struct grid_tile {
   int id = -1;
 };
 
-typedef struct grid_tile TILE;
+typedef Item* TILE;
 typedef vector<TILE> GRID;
-typedef map<string, const TILE*> COLLISIONS;
 
 
 const string dir_text[4] = {
@@ -86,10 +64,7 @@ class World {
     
     
     
-    Text* _debug_neighbor_north;
-    Text* _debug_neighbor_south;
-    Text* _debug_neighbor_west;
-    Text* _debug_neighbor_east;
+    vector<Text*> _debug_neighbor;
     
     
     
@@ -100,18 +75,17 @@ class World {
     
     int _map_width = 0;
     int _map_height = 0;
-    int _grid_size = 0;
     
     bool _moving_up = false;
     bool _moving_down = false;
     bool _moving_left = false;
     bool _moving_right = false;
+    bool _action_key_pressed = false;
     
-    TILE _current_tile;
-    vector<TILE*> _neighbor_tiles;
+    TILE _current_tile = NULL;
+    vector<TILE> _neighbor_tiles;
     
     GRID _items;
-    //COLLISIONS _collisions;
     
     vector<PNG*> _to_render;
 
@@ -121,7 +95,6 @@ class World {
     
     int width();
     int height();
-    int grid_size();
     
     int get_x();
     int get_y();

@@ -6,6 +6,12 @@
 using namespace std;
 
 
+
+
+
+
+
+
 // General
 const int window_width = 1280;
 const int window_height = 720;
@@ -33,6 +39,7 @@ const SDL_Color color_white = { 255, 255, 255, 1 };
 const string world_data_path = "maps/main.map";
 const string world_texture_path = "images/maps/main_texture.png";
 const int world_velocity = 250;
+int grid_size = 32;
 
 
 // Entity images

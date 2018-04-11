@@ -13,6 +13,34 @@
 using namespace std;
 
 
+
+
+enum tile_type {
+  COLLIDER,
+  TREE,
+  ORE,
+  FISH,
+  TERRAIN
+};
+
+enum neighbor_direction {
+  N_NORTH,
+  N_EAST,
+  N_SOUTH,
+  N_WEST
+};
+
+enum tree_state {
+  UNCUT = 0,
+  CUT = 160
+};
+
+enum tree_type {
+  OAK = 0
+};
+
+
+
 // General
 extern const int window_width; // define the window's width created by SDL
 extern const int window_height; // define the window's height created by SDL
@@ -40,6 +68,7 @@ extern const SDL_Color color_white;
 extern const string world_data_path; // define where the main world's data is stored [MAP]
 extern const string world_texture_path; // define where the main world's texture image is stored [PNG]
 extern const int world_velocity; // defines how fast the world moves around
+extern int grid_size; // defines the world default grid size
 
 
 // Entity images

@@ -50,7 +50,10 @@ int main() {
   bool game_running = true;
   bool debug_test_refresh_done = false;
   
-  init_SDL();
+  if(init_SDL() != true) {
+    cout << "Failed to init SDL!" << endl;
+    return -1;
+  }
 
   
   SDL_DisplayMode DM;
