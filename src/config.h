@@ -55,6 +55,7 @@ extern bool debug_mode; // define if debug mode should be on by default
 extern const char* main_font_path; // define where the main font is stored [TTF]
 
 extern TTF_Font* main_font_16;
+extern TTF_Font* main_font_18;
 extern TTF_Font* main_font_20;
 extern TTF_Font* main_font_32;
 

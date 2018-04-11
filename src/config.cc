@@ -26,6 +26,7 @@ bool debug_mode = true;
 const char* main_font_path = "fonts/Ubuntu_C.ttf";
 
 TTF_Font* main_font_16;
+TTF_Font* main_font_18;
 TTF_Font* main_font_20;
 TTF_Font* main_font_32;
 

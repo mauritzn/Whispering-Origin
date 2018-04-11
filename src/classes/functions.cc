@@ -112,6 +112,7 @@ bool init_SDL() {
   
   // set the fonts
   main_font_16 = TTF_OpenFont(main_font_path, 16);
+  main_font_18 = TTF_OpenFont(main_font_path, 18);
   main_font_20 = TTF_OpenFont(main_font_path, 20);
   main_font_32 = TTF_OpenFont(main_font_path, 32);
   

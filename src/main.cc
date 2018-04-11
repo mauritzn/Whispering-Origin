@@ -204,6 +204,7 @@ int main() {
 
 
   TTF_CloseFont(main_font_16);
+  TTF_CloseFont(main_font_18);
   TTF_CloseFont(main_font_20);
   TTF_CloseFont(main_font_32);
 

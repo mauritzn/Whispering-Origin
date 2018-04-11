@@ -98,42 +98,6 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
   
   
   
-  
-  /*for(TILE const& value: _items) {
-    if(value.type == TREE) {
-      int tree_x = (value.col * _grid_size) - (tree_grid_size / 2) + (_grid_size / 2);
-      int tree_y = (value.row * _grid_size) - (tree_grid_size - _grid_size);
-      
-      
-      _to_render.push_back(new PNG(*_win, *_ren, tree_image_path, tree_x, tree_y));
-      
-      _to_render.back()->set_container_width(tree_grid_size);
-      _to_render.back()->set_container_height(tree_grid_size);
-      _to_render.back()->set_image_width(tree_grid_size);
-      _to_render.back()->set_image_height(tree_grid_size);
-      
-      _to_render.back()->set_image_x(UNCUT);
-      _to_render.back()->set_image_y(OAK);
-    } else if(value.type == ORE) {
-      int ore_x = (value.col * _grid_size) - (ore_grid_size / 2) + (_grid_size / 2);
-      int ore_y = (value.row * _grid_size) - (ore_grid_size - _grid_size);
-      
-      _to_render.push_back(new PNG(*_win, *_ren, ore_image_path, ore_x, ore_y));
-      
-      _to_render.back()->set_container_width(ore_grid_size);
-      _to_render.back()->set_container_height(ore_grid_size);
-      _to_render.back()->set_image_width(ore_grid_size);
-      _to_render.back()->set_image_height(ore_grid_size);
-      
-      _to_render.back()->set_image_x(0);
-      _to_render.back()->set_image_y(0);
-    } else {
-      //if(value.type != COLLIDER) _to_render.push_back(new PNG(*_win, *_ren, "images/debug_tile.png", value.x_start, value.y_start));
-    }
-  }*/
-  
-  
-  
   // min value is 0
   // max value is -640 ((window_width / 2) * -1)
   //_texture->set_x((window_width / 4) * -1); // center
@@ -204,19 +168,7 @@ void World::add_to_grid(const string& string_to_parse, const tile_type& type) {
     col = stoi(exploded[1]);
   }
   
-  
-  /*_items.back().x_start = (_items.back().col * _grid_size);
-  _items.back().x_end = (_items.back().x_start + _grid_size);
-  
-  _items.back().y_start = (_items.back().row * _grid_size);
-  _items.back().y_end = (_items.back().y_start + _grid_size);
-  
-  
-  _items.back().type = type;
-  _items.back().row_and_col = combine_row_and_col(_items.back().row, _items.back().col);*/
-  
-  
-  _items.push_back(new Item(*_win, *_ren, *_player, type, id, row, col));
+  _items.push_back(new Item(*_win, *_ren, *_fps, *_player, type, id, row, col));
 }
 
 
@@ -231,7 +183,7 @@ void World::update_current_tile() {
       _current_tile->set_col(this->get_player_col());
     }
   } else {
-    _current_tile = new Item(*_win, *_ren, *_player, TERRAIN, -1, this->get_player_row(), this->get_player_col());
+    _current_tile = new Item(*_win, *_ren, *_fps, *_player, TERRAIN, -1, this->get_player_row(), this->get_player_col());
   }
 }
 
@@ -248,18 +200,6 @@ void World::update_neighbors() {
   // reset neighbors
   for(int i = 0; i < 4; i++) {
     _neighbor_tiles[i] = NULL;
-    
-    /*_neighbor_tiles[i]->row_and_col = "0x0";
-    _neighbor_tiles[i]->row = 0;
-    _neighbor_tiles[i]->col = 0;
-    
-    _neighbor_tiles[i]->x_start = 0;
-    _neighbor_tiles[i]->x_end = 0;
-    _neighbor_tiles[i]->y_start = 0;
-    _neighbor_tiles[i]->y_end = 0;
-    
-    _neighbor_tiles[i]->type = TERRAIN;
-    _neighbor_tiles[i]->id = -1;*/
   }
   
   
@@ -282,21 +222,7 @@ void World::update_neighbors() {
         neighbor_found = false;
       }
       
-      if(neighbor_found) {
-        _neighbor_tiles[n_dir] = value;
-        
-        /*_neighbor_tiles[n_dir]->row_and_col = value->get_row_and_col();
-        _neighbor_tiles[n_dir]->row = value->get_row();
-        _neighbor_tiles[n_dir]->col = value->get_col();
-        
-        _neighbor_tiles[n_dir]->x_start = value->get_x_start();
-        _neighbor_tiles[n_dir]->x_end = value->get_x_end();
-        _neighbor_tiles[n_dir]->y_start = value->get_y_start();
-        _neighbor_tiles[n_dir]->y_end = value->get_y_end();
-        
-        _neighbor_tiles[n_dir]->type = value.type;
-        _neighbor_tiles[n_dir]->id = value.id;*/
-      }
+      if(neighbor_found) _neighbor_tiles[n_dir] = value;
     }
   }
 }
@@ -323,12 +249,6 @@ void World::key_released(SDL_Keycode key){
 
 void World::update() {
   float delta_velocity = (world_velocity * _fps->delta_time());
-  //float temp_x = _x;
-  //float temp_y = _y;
-  
-  //int temp_row = this->get_player_row();
-  //int temp_col = this->get_player_col();
-  
   
   if(_moving_up) {
     _player->set_direction(NORTH);
@@ -443,26 +363,38 @@ void World::update() {
       if(_neighbor_tiles[N_NORTH] != NULL) {
         if(_neighbor_tiles[N_NORTH]->get_type() != TERRAIN && _neighbor_tiles[N_NORTH]->get_type() != COLLIDER) {
           _debug_neighbor[N_NORTH]->update(type_text[(_neighbor_tiles[N_NORTH]->get_type())] + " [ACTION]");
+          _neighbor_tiles[N_NORTH]->action();
         }
       }
     } else if(_player->get_direction() == SOUTH) {
       if(_neighbor_tiles[N_SOUTH] != NULL) {
         if(_neighbor_tiles[N_SOUTH]->get_type() != TERRAIN && _neighbor_tiles[N_SOUTH]->get_type() != COLLIDER) {
           _debug_neighbor[N_SOUTH]->update(type_text[(_neighbor_tiles[N_SOUTH]->get_type())] + " [ACTION]");
+          _neighbor_tiles[N_SOUTH]->action();
         }
       }
     } else if(_player->get_direction() == WEST) {
       if(_neighbor_tiles[N_WEST] != NULL) {
         if(_neighbor_tiles[N_WEST]->get_type() != TERRAIN && _neighbor_tiles[N_WEST]->get_type() != COLLIDER) {
           _debug_neighbor[N_WEST]->update(type_text[(_neighbor_tiles[N_WEST]->get_type())] + " [ACTION]");
+          _neighbor_tiles[N_WEST]->action();
         }
       }
     } else if(_player->get_direction() == EAST) {
       if(_neighbor_tiles[N_EAST] != NULL) {
         if(_neighbor_tiles[N_EAST]->get_type() != TERRAIN && _neighbor_tiles[N_EAST]->get_type() != COLLIDER) {
           _debug_neighbor[N_EAST]->update(type_text[(_neighbor_tiles[N_EAST]->get_type())] + " [ACTION]");
+          _neighbor_tiles[N_EAST]->action();
         }
       }
+    }
+  }
+  
+  
+  
+  for(TILE const& value: _items) {
+    if(value->get_type() != TERRAIN && value->get_type() != COLLIDER) {
+      value->update();
     }
   }
 }
@@ -489,6 +421,19 @@ void World::render() {
     }
   }
 
+  
+  neighbor_direction n_dir = N_SOUTH;
+  if(_player->get_direction() == NORTH) n_dir = N_NORTH;
+  else if(_player->get_direction() == SOUTH) n_dir = N_SOUTH;
+  else if(_player->get_direction() == WEST) n_dir = N_WEST;
+  else if(_player->get_direction() == EAST) n_dir = N_EAST;
+  
+  if(_neighbor_tiles[n_dir] != NULL) {
+    if(_neighbor_tiles[n_dir]->get_type() != TERRAIN && _neighbor_tiles[n_dir]->get_type() != COLLIDER) {
+      _neighbor_tiles[n_dir]->show_progress();
+    }
+  }
+  
   
   if(debug_mode) {
     for(int i = 0; i < 4; i++) {

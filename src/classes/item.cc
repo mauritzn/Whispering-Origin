@@ -9,14 +9,17 @@
 #include "functions.h"
 #include "images.h"
 #include "../config.h"
+#include "fps.h"
 #include "player.h"
+#include "text.h"
 
 using namespace std;
 
 
-Item::Item(Window& win, Renderer& ren, Player& player, const tile_type& type, const int id, int row, int col) {
+Item::Item(Window& win, Renderer& ren, FPS& fps, Player& player, const tile_type& type, const int id, int row, int col) {
   _win = &win;
   _ren = &ren;
+  _fps = &fps;
   //_world = &world;
   _player = &player;
 
@@ -30,18 +33,26 @@ Item::Item(Window& win, Renderer& ren, Player& player, const tile_type& type, co
   
   
   
-  int item_grid_size = 0;
   string item_image_path = "";
   
   if(_type == TREE) {
-    item_grid_size = tree_grid_size;
+    _item_grid_size = tree_grid_size;
     item_image_path = tree_image_path;
+    
+    _resources = 5;
+    _resources_left = _resources;
   } else if(_type == ORE) {
-    item_grid_size = ore_grid_size;
+    _item_grid_size = ore_grid_size;
     item_image_path = ore_image_path;
+    
+    _resources = 3;
+    _resources_left = _resources;
   }
-  //else if(_type == FISH) item_grid_size = fish_grid_size;
+  //else if(_type == FISH) _item_grid_size = fish_grid_size;
   
+  
+  _progress_text = new Text(*_win, *_ren, main_font_18, color_white, (format_number(_resources_left) + "/" + format_number(_resources)), 0, 0);
+  _progress_text->align_center_y();
   //if(item_image_path != "") cout << "Item Image Path: " << item_image_path << endl;
   
   
@@ -52,16 +63,16 @@ Item::Item(Window& win, Renderer& ren, Player& player, const tile_type& type, co
   
   
   if(item_image_path != "") {
-    int item_x = _x_start - (item_grid_size / 2) + (grid_size / 2);
-    int item_y = _y_start - (item_grid_size - grid_size);
+    int item_x = _x_start - (_item_grid_size / 2) + (grid_size / 2);
+    int item_y = _y_start - (_item_grid_size - grid_size);
     
     
     _item_image = new PNG(*_win, *_ren, item_image_path, item_x, item_y);
     
-    _item_image->set_container_width(item_grid_size);
-    _item_image->set_container_height(item_grid_size);
-    _item_image->set_image_width(item_grid_size);
-    _item_image->set_image_height(item_grid_size);
+    _item_image->set_container_width(_item_grid_size);
+    _item_image->set_container_height(_item_grid_size);
+    _item_image->set_image_width(_item_grid_size);
+    _item_image->set_image_height(_item_grid_size);
     
     // 0 value is temporary
     _item_image->set_image_x(0);
@@ -150,12 +161,43 @@ int Item::get_id() { return _id; }
 
 
 void Item::action() {
-  cout << "!! ACTION OCCURED !!" << endl;
+  if((_fps->ticks() - _last_action_at) >= 1000) {
+    if(_resources_left > 0) {
+      _last_action_at = _fps->ticks();
+    
+      _resources_left--;
+      _progress_text->update((format_number(_resources_left) + "/" + format_number(_resources)));
+      
+      if(_resources_left == 0) {
+        if(_depleted_at == 0) {
+          _depleted_at = _fps->ticks();
+          _item_image->set_image_x(_item_grid_size);
+        }
+      }
+    }
+  }
 }
-void Item::show_progress() {}
+
+void Item::show_progress() {
+  _progress_text->set_x(_item_image->get_x() + ((_item_image->width() / 2) - (_progress_text->width() / 2)));
+  _progress_text->set_y(_item_image->get_y());
+  
+  if(_type == ORE) _progress_text->set_y(_progress_text->get_y() - 30);
+  
+  _progress_text->render();
+}
 
 
-void Item::update() {}
+void Item::update() {
+  if(_depleted_at > 0) {
+    if(_fps->ticks() - _depleted_at >= 5000) {
+      _depleted_at = 0;
+      _item_image->set_image_x(0);
+      _resources_left = _resources;
+      _progress_text->update((format_number(_resources_left) + "/" + format_number(_resources)));
+    }
+  }
+}
 
 void Item::render() {
   if(_item_image != NULL) {
