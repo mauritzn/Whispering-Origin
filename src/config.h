@@ -7,6 +7,8 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include <string>
 using namespace std;
 
@@ -22,7 +24,16 @@ extern bool debug_mode; // define if debug mode should be on by default
 
 
 // Fonts
-extern const char* main_font; // define where the main font is stored [TTF]
+extern const char* main_font_path; // define where the main font is stored [TTF]
+
+extern TTF_Font* main_font_16;
+extern TTF_Font* main_font_20;
+extern TTF_Font* main_font_32;
+
+
+// Colors
+extern const SDL_Color color_game_background;
+extern const SDL_Color color_white;
 
 
 // World
@@ -38,8 +49,12 @@ extern const int character_grid_size; // define how big one character image is (
 extern const string tree_image_path; // define where the TEMP tree image is stored [PNG]
 extern const int tree_grid_size; // define how big one tree image is (used for sprites)
 
+extern const string ore_image_path;
+extern const int ore_grid_size;
+
 extern const string monster_image_path; // define where TEMP monster image is stored [PNG]
 extern const int monster_grid_size;
+
 
 // Player
 extern const int max_level; // define how far the player can level

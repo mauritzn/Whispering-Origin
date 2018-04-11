@@ -23,6 +23,12 @@ void FPS::calculate() {
 
 void FPS::update() {
   this->calculate();
+  _frame_count++;
+}
+
+
+uint32_t FPS::frame_count() {
+  return _frame_count;
 }
 
 uint32_t FPS::ticks() {

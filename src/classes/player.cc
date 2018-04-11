@@ -11,27 +11,23 @@
 
 using namespace std;
 
-Player::Player(Window& win, Renderer& ren)
-{
-    _win = &win;
-    _ren = &ren;
+Player::Player(Window& win, Renderer& ren) {
+  _win = &win;
+  _ren = &ren;
 
-    _character = new PNG(*_win, *_ren, character_image_path, 0, 0);
-    _character->set_container_width(character_grid_size);
-    _character->set_container_height(character_grid_size);
-    _character->set_image_width(character_grid_size);
-    _character->set_image_height(character_grid_size);
-    
-    //_character->set_absolute_x((window_width / 2) - (character_grid_size / 2)); // center
-    //_character->set_absolute_y((window_height / 2) - (character_grid_size / 2)); // center
-    _character->align_center();
-    
-    _character->set_image_y(SOUTH);
+  _character = new PNG(*_win, *_ren, character_image_path, 0, 0);
+  _character->set_container_width(character_grid_size);
+  _character->set_container_height(character_grid_size);
+  _character->set_image_width(character_grid_size);
+  _character->set_image_height(character_grid_size);
+  
+  _character->align_center();
+  _character->set_image_y(SOUTH);
 
-    
-    for(int i = 1; i < max_level; i++) {
-       _xp_rates.push_back(pow((i * 2), 3));
-    }
+  
+  for(int i = 1; i < max_level; i++) {
+    _xp_rates.push_back(pow((i * 2), 3));
+  }
 }
 
 
@@ -47,33 +43,16 @@ void Player::set_direction(player_direction new_direction) {
 }
 
 
-int Player::health()
-{
-    return _hp;
-}
+int Player::health() { return _hp; }
+uint32_t Player::money() { return _money; }
 
-uint32_t Player::money()
-{
-    return _money;
-}
+int Player::level() { return _player_level; }
+int Player::xp() { return _player_xp; }
 
-int Player::level()
-{
-    return _player_level;
-}
 
-int Player::xp()
-{
-    return _player_xp;
-}
+void Player::heal(int amount) { _hp += amount; }
 
-void Player::heal(int amount)
-{
-    _hp += amount;
-}
-
-void Player::take_damage(int amount)
-{
+void Player::damage(int amount) {
   if(amount > 0) {
     if(_hp > 0) {
       if(amount <= _hp) {
@@ -85,27 +64,25 @@ void Player::take_damage(int amount)
   }
 }
 
-bool Player::is_alive()
-{
-    if(_hp > 0) return true;
-    else return false;
+bool Player::is_alive() {
+  if(_hp > 0) return true;
+  else return false;
 }
 
-void Player::increase_money(int amount)
-{
-   if(amount > 0) {
-      if(_money < max_money) {
-          if((_money + amount) <= max_money) {
-              _money += amount;
-          } else {
-            _money = max_money;
-          }
+
+void Player::increase_money(int amount) {
+  if(amount > 0) {
+    if(_money < max_money) {
+      if((_money + amount) <= max_money) {
+        _money += amount;
+      } else {
+        _money = max_money;
       }
-   }
+    }
+  }
 }
 
-void Player::decrease_money(int amount)
-{
+void Player::decrease_money(int amount) {
   if(amount > 0) {
     if(_money > 0) {
       if((unsigned) amount <= _money) {
@@ -117,10 +94,9 @@ void Player::decrease_money(int amount)
   }
 }
 
-void Player::set_money(int amount)
-{
-    if((unsigned) amount > max_money) amount = max_money;
-    _money = amount;
+void Player::set_money(int amount) {
+  if((unsigned) amount > max_money) amount = max_money;
+  _money = amount;
 }
 
 
@@ -132,8 +108,8 @@ int Player::xp_to_level() {
   }
 }
 
-void Player::increase_xp(int amount)
-{
+
+void Player::increase_xp(int amount) {
   bool check_for_level_up = true;
   
   if(_player_level < max_level) {
@@ -145,7 +121,9 @@ void Player::increase_xp(int amount)
             _player_level++;
             _leveled_up_at = SDL_GetTicks();
             
-            if(_player_level == max_level) _player_xp = this->xp_to_level();
+            if(_player_level == max_level) {
+              _player_xp = this->xp_to_level();
+            }
         } else {
           check_for_level_up = false;
         }
@@ -155,6 +133,7 @@ void Player::increase_xp(int amount)
     }
   }
 }
+
 
 bool Player::has_leveled_up() {
   if(_leveled_up_at > 0) {
@@ -168,7 +147,7 @@ bool Player::has_leveled_up() {
   }
 }
 
-void Player::render()
-{
-    _character->render();
+
+void Player::render() {
+  _character->render();
 }

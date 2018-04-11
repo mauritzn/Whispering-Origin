@@ -41,6 +41,8 @@ class Text {
     
     void update(string); // change the text value
     
+    int width();
+    int height();
     
     void align_center();
     void align_center_x();

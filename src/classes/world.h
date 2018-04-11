@@ -11,6 +11,7 @@
 #include "images.h"
 #include "fps.h"
 #include "player.h"
+#include "text.h"
 
 using namespace std;
 
@@ -56,7 +57,24 @@ struct grid_tile {
 typedef struct grid_tile TILE;
 typedef vector<TILE> GRID;
 typedef map<string, const TILE*> COLLISIONS;
-  
+
+
+const string dir_text[4] = {
+  "North",
+  "East",
+  "South",
+  "West"
+};
+
+const string type_text[5] = {
+  "Collider",
+  "Tree",
+  "Ore",
+  "Fish",
+  "Terrain"
+};
+
+
 
 class World {
   private:
@@ -65,6 +83,17 @@ class World {
     FPS* _fps; // used to get delta time
     Player* _player; // (will be) used to change the player sprite
 
+    
+    
+    
+    Text* _debug_neighbor_north;
+    Text* _debug_neighbor_south;
+    Text* _debug_neighbor_west;
+    Text* _debug_neighbor_east;
+    
+    
+    
+    
     PNG* _texture;
     float _x = 0;
     float _y = 0;

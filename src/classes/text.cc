@@ -84,6 +84,11 @@ void Text::update(string text) {
 
 
 
+int Text::width() { return _width; }
+int Text::height() { return _height; }
+
+
+
 void Text::align_center() {
   _x_alignment = 0;
   

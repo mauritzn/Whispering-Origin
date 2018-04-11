@@ -20,58 +20,54 @@ enum player_direction {
   EAST = 192
 };
 
-class Player
-{
-    private:
-        Window* _win;
-        Renderer* _ren;
+class Player {
+  private:
+    Window* _win;
+    Renderer* _ren;
 
-        PNG* _character;
+    PNG* _character;
     
-        int _hp = 10;
-        uint32_t _money = 10;
-        int _acc = 7;   // Player Accuracy
-        
+    int _hp = 10;
+    uint32_t _money = 10;
+    int _acc = 7;   // Player Accuracy
+    
 
-        uint32_t _leveled_up_at = 0;
-        int _player_level = 1;
-        int _player_xp = 0;
-        vector<int> _xp_rates;
+    uint32_t _leveled_up_at = 0;
+    int _player_level = 1;
+    int _player_xp = 0;
+    vector<int> _xp_rates;
 
-    public:
-        Player(Window&, Renderer&);
-        
-        int get_x();
-        int get_y();
-        
-        void set_x(int);
-        void set_y(int);
-        
-        int get_row();
-        int get_col();
-        
-        
-        void set_direction(player_direction);
-        
-        int health();
-        uint32_t money();
-        int level();
-        int xp();
 
-        void heal(int);
-        int deal_damage();
-        void take_damage(int);
-        bool is_alive();
+  public:
+    Player(Window&, Renderer&);
+    
+    int get_x();
+    int get_y();
+    
+    void set_x(int);
+    void set_y(int);
+    
+    
+    void set_direction(player_direction);
+    
+    int health();
+    uint32_t money();
+    int level();
+    int xp();
 
-        void increase_money(int);
-        void decrease_money(int);
-        void set_money(int);
+    void heal(int);
+    void damage(int);
+    bool is_alive();
 
-        int xp_to_level();
-        void increase_xp(int);
-        bool has_leveled_up();
+    void increase_money(int);
+    void decrease_money(int);
+    void set_money(int);
 
-        void render();
+    int xp_to_level();
+    void increase_xp(int);
+    bool has_leveled_up();
+
+    void render();
 };
 
 #endif

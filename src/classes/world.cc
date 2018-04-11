@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 
 #include <iostream>
 #include <cmath>
@@ -14,6 +15,7 @@
 #include "../config.h"
 #include "fps.h"
 #include "player.h"
+#include "text.h"
 
 using namespace std;
 
@@ -25,6 +27,30 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
   _player = &player;
 
   _texture = new PNG(*_win, *_ren, world_texture_path, 0, 0);
+  
+  
+  
+  
+  _debug_neighbor_north = new Text(*_win, *_ren, main_font_16, color_white, "NORTH", 0, 0);
+  _debug_neighbor_south = new Text(*_win, *_ren, main_font_16, color_white, "SOUTH", 0, 0);
+  _debug_neighbor_west = new Text(*_win, *_ren, main_font_16, color_white, "WEST", 0, 0);
+  _debug_neighbor_east = new Text(*_win, *_ren, main_font_16, color_white, "EAST", 0, 0);
+  
+  
+  _debug_neighbor_north->align_center();
+  _debug_neighbor_north->set_y((_debug_neighbor_north->get_y() - 40));
+  
+  _debug_neighbor_south->align_center();
+  _debug_neighbor_south->set_y((_debug_neighbor_south->get_y() + 50));
+  
+  _debug_neighbor_west->align_center_y();
+  _debug_neighbor_west->align_right();
+  _debug_neighbor_west->set_x(((window_width / 2) - (_debug_neighbor_west->width() / 2)) - 45);
+  
+  _debug_neighbor_east->align_center_y();
+  _debug_neighbor_east->set_x(((window_width / 2) - (_debug_neighbor_east->width() / 2)) + 45);
+  
+  
   
   
   string line;
@@ -83,7 +109,7 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
       int tree_y = (value.row * _grid_size) - (tree_grid_size - _grid_size);
       
       /*cout << "X: " << tree_x << ", Y: " << tree_y << " || "
-          << value.row << "x" << value.col << endl;*/
+          << combine_row_and_col(value.row, value.col) << endl;*/
       
       
       _to_render.push_back(new PNG(*_win, *_ren, tree_image_path, tree_x, tree_y));
@@ -95,6 +121,19 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
       
       _to_render.back()->set_image_x(UNCUT);
       _to_render.back()->set_image_y(OAK);
+    } else if(value.type == ORE) {
+      int ore_x = (value.col * _grid_size) - (ore_grid_size / 2) + (_grid_size / 2);
+      int ore_y = (value.row * _grid_size) - (ore_grid_size - _grid_size);
+      
+      _to_render.push_back(new PNG(*_win, *_ren, ore_image_path, ore_x, ore_y));
+      
+      _to_render.back()->set_container_width(ore_grid_size);
+      _to_render.back()->set_container_height(ore_grid_size);
+      _to_render.back()->set_image_width(ore_grid_size);
+      _to_render.back()->set_image_height(ore_grid_size);
+      
+      _to_render.back()->set_image_x(0);
+      _to_render.back()->set_image_y(0);
     } else {
       //if(value.type != COLLIDER) _to_render.push_back(new PNG(*_win, *_ren, "images/debug_tile.png", value.x_start, value.y_start));
     }
@@ -153,16 +192,12 @@ int World::get_player_col() {
 }
 
 string World::get_player_row_and_col() {
-  stringstream row_and_col;
-  row_and_col << this->get_player_row() << "x" << this->get_player_col();
-  
-  return row_and_col.str();
+  return combine_row_and_col(this->get_player_row(), this->get_player_col());
 }
 
 
 
 void World::add_to_grid(const string& string_to_parse, const tile_type& type) {
-  stringstream row_and_col_string;
   vector<string> exploded = explode_string(string_to_parse, 'x');
   
   _items.push_back(*(new TILE()));
@@ -187,9 +222,7 @@ void World::add_to_grid(const string& string_to_parse, const tile_type& type) {
   
   
   _items.back().type = type;
-  
-  row_and_col_string << _items.back().row << "x" << _items.back().col;
-  _items.back().row_and_col = row_and_col_string.str();
+  _items.back().row_and_col = combine_row_and_col(_items.back().row, _items.back().col);
 }
 
 
@@ -204,15 +237,10 @@ void World::update_neighbors() {
   bool neighbor_found = false;
   neighbor_direction n_dir = N_SOUTH;
   
-  stringstream row_and_col_north;
-  stringstream row_and_col_south;
-  stringstream row_and_col_west;
-  stringstream row_and_col_east;
-  
-  row_and_col_north << (_current_tile.row - 1) << "x" << _current_tile.col;
-  row_and_col_south << (_current_tile.row + 1) << "x" << _current_tile.col;
-  row_and_col_west << _current_tile.row << "x" << (_current_tile.col - 1);
-  row_and_col_east << _current_tile.row << "x" << (_current_tile.col + 1);
+  string row_and_col_north = combine_row_and_col((_current_tile.row - 1), _current_tile.col);
+  string row_and_col_south = combine_row_and_col((_current_tile.row + 1), _current_tile.col);
+  string row_and_col_west = combine_row_and_col(_current_tile.row, (_current_tile.col - 1));
+  string row_and_col_east = combine_row_and_col(_current_tile.row, (_current_tile.col + 1));
   
   
   // reset neighbors
@@ -234,16 +262,16 @@ void World::update_neighbors() {
   
   for(TILE const& value: _items) {
     if(value.type != TERRAIN) {
-      if(value.row_and_col == row_and_col_north.str()) {
+      if(value.row_and_col == row_and_col_north) {
         n_dir = N_NORTH;
         neighbor_found = true;
-      } else if(value.row_and_col == row_and_col_south.str()) {
+      } else if(value.row_and_col == row_and_col_south) {
         n_dir = N_SOUTH;
         neighbor_found = true;
-      } else if(value.row_and_col == row_and_col_west.str()) {
+      } else if(value.row_and_col == row_and_col_west) {
         n_dir = N_WEST;
         neighbor_found = true;
-      } else if(value.row_and_col == row_and_col_east.str()) {
+      } else if(value.row_and_col == row_and_col_east) {
         n_dir = N_EAST;
         neighbor_found = true;
       } else {
@@ -369,28 +397,19 @@ void World::update() {
     
     /*
     if(debug_mode) {
-      string dir_text[4] = {
-        "North",
-        "East",
-        "South",
-        "West"
-      };
-      
-      string type_text[5] = {
-        "Collider",
-        "Tree",
-        "Ore",
-        "Fish",
-        "Terrain"
-      };
-      
       cout << "PLAYER moved to new tile (" << _current_tile.row_and_col << ")" << endl;
       for(int i = 0; i < 4; i++) {
         cout << " > Neighbor " << dir_text[i] << ": " << _neighbor_tiles[i]->row_and_col << " => " << type_text[(_neighbor_tiles[i]->type)]
              << " || x: " << _neighbor_tiles[i]->x_start << ", y: " << _neighbor_tiles[i]->y_start << endl;
       }
       cout << endl;
-    }*/
+    }
+    */
+    
+    _debug_neighbor_north->update(type_text[(_neighbor_tiles[0]->type)]);
+    _debug_neighbor_south->update(type_text[(_neighbor_tiles[2]->type)]);
+    _debug_neighbor_west->update(type_text[(_neighbor_tiles[3]->type)]);
+    _debug_neighbor_east->update(type_text[(_neighbor_tiles[1]->type)]);
   }
 }
 
@@ -412,5 +431,13 @@ void World::render() {
         value->render();
       }
     }
+  }
+
+  
+  if(debug_mode) {
+    _debug_neighbor_north->render();
+    _debug_neighbor_south->render();
+    _debug_neighbor_west->render();
+    _debug_neighbor_east->render();
   }
 }
