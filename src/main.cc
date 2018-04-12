@@ -108,7 +108,7 @@ int main() {
 
   
   
-  PNG UI_debug(win, ren, "images/UI_2.png", 0, 0);
+  PNG UI_debug(win, ren, "images/UI_3.png", 0, 0);
   
   
   
