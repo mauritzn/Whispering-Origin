@@ -195,6 +195,8 @@ void Item::update() {
       _item_image->set_image_x(0);
       _resources_left = _resources;
       _progress_text->update((format_number(_resources_left) + "/" + format_number(_resources)));
+    } else {
+      _progress_text->update(format_number(((5000 - (_fps->ticks() - _depleted_at)) / 1000) + 1) + "s");
     }
   }
 }

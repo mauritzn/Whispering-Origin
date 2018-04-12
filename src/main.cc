@@ -108,7 +108,7 @@ int main() {
 
   
   
-  PNG UI_debug(win, ren, "images/UI_debug.png", 0, 0);
+  PNG UI_debug(win, ren, "images/UI_2.png", 0, 0);
   
   
   
@@ -180,7 +180,7 @@ int main() {
     debug_pos.update("Position (ROW x COL): " + test_world.get_player_row_and_col());
 
 
-    //UI_debug.render();
+    UI_debug.render();
     
     if(debug_mode) {
       debug_frame_count.render();
