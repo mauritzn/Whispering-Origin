@@ -94,17 +94,17 @@ int main() {
 
   
   map<string, Text*> debug_info {
-    { "ticks", new Text(win, ren, main_font_20, color_white, "Ticks: 0", 25, 1) },
-    { "frames", new Text(win, ren, main_font_20, color_white, "Frames: 0", 25, 2) },
-    { "fps", new Text(win, ren, main_font_20, color_white, "FPS: 0", 25, 3) },
-    { "delta_time", new Text(win, ren, main_font_20, color_white, "Delta Time: 0", 25, 4) },
+    { "ticks", new Text(win, ren, main_font_20, color_white, "Ticks: 0", 0, 1) },
+    { "frames", new Text(win, ren, main_font_20, color_white, "Frames: 0", 0, 2) },
+    { "fps", new Text(win, ren, main_font_20, color_white, "FPS: 0", 0, 3) },
+    { "delta_time", new Text(win, ren, main_font_20, color_white, "Delta Time: 0", 0, 4) },
     
-    { "player_hp", new Text(win, ren, main_font_20, color_white, "Health: 0", 25, 6) },
-    { "player_lvl", new Text(win, ren, main_font_20, color_white, "Level: 0", 25, 7) },
-    { "player_xp", new Text(win, ren, main_font_20, color_white, "XP: 0", 25, 8) },
-    { "player_money", new Text(win, ren, main_font_20, color_white, "Money: 0", 25, 9) },
-    { "player_xy", new Text(win, ren, main_font_20, color_white, "X: 0, Y: 0", 25, 10) },
-    { "player_pos", new Text(win, ren, main_font_20, color_white, "Position (ROW x COL): 0x0", 25, 11) }
+    { "player_hp", new Text(win, ren, main_font_20, color_white, "Health: 0", 0, 6) },
+    { "player_lvl", new Text(win, ren, main_font_20, color_white, "Level: 0", 0, 7) },
+    { "player_xp", new Text(win, ren, main_font_20, color_white, "XP: 0", 0, 8) },
+    { "player_money", new Text(win, ren, main_font_20, color_white, "Money: 0", 0, 9) },
+    { "player_xy", new Text(win, ren, main_font_20, color_white, "X: 0, Y: 0", 0, 10) },
+    { "player_pos", new Text(win, ren, main_font_20, color_white, "Position (ROW x COL): 0x0", 0, 11) }
   };
   
   
@@ -114,6 +114,8 @@ int main() {
       first_debug_text = value.second;
       first_debug_text->set_y(debug_info_y_start);
     }
+    
+    value.second->set_x(debug_info_x_start);
   }
   
   for(auto const& value : debug_info) {
