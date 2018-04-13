@@ -50,6 +50,9 @@ extern const char* icon_path; // define where the icon image is stored (icon wil
 
 extern bool debug_mode; // define if debug mode should be on by default
 
+extern const int debug_info_y_start;
+extern const int debug_info_y_padding;
+
 
 // Fonts
 extern const char* main_font_path; // define where the main font is stored [TTF]

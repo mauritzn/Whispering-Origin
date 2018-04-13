@@ -21,6 +21,9 @@ const char* icon_path = "images/icon.png";
 
 bool debug_mode = true;
 
+const int debug_info_y_start = 20;
+const int debug_info_y_padding = 2;
+
 
 // Fonts
 const char* main_font_path = "fonts/Ubuntu_C.ttf";

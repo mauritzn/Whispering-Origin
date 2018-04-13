@@ -25,6 +25,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
 #include <cmath>
 
 #include "config.h"
@@ -89,22 +90,39 @@ int main() {
   Text hello_text(win, ren, main_font_20, color_white, "<text will be updated ;) >", 0, 0);
   hello_text.align_center_x();
   hello_text.align_bottom();
-  hello_text.set_y((hello_text.get_y() - 25));
+  hello_text.set_y((hello_text.get_y() - 60));
 
   
-  Text debug_ticks(win, ren, main_font_20, color_white, "Ticks: 0", 25, 25);
-  Text debug_frame_count(win, ren, main_font_20, color_white, "Frames: 0", 25, 50);
-  Text debug_fps(win, ren, main_font_20, color_white, "FPS: 0", 25, 75);
-  Text debug_delta_time(win, ren, main_font_20, color_white, "Delta Time: 0", 25, 100);
-
+  map<string, Text*> debug_info {
+    { "ticks", new Text(win, ren, main_font_20, color_white, "Ticks: 0", 25, 1) },
+    { "frames", new Text(win, ren, main_font_20, color_white, "Frames: 0", 25, 2) },
+    { "fps", new Text(win, ren, main_font_20, color_white, "FPS: 0", 25, 3) },
+    { "delta_time", new Text(win, ren, main_font_20, color_white, "Delta Time: 0", 25, 4) },
+    
+    { "player_hp", new Text(win, ren, main_font_20, color_white, "Health: 0", 25, 6) },
+    { "player_lvl", new Text(win, ren, main_font_20, color_white, "Level: 0", 25, 7) },
+    { "player_xp", new Text(win, ren, main_font_20, color_white, "XP: 0", 25, 8) },
+    { "player_money", new Text(win, ren, main_font_20, color_white, "Money: 0", 25, 9) },
+    { "player_xy", new Text(win, ren, main_font_20, color_white, "X: 0, Y: 0", 25, 10) },
+    { "player_pos", new Text(win, ren, main_font_20, color_white, "Position (ROW x COL): 0x0", 25, 11) }
+  };
   
-  // Character-specific debug
-  Text debug_health(win, ren, main_font_20, color_white, "Health: ", 25, 150);
-  Text debug_level(win, ren, main_font_20, color_white, "Level: ", 25, 175);
-  Text debug_exp(win, ren, main_font_20, color_white, "XP: ", 25, 200);
-  Text debug_money(win, ren, main_font_20, color_white, "Money: ", 25, 225);
-  Text debug_xy(win, ren, main_font_20, color_white, "X: , Y: ", 25, 250);
-  Text debug_pos(win, ren, main_font_20, color_white, "Position (ROW x COL): ", 25, 275);
+  
+  Text* first_debug_text;
+  for(auto const& value : debug_info) {
+    if(value.second->get_y() == 1) {
+      first_debug_text = value.second;
+      first_debug_text->set_y(debug_info_y_start);
+    }
+  }
+  
+  for(auto const& value : debug_info) {
+    int pos = value.second->get_y();
+    
+    if(pos != debug_info_y_start) {
+      value.second->set_y((first_debug_text->get_y() + (value.second->height() * (pos - 1))) + (debug_info_y_padding * (pos - 1)));
+    }
+  }
 
   
   
@@ -161,39 +179,30 @@ int main() {
     
     
     // BEGIN, DEBUG TEXT UPDATING & RENDERING
-    debug_frame_count.update("Frames: " + format_number(fps.frame_count()));
-    debug_ticks.update("Ticks: " + format_number(fps.ticks()));
+    debug_info["frames"]->update("Frames: " + format_number(fps.frame_count()));
+    debug_info["ticks"]->update("Ticks: " + format_number(fps.ticks()));
     
     if((fps.ticks() % 500) < 250) {
-      debug_fps.update("FPS: " + to_fixed(fps.get()));
+      debug_info["fps"]->update("FPS: " + to_fixed(fps.get()));
     }
     
-    debug_delta_time.update("Delta Time: " + to_string(fps.delta_time()));
+    debug_info["delta_time"]->update("Delta Time: " + to_string(fps.delta_time()));
     
     // Char-specific text-update
-    debug_health.update("Health: " + format_number(test_player.health()));
-    debug_exp.update("XP: " + format_number(test_player.xp()) + "/" + format_number(test_player.xp_to_level()));
-    debug_level.update("Level: " + format_number(test_player.level()) + "/" 
-            + to_string(max_level));
-    debug_money.update("Money: " + format_number(test_player.money()));
-    debug_xy.update("X: " + to_string(test_world.get_player_x()) + ", Y: " + to_string(test_world.get_player_y()));
-    debug_pos.update("Position (ROW x COL): " + test_world.get_player_row_and_col());
+    debug_info["player_hp"]->update("Health: " + format_number(test_player.health()));
+    debug_info["player_xp"]->update("XP: " + format_number(test_player.xp()) + "/" + format_number(test_player.xp_to_level()));
+    debug_info["player_lvl"]->update("Level: " + format_number(test_player.level()) + "/" + to_string(max_level));
+    debug_info["player_money"]->update("Money: " + format_number(test_player.money()));
+    debug_info["player_xy"]->update("X: " + to_string(test_world.get_player_x()) + ", Y: " + to_string(test_world.get_player_y()));
+    debug_info["player_pos"]->update("Position (ROW x COL): " + test_world.get_player_row_and_col());
 
 
     UI_debug.render();
     
     if(debug_mode) {
-      debug_frame_count.render();
-      debug_ticks.render();
-      debug_fps.render();
-      debug_delta_time.render();
-
-      debug_health.render();
-      debug_exp.render();
-      debug_level.render();
-      debug_money.render();
-      debug_xy.render();
-      debug_pos.render();
+      for(auto const& value : debug_info) {
+        value.second->render();
+      }
     }
     // END, DEBUG TEXT UPDATING & RENDERING
 
