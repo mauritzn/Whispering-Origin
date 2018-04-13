@@ -82,6 +82,7 @@ class Item {
     
     
     void action();
+    bool action_on_cooldown();
     void show_progress();
     
     void update();

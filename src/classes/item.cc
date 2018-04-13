@@ -178,6 +178,15 @@ void Item::action() {
   }
 }
 
+bool Item::action_on_cooldown() {
+  if((_fps->ticks() - _last_action_at) >= 1000) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
+
 void Item::show_progress() {
   _progress_text->set_x(_item_image->get_x() + ((_item_image->width() / 2) - (_progress_text->width() / 2)));
   _progress_text->set_y(_item_image->get_y());

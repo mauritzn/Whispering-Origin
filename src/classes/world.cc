@@ -358,33 +358,29 @@ void World::update() {
   
   
   
-  if(_action_key_pressed) {
-    if(_player->get_direction() == NORTH) {
-      if(_neighbor_tiles[N_NORTH] != NULL) {
-        if(_neighbor_tiles[N_NORTH]->get_type() != TERRAIN && _neighbor_tiles[N_NORTH]->get_type() != COLLIDER) {
-          _debug_neighbor[N_NORTH]->update(type_text[(_neighbor_tiles[N_NORTH]->get_type())] + " [ACTION]");
-          _neighbor_tiles[N_NORTH]->action();
+  player_direction to_check = NORTH;
+    
+  for(int i = 0; i < 4; i++) {
+    if(i == N_NORTH) to_check = NORTH;
+    else if(i == N_SOUTH) to_check = SOUTH;
+    else if(i == N_WEST) to_check = WEST;
+    else if(i == N_EAST) to_check = EAST;
+    
+    
+    if(_player->get_direction() == to_check) {
+      if(_neighbor_tiles[i] != NULL) {
+        if(_action_key_pressed) {
+          if(_neighbor_tiles[i]->get_type() != TERRAIN && _neighbor_tiles[i]->get_type() != COLLIDER) {
+            _neighbor_tiles[i]->action();
+          }
         }
-      }
-    } else if(_player->get_direction() == SOUTH) {
-      if(_neighbor_tiles[N_SOUTH] != NULL) {
-        if(_neighbor_tiles[N_SOUTH]->get_type() != TERRAIN && _neighbor_tiles[N_SOUTH]->get_type() != COLLIDER) {
-          _debug_neighbor[N_SOUTH]->update(type_text[(_neighbor_tiles[N_SOUTH]->get_type())] + " [ACTION]");
-          _neighbor_tiles[N_SOUTH]->action();
-        }
-      }
-    } else if(_player->get_direction() == WEST) {
-      if(_neighbor_tiles[N_WEST] != NULL) {
-        if(_neighbor_tiles[N_WEST]->get_type() != TERRAIN && _neighbor_tiles[N_WEST]->get_type() != COLLIDER) {
-          _debug_neighbor[N_WEST]->update(type_text[(_neighbor_tiles[N_WEST]->get_type())] + " [ACTION]");
-          _neighbor_tiles[N_WEST]->action();
-        }
-      }
-    } else if(_player->get_direction() == EAST) {
-      if(_neighbor_tiles[N_EAST] != NULL) {
-        if(_neighbor_tiles[N_EAST]->get_type() != TERRAIN && _neighbor_tiles[N_EAST]->get_type() != COLLIDER) {
-          _debug_neighbor[N_EAST]->update(type_text[(_neighbor_tiles[N_EAST]->get_type())] + " [ACTION]");
-          _neighbor_tiles[N_EAST]->action();
+        
+        if(debug_mode) {
+          if(_neighbor_tiles[i]->action_on_cooldown()) {
+            _debug_neighbor[i]->update(type_text[(_neighbor_tiles[i]->get_type())] + " [ACTION]");
+          } else {
+            _debug_neighbor[i]->update(type_text[(_neighbor_tiles[i]->get_type())]);
+          }
         }
       }
     }
