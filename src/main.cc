@@ -216,8 +216,9 @@ int main() {
         }
       }
       
-      int progress_to_level = constrain(test_player.xp() - last_xp_required_to_level, 0, test_player.xp_to_level());
-      progress_to_level = (((float) progress_to_level / (float) (test_player.xp_to_level() - last_xp_required_to_level)) * 100);
+      int player_xp = (test_player.xp() - last_xp_required_to_level);
+      int required_xp = (test_player.xp_to_level() - last_xp_required_to_level);
+      int progress_to_level = (((float) player_xp / (float) required_xp) * 100);
       
       player_level_bar.set_progress(progress_to_level);
     }
