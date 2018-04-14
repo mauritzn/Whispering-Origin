@@ -38,6 +38,7 @@
 #include "classes/fps.h"
 #include "classes/player.h"
 #include "classes/world.h"
+#include "classes/progress_bar.h"
 using namespace std;
 
 
@@ -132,6 +133,14 @@ int main() {
   
   
   
+  
+  
+  SDL_Color bar_color = { 21, 108, 153 };
+  Progress test_bar(win, ren, bar_color, 68, 17, 250, 250);
+  test_bar.set_progress(50);
+  
+  
+  
 
 
 
@@ -200,6 +209,7 @@ int main() {
 
 
     UI_debug.render();
+    test_bar.render();
     
     if(debug_mode) {
       for(auto const& value : debug_info) {
