@@ -10,6 +10,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <string>
+#include <vector>
 using namespace std;
 
 
@@ -54,10 +55,13 @@ extern const int debug_info_x_start;
 extern const int debug_info_y_start;
 extern const int debug_info_y_padding;
 
+extern vector<int> xp_rates;
+
 
 // Fonts
 extern const char* main_font_path; // define where the main font is stored [TTF]
 
+extern TTF_Font* main_font_14;
 extern TTF_Font* main_font_16;
 extern TTF_Font* main_font_18;
 extern TTF_Font* main_font_20;
@@ -95,7 +99,5 @@ extern const int max_level; // define how far the player can level
 extern const uint32_t max_money; // define how much money the player can have
 
 extern const int time_to_display_level_up_message; // define how long the level up message should be shown (in milliseconds)
-
-
 
 #endif

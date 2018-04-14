@@ -23,11 +23,6 @@ Player::Player(Window& win, Renderer& ren) {
   
   _character->align_center();
   _character->set_image_y(SOUTH);
-
-  
-  for(int i = 1; i < max_level; i++) {
-    _xp_rates.push_back(pow((i * 2), 3));
-  }
 }
 
 
@@ -106,9 +101,9 @@ void Player::set_money(int amount) {
 
 int Player::xp_to_level() {
   if(_player_level == max_level) {
-    return _xp_rates[_player_level - 2];
+    return xp_rates[_player_level - 2];
   } else {
-    return _xp_rates[_player_level - 1];
+    return xp_rates[_player_level - 1];
   }
 }
 

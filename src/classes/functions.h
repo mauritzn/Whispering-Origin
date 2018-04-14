@@ -27,5 +27,6 @@ extern string combine_row_and_col(int, int);
 //extern void add_tile_to_grid(const string&, const tile_type&, GRID&);
 
 extern bool init_SDL();
+extern void init_game();
 
 #endif

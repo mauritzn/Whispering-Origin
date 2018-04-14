@@ -92,6 +92,7 @@ string combine_row_and_col(int row, int col) {
 }*/
 
 
+
 bool init_SDL() {
   if(SDL_Init(SDL_INIT_VIDEO) != 0) {
     cout << "SDL_Init Error: " << SDL_GetError() << endl;
@@ -111,10 +112,18 @@ bool init_SDL() {
   
   
   // set the fonts
+  main_font_14 = TTF_OpenFont(main_font_path, 14);
   main_font_16 = TTF_OpenFont(main_font_path, 16);
   main_font_18 = TTF_OpenFont(main_font_path, 18);
   main_font_20 = TTF_OpenFont(main_font_path, 20);
   main_font_32 = TTF_OpenFont(main_font_path, 32);
   
   return true;
+}
+
+
+void init_game() {
+  for(int i = 1; i < max_level; i++) {
+    xp_rates.push_back(pow((i * 2), 3));
+  }
 }

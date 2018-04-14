@@ -56,6 +56,8 @@ int main() {
     cout << "Failed to init SDL!" << endl;
     return -1;
   }
+  
+  init_game();
 
   
   SDL_DisplayMode DM;
@@ -75,6 +77,9 @@ int main() {
   SDL_Surface* icon = IMG_Load(icon_path);
   SDL_SetWindowIcon(win.get(), icon);
 
+  // used for player level & xp UI
+  int last_player_xp = 0;
+  int last_xp_required_to_level = 0;
   
 
   //BMP test_char(win, ren, "images/test_char_2.bmp", 0, 0);
@@ -86,8 +91,17 @@ int main() {
   Text level_up(win, ren, main_font_32, color_white, "Level up! You are now level ", 0, 0);
   level_up.align_center();
   level_up.set_y((level_up.get_y() - 55));
-
-
+  
+  
+  map<string, Text*> UI_text {
+    { "player_level", new Text(win, ren, main_font_16, color_white, "Level 1", 30, 25) },
+    { "player_xp", new Text(win, ren, main_font_14, color_white, ("0/" + format_number(xp_rates[0]) + " xp"), 0, 65) }
+  };
+  
+  UI_text["player_xp"]->align_right();
+  UI_text["player_xp"]->set_x(90);
+  
+  
   Text hello_text(win, ren, main_font_20, color_white, "<text will be updated ;) >", 0, 0);
   hello_text.align_center_x();
   hello_text.align_bottom();
@@ -135,9 +149,8 @@ int main() {
   
   
   
-  SDL_Color bar_color = { 21, 108, 153 };
-  Progress test_bar(win, ren, bar_color, 68, 17, 250, 250);
-  test_bar.set_progress(50);
+  SDL_Color bar_color = { 130, 160, 0 };
+  Progress player_level_bar(win, ren, bar_color, 102, 12, 25, 50);
   
   
   
@@ -189,6 +202,38 @@ int main() {
     
     
     
+    // BEGIN, PLAYER LEVEL & XP UI
+    if(test_player.xp() > last_player_xp) {
+      UI_text["player_xp"]->update(format_number(test_player.xp()) + "/" + format_number(test_player.xp_to_level()) + " xp");
+      
+      if(test_player.level() > 1) {
+        if(test_player.has_leveled_up()) {
+          if(xp_rates[test_player.level() - 2] > last_xp_required_to_level) {
+            last_xp_required_to_level = xp_rates[test_player.level() - 2];
+          }
+          
+          UI_text["player_level"]->update("Level " + to_string(test_player.level()));
+        }
+      }
+      
+      int progress_to_level = constrain(test_player.xp() - last_xp_required_to_level, 0, test_player.xp_to_level());
+      progress_to_level = (((float) progress_to_level / (float) (test_player.xp_to_level() - last_xp_required_to_level)) * 100);
+      
+      player_level_bar.set_progress(progress_to_level);
+    }
+    
+    player_level_bar.render();
+    // END, PLAYER LEVEL & XP UI
+    
+    
+    
+    // render UI text
+    for(auto const& value : UI_text) {
+      value.second->render();
+    }
+    
+    
+    
     // BEGIN, DEBUG TEXT UPDATING & RENDERING
     debug_info["frames"]->update("Frames: " + format_number(fps.frame_count()));
     debug_info["ticks"]->update("Ticks: " + format_number(fps.ticks()));
@@ -209,7 +254,6 @@ int main() {
 
 
     UI_debug.render();
-    test_bar.render();
     
     if(debug_mode) {
       for(auto const& value : debug_info) {
@@ -224,6 +268,7 @@ int main() {
   }
 
 
+  TTF_CloseFont(main_font_14);
   TTF_CloseFont(main_font_16);
   TTF_CloseFont(main_font_18);
   TTF_CloseFont(main_font_20);

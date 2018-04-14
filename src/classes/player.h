@@ -35,7 +35,6 @@ class Player {
     uint32_t _leveled_up_at = 0;
     int _player_level = 1;
     int _player_xp = 0;
-    vector<int> _xp_rates;
 
 
   public:
