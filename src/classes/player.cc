@@ -7,6 +7,7 @@
 
 #include "player.h"
 #include "images.h"
+#include "functions.h"
 #include "../config.h"
 
 using namespace std;
@@ -23,6 +24,12 @@ Player::Player(Window& win, Renderer& ren) {
   
   _character->align_center();
   _character->set_image_y(SOUTH);
+  
+  _hp = _max_hp;
+  
+  UI_active_slot = new PNG(*_win, *_ren, "images/active_slot.png", 0, 0);
+  UI_active_slot->align_bottom();
+  UI_active_slot->set_x(_inv_slots[0]);
 }
 
 
@@ -42,6 +49,7 @@ void Player::set_direction(player_direction new_direction) {
 }
 
 
+int Player::max_health() { return _max_hp; }
 int Player::health() { return _hp; }
 uint32_t Player::money() { return _money; }
 
@@ -49,7 +57,10 @@ int Player::level() { return _player_level; }
 int Player::xp() { return _player_xp; }
 
 
-void Player::heal(int amount) { _hp += amount; }
+void Player::heal(int amount) {
+  _hp += amount;
+  if(_hp > _max_hp) _hp = _max_hp;
+}
 
 void Player::damage(int amount) {
   if(amount > 0) {
@@ -66,6 +77,29 @@ void Player::damage(int amount) {
 bool Player::is_alive() {
   if(_hp > 0) return true;
   else return false;
+}
+
+
+
+int Player::current_inventory_slot() {
+  return _current_inventory_slot;
+}
+
+void Player::set_inventory_slot(int new_slot) {
+  _current_inventory_slot = constrain(new_slot, 0, (_inv_slots.size() - 1));
+  UI_active_slot->set_x(_inv_slots[_current_inventory_slot]);
+}
+
+void Player::prev_inventory_slot() {
+  _current_inventory_slot--;
+  if(_current_inventory_slot < 0) _current_inventory_slot = (_inv_slots.size() - 1);
+  UI_active_slot->set_x(_inv_slots[_current_inventory_slot]);
+}
+
+void Player::next_inventory_slot() {
+  _current_inventory_slot++;
+  if((unsigned) _current_inventory_slot >= _inv_slots.size()) _current_inventory_slot = 0;
+  UI_active_slot->set_x(_inv_slots[_current_inventory_slot]);
 }
 
 
@@ -123,6 +157,9 @@ void Player::increase_xp(int amount) {
             if(_player_level == max_level) {
               _player_xp = this->xp_to_level();
             }
+            
+            _max_hp += 5;
+            _hp = _max_hp;
         } else {
           check_for_level_up = false;
         }
@@ -146,6 +183,10 @@ bool Player::has_leveled_up() {
   }
 }
 
+
+void Player::render_inventory() {
+  UI_active_slot->render();
+}
 
 void Player::render() {
   _character->render();

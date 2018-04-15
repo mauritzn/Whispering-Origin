@@ -165,7 +165,7 @@ void update_debug_info(map<string, Text*>& info, FPS& fps, Player& player, World
   info["delta_time"]->update("Delta Time: " + to_string(fps.delta_time()));
   
   // Char-specific text-update
-  info["player_hp"]->update("Health: " + format_number(player.health()));
+  info["player_hp"]->update("Health: " + format_number(player.health()) + "/" + format_number(player.max_health()));
   info["player_xp"]->update("XP: " + format_number(player.xp()) + "/" + format_number(player.xp_to_level()));
   info["player_lvl"]->update("Level: " + format_number(player.level()) + "/" + to_string(max_level));
   info["player_money"]->update("Money: " + format_number(player.money()));

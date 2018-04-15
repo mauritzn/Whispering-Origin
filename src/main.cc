@@ -42,29 +42,6 @@
 using namespace std;
 
 
-
-enum inventory_slots {
-  TOOL_1 = 300,
-  TOOL_2 = 342,
-  TOOL_3 = 384,
-  TOOL_4 = 426,
-  
-  SLOT_1 = 475,
-  SLOT_2 = 517,
-  SLOT_3 = 559,
-  SLOT_4 = 601,
-  SLOT_5 = 643,
-  SLOT_6 = 685,
-  SLOT_7 = 727,
-  SLOT_8 = 769,
-  SLOT_9 = 811,
-  SLOT_10 = 853,
-  SLOT_11 = 895,
-  SLOT_12 = 937
-};
-
-
-
 int main() {
   FPS fps;
   SDL_Event event;
@@ -129,7 +106,7 @@ int main() {
   
   
   
-  Text hello_text(win, ren, main_font_20, color_white, "Use WASD to move, F4 to toggle debug menu, F5 to give 5 xp, Q / E to switch inventory slots", 0, 0);
+  Text hello_text(win, ren, main_font_20, color_white, "Use WASD to move, F1 to toggle debug menu, F5 to give 5 xp, Q / E to switch inventory slots", 0, 0);
   hello_text.align_center_x();
   hello_text.align_bottom();
   hello_text.set_y((hello_text.get_y() - 60));
@@ -142,7 +119,7 @@ int main() {
     { "fps", new Text(win, ren, main_font_20, color_white, "FPS: 0", 0, 3) },
     { "delta_time", new Text(win, ren, main_font_20, color_white, "Delta Time: 0", 0, 4) },
     
-    { "player_hp", new Text(win, ren, main_font_20, color_white, "Health: 0", 0, 6) },
+    { "player_hp", new Text(win, ren, main_font_20, color_white, "Health: 0/0", 0, 6) },
     { "player_lvl", new Text(win, ren, main_font_20, color_white, "Level: 0", 0, 7) },
     { "player_xp", new Text(win, ren, main_font_20, color_white, "XP: 0", 0, 8) },
     { "player_money", new Text(win, ren, main_font_20, color_white, "Money: 0", 0, 9) },
@@ -154,14 +131,7 @@ int main() {
   
   
   
-  PNG UI_active_slot(win, ren, "images/active_slot.png", 0, 0);
-  UI_active_slot.align_bottom();
-  
-  int current_slot = 0;
-  vector<inventory_slots> inv_slots = {
-    TOOL_1, TOOL_2, TOOL_3, TOOL_4,
-    SLOT_1, SLOT_2, SLOT_3, SLOT_4, SLOT_5, SLOT_6, SLOT_7, SLOT_8, SLOT_9, SLOT_10, SLOT_11, SLOT_12
-  };
+
   
   
   
@@ -173,13 +143,11 @@ int main() {
       if(event.type == SDL_QUIT) game_running = false;
       else if(event.type == SDL_KEYDOWN) {
         if(event.key.keysym.sym == SDLK_F5) player.increase_xp(5);
-        else if(event.key.keysym.sym == SDLK_F4) debug_mode = !debug_mode;
+        else if(event.key.keysym.sym == SDLK_F1) debug_mode = !debug_mode;
         else if(event.key.keysym.sym == SDLK_q) {
-          current_slot--;
-          if(current_slot < 0) current_slot = (inv_slots.size() - 1);
+          player.prev_inventory_slot();
         } else if(event.key.keysym.sym == SDLK_e) {
-          current_slot++;
-          if((unsigned) current_slot >= inv_slots.size()) current_slot = 0;
+          player.next_inventory_slot();
         } else {
           world.key_pressed(event.key.keysym.sym);
         }
@@ -234,6 +202,7 @@ int main() {
       int player_xp = (player.xp() - last_xp_required_to_level);
       int required_xp = (player.xp_to_level() - last_xp_required_to_level);
       int progress_to_level = (((float) player_xp / (float) required_xp) * 100);
+      if(player.level() == max_level) progress_to_level = 100;
       
       player_level_bar.set_progress(progress_to_level);
     }
@@ -251,10 +220,7 @@ int main() {
     }
     
     
-    
-    UI_active_slot.set_x(inv_slots[current_slot]);
-    UI_active_slot.render();
-    
+    player.render_inventory();
     
     
     update_debug_info(debug_info, fps, player, world);
