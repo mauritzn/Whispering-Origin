@@ -11,6 +11,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <string>
 #include <vector>
+#include <map>
 using namespace std;
 
 
@@ -65,12 +66,7 @@ extern const string active_slot_image_path;
 
 // Fonts
 extern const char* main_font_path; // define where the main font is stored [TTF]
-
-extern TTF_Font* main_font_14;
-extern TTF_Font* main_font_16;
-extern TTF_Font* main_font_18;
-extern TTF_Font* main_font_20;
-extern TTF_Font* main_font_32;
+extern map<string, TTF_Font*> fonts;
 
 
 // Colors

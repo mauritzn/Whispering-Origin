@@ -51,7 +51,7 @@ Item::Item(Window& win, Renderer& ren, FPS& fps, Player& player, const tile_type
   //else if(_type == FISH) _item_grid_size = fish_grid_size;
   
   
-  _progress_text = new Text(*_win, *_ren, main_font_18, color_white, (format_number(_resources_left) + "/" + format_number(_resources)), 0, 0);
+  _progress_text = new Text(*_win, *_ren, fonts["main_18"], color_white, (format_number(_resources_left) + "/" + format_number(_resources)), 0, 0);
   _progress_text->align_center_y();
   //if(item_image_path != "") cout << "Item Image Path: " << item_image_path << endl;
   

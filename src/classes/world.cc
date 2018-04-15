@@ -32,7 +32,7 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
   
   
   for(int i = 0; i < 4; i++) {
-  _debug_neighbor.push_back(new Text(*_win, *_ren, main_font_16, color_white, dir_text[i], 0, 0));
+  _debug_neighbor.push_back(new Text(*_win, *_ren, fonts["main_16"], color_white, dir_text[i], 0, 0));
   }
   
   _debug_neighbor[N_NORTH]->align_center();

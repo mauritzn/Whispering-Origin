@@ -115,11 +115,12 @@ bool init_SDL() {
   
   
   // set the fonts
-  main_font_14 = TTF_OpenFont(main_font_path, 14);
-  main_font_16 = TTF_OpenFont(main_font_path, 16);
-  main_font_18 = TTF_OpenFont(main_font_path, 18);
-  main_font_20 = TTF_OpenFont(main_font_path, 20);
-  main_font_32 = TTF_OpenFont(main_font_path, 32);
+  fonts["main_12"] = TTF_OpenFont(main_font_path, 12);
+  fonts["main_14"] = TTF_OpenFont(main_font_path, 14);
+  fonts["main_16"] = TTF_OpenFont(main_font_path, 16);
+  fonts["main_18"] = TTF_OpenFont(main_font_path, 18);
+  fonts["main_20"] = TTF_OpenFont(main_font_path, 20);
+  fonts["main_32"] = TTF_OpenFont(main_font_path, 32);
   
   return true;
 }

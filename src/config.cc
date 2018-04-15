@@ -4,6 +4,7 @@
 #include "config.h"
 #include <string>
 #include <vector>
+#include <map>
 using namespace std;
 
 
@@ -36,12 +37,7 @@ const string active_slot_image_path = "images/active_slot.png";
 
 // Fonts
 const char* main_font_path = "fonts/Ubuntu_C.ttf";
-
-TTF_Font* main_font_14;
-TTF_Font* main_font_16;
-TTF_Font* main_font_18;
-TTF_Font* main_font_20;
-TTF_Font* main_font_32;
+map<string, TTF_Font*> fonts;
 
 
 // Colors

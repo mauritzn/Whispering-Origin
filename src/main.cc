@@ -87,26 +87,29 @@ int main() {
   
   PNG UI_base(win, ren, base_ui_image_path, 0, 0);
   
-  SDL_Color bar_color = { 130, 160, 0 };
-  Progress player_level_bar(win, ren, bar_color, 102, 12, 25, 50);
-  
   
   map<string, Text*> UI_text {
-    { "player_level", new Text(win, ren, main_font_16, color_white, "Level 1", 30, 25) },
-    { "player_xp", new Text(win, ren, main_font_14, color_white, ("0/" + format_number(xp_rates[0]) + " xp"), 0, 65) }
+    { "player_title", new Text(win, ren, fonts["main_16"], color_white, "Player", 30, 22) },
+    { "player_level", new Text(win, ren, fonts["main_14"], color_white, "Level 1", 0, 23) },
+    { "player_xp", new Text(win, ren, fonts["main_12"], color_white, ("0/" + format_number(xp_rates[0]) + " xp"), 157, 40) }
   };
   
-  UI_text["player_xp"]->align_right();
-  UI_text["player_xp"]->set_x(90);
+  UI_text["player_level"]->align_right();
+  UI_text["player_level"]->set_x(114);
   
   
-  Text level_up(win, ren, main_font_32, color_white, "Level up! You are now level ", 0, 0);
+  SDL_Color bar_color = { 130, 160, 0 };
+  Progress player_level_bar(win, ren, bar_color, 127, 12, 25, 42);
+  
+  
+  
+  Text level_up(win, ren, fonts["main_32"], color_white, "Level up! You are now level ", 0, 0);
   level_up.align_center();
   level_up.set_y((level_up.get_y() - 55));
   
   
   
-  Text hello_text(win, ren, main_font_20, color_white, "Use WASD to move, F1 to toggle debug menu, F5 to give 5 xp, Q / E to switch inventory slots", 0, 0);
+  Text hello_text(win, ren, fonts["main_20"], color_white, "Use WASD to move, F1 to toggle debug menu, F5 to give 5 xp, Q / E to switch inventory slots", 0, 0);
   hello_text.align_center_x();
   hello_text.align_bottom();
   hello_text.set_y((hello_text.get_y() - 60));
@@ -114,17 +117,17 @@ int main() {
   
   
   map<string, Text*> debug_info {
-    { "ticks", new Text(win, ren, main_font_20, color_white, "Ticks: 0", 0, 1) },
-    { "frames", new Text(win, ren, main_font_20, color_white, "Frames: 0", 0, 2) },
-    { "fps", new Text(win, ren, main_font_20, color_white, "FPS: 0", 0, 3) },
-    { "delta_time", new Text(win, ren, main_font_20, color_white, "Delta Time: 0", 0, 4) },
+    { "ticks", new Text(win, ren, fonts["main_20"], color_white, "Ticks: 0", 0, 1) },
+    { "frames", new Text(win, ren, fonts["main_20"], color_white, "Frames: 0", 0, 2) },
+    { "fps", new Text(win, ren, fonts["main_20"], color_white, "FPS: 0", 0, 3) },
+    { "delta_time", new Text(win, ren, fonts["main_20"], color_white, "Delta Time: 0", 0, 4) },
     
-    { "player_hp", new Text(win, ren, main_font_20, color_white, "Health: 0/0", 0, 6) },
-    { "player_lvl", new Text(win, ren, main_font_20, color_white, "Level: 0", 0, 7) },
-    { "player_xp", new Text(win, ren, main_font_20, color_white, "XP: 0", 0, 8) },
-    { "player_money", new Text(win, ren, main_font_20, color_white, "Money: 0", 0, 9) },
-    { "player_xy", new Text(win, ren, main_font_20, color_white, "X: 0, Y: 0", 0, 10) },
-    { "player_pos", new Text(win, ren, main_font_20, color_white, "Position (ROW x COL): 0x0", 0, 11) }
+    { "player_hp", new Text(win, ren, fonts["main_20"], color_white, "Health: 0/0", 0, 6) },
+    { "player_lvl", new Text(win, ren, fonts["main_20"], color_white, "Level: 0", 0, 7) },
+    { "player_xp", new Text(win, ren, fonts["main_20"], color_white, "XP: 0", 0, 8) },
+    { "player_money", new Text(win, ren, fonts["main_20"], color_white, "Money: 0", 0, 9) },
+    { "player_xy", new Text(win, ren, fonts["main_20"], color_white, "X: 0, Y: 0", 0, 10) },
+    { "player_pos", new Text(win, ren, fonts["main_20"], color_white, "Position (ROW x COL): 0x0", 0, 11) }
   };
   
   init_debug_info_position(debug_info);
@@ -231,11 +234,9 @@ int main() {
   }
 
 
-  TTF_CloseFont(main_font_14);
-  TTF_CloseFont(main_font_16);
-  TTF_CloseFont(main_font_18);
-  TTF_CloseFont(main_font_20);
-  TTF_CloseFont(main_font_32);
+  for(auto const& value : fonts) {
+    TTF_CloseFont(value.second);
+  }
 
   TTF_Quit();
   SDL_Quit();
