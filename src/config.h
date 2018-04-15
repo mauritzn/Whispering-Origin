@@ -58,6 +58,11 @@ extern const int debug_info_y_padding;
 extern vector<int> xp_rates;
 
 
+// UI
+extern const string base_ui_image_path;
+extern const string active_slot_image_path;
+
+
 // Fonts
 extern const char* main_font_path; // define where the main font is stored [TTF]
 

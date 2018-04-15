@@ -29,6 +29,11 @@ const int debug_info_y_padding = 2;
 vector<int> xp_rates;
 
 
+// UI
+const string base_ui_image_path = "images/UI.png";
+const string active_slot_image_path = "images/active_slot.png";
+
+
 // Fonts
 const char* main_font_path = "fonts/Ubuntu_C.ttf";
 

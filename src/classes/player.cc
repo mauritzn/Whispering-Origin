@@ -27,7 +27,7 @@ Player::Player(Window& win, Renderer& ren) {
   
   _hp = _max_hp;
   
-  UI_active_slot = new PNG(*_win, *_ren, "images/active_slot.png", 0, 0);
+  UI_active_slot = new PNG(*_win, *_ren, active_slot_image_path, 0, 0);
   UI_active_slot->align_bottom();
   UI_active_slot->set_x(_inv_slots[0]);
 }

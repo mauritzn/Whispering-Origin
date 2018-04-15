@@ -85,7 +85,7 @@ int main() {
 
 
   
-  PNG UI_base(win, ren, "images/UI.png", 0, 0);
+  PNG UI_base(win, ren, base_ui_image_path, 0, 0);
   
   SDL_Color bar_color = { 130, 160, 0 };
   Progress player_level_bar(win, ren, bar_color, 102, 12, 25, 50);
