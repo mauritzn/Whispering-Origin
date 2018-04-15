@@ -6,6 +6,8 @@
 
 #include "window.h"
 #include "images.h"
+#include "fps.h"
+#include "player.h"
 #include "world.h"
 
 using namespace std;
@@ -28,5 +30,9 @@ extern string combine_row_and_col(int, int);
 
 extern bool init_SDL();
 extern void init_game();
+
+extern void init_debug_info_position(const map<string, Text*>&);
+extern void update_debug_info(map<string, Text*>&, FPS&, Player&, World&);
+extern void render_debug_info(const map<string, Text*>&);
 
 #endif

@@ -28,7 +28,7 @@ class Player {
     PNG* _character;
     
     int _hp = 10;
-    uint32_t _money = 10;
+    uint32_t _money = 0;
     int _acc = 7;   // Player Accuracy
     
 

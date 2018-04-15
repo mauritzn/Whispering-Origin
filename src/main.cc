@@ -43,6 +43,26 @@ using namespace std;
 
 
 
+enum inventory_slots {
+  TOOL_1 = 300,
+  TOOL_2 = 342,
+  TOOL_3 = 384,
+  TOOL_4 = 426,
+  
+  SLOT_1 = 475,
+  SLOT_2 = 517,
+  SLOT_3 = 559,
+  SLOT_4 = 601,
+  SLOT_5 = 643,
+  SLOT_6 = 685,
+  SLOT_7 = 727,
+  SLOT_8 = 769,
+  SLOT_9 = 811,
+  SLOT_10 = 853,
+  SLOT_11 = 895,
+  SLOT_12 = 937
+};
+
 
 
 int main() {
@@ -83,14 +103,15 @@ int main() {
   
 
   //BMP test_char(win, ren, "images/test_char_2.bmp", 0, 0);
-  Player test_player(win, ren);
-  World test_world(win, ren, fps, test_player);
+  Player player(win, ren);
+  World world(win, ren, fps, player);
 
 
-
-  Text level_up(win, ren, main_font_32, color_white, "Level up! You are now level ", 0, 0);
-  level_up.align_center();
-  level_up.set_y((level_up.get_y() - 55));
+  
+  PNG UI_base(win, ren, "images/UI.png", 0, 0);
+  
+  SDL_Color bar_color = { 130, 160, 0 };
+  Progress player_level_bar(win, ren, bar_color, 102, 12, 25, 50);
   
   
   map<string, Text*> UI_text {
@@ -102,11 +123,18 @@ int main() {
   UI_text["player_xp"]->set_x(90);
   
   
-  Text hello_text(win, ren, main_font_20, color_white, "<text will be updated ;) >", 0, 0);
+  Text level_up(win, ren, main_font_32, color_white, "Level up! You are now level ", 0, 0);
+  level_up.align_center();
+  level_up.set_y((level_up.get_y() - 55));
+  
+  
+  
+  Text hello_text(win, ren, main_font_20, color_white, "Use WASD to move, F4 to toggle debug menu, F5 to give 5 xp, Q / E to switch inventory slots", 0, 0);
   hello_text.align_center_x();
   hello_text.align_bottom();
   hello_text.set_y((hello_text.get_y() - 60));
 
+  
   
   map<string, Text*> debug_info {
     { "ticks", new Text(win, ren, main_font_20, color_white, "Ticks: 0", 0, 1) },
@@ -122,102 +150,89 @@ int main() {
     { "player_pos", new Text(win, ren, main_font_20, color_white, "Position (ROW x COL): 0x0", 0, 11) }
   };
   
-  
-  Text* first_debug_text;
-  for(auto const& value : debug_info) {
-    if(value.second->get_y() == 1) {
-      first_debug_text = value.second;
-      first_debug_text->set_y(debug_info_y_start);
-    }
-    
-    value.second->set_x(debug_info_x_start);
-  }
-  
-  for(auto const& value : debug_info) {
-    int pos = value.second->get_y();
-    
-    if(pos != debug_info_y_start) {
-      value.second->set_y((first_debug_text->get_y() + (value.second->height() * (pos - 1))) + (debug_info_y_padding * (pos - 1)));
-    }
-  }
-
+  init_debug_info_position(debug_info);
   
   
-  PNG UI_debug(win, ren, "images/UI_3.png", 0, 0);
+  
+  PNG UI_active_slot(win, ren, "images/active_slot.png", 0, 0);
+  UI_active_slot.align_bottom();
+  
+  int current_slot = 0;
+  vector<inventory_slots> inv_slots = {
+    TOOL_1, TOOL_2, TOOL_3, TOOL_4,
+    SLOT_1, SLOT_2, SLOT_3, SLOT_4, SLOT_5, SLOT_6, SLOT_7, SLOT_8, SLOT_9, SLOT_10, SLOT_11, SLOT_12
+  };
   
   
   
   
   
-  SDL_Color bar_color = { 130, 160, 0 };
-  Progress player_level_bar(win, ren, bar_color, 102, 12, 25, 50);
   
-  
-  
-
-
-
   while(game_running) {
     while(SDL_PollEvent(&event)) {
       if(event.type == SDL_QUIT) game_running = false;
       else if(event.type == SDL_KEYDOWN) {
-        if(event.key.keysym.sym == SDLK_F5) test_player.increase_xp(5);
+        if(event.key.keysym.sym == SDLK_F5) player.increase_xp(5);
         else if(event.key.keysym.sym == SDLK_F4) debug_mode = !debug_mode;
-        else {
-          test_world.key_pressed(event.key.keysym.sym);
+        else if(event.key.keysym.sym == SDLK_q) {
+          current_slot--;
+          if(current_slot < 0) current_slot = (inv_slots.size() - 1);
+        } else if(event.key.keysym.sym == SDLK_e) {
+          current_slot++;
+          if((unsigned) current_slot >= inv_slots.size()) current_slot = 0;
+        } else {
+          world.key_pressed(event.key.keysym.sym);
         }
       } else if(event.type == SDL_KEYUP) {
-        test_world.key_released(event.key.keysym.sym);
+        world.key_released(event.key.keysym.sym);
       } else {
         //if(event.type != 1024 && event.type != 512) cout << ">> Event: " << event.type << endl;
       }
     }
     
     fps.update();
-    test_world.update();
+    world.update();
     
 
     ren.clear();
-    test_world.render();
+    world.render();
 
     hello_text.render();
     
     
     
-    if(test_player.has_leveled_up()) {
-      level_up.update("Level up! You are now level " + format_number(test_player.level()));
+    if(player.has_leveled_up()) {
+      level_up.update("Level up! You are now level " + format_number(player.level()));
       level_up.render();
     }
     
     
-    if(fps.ticks() >= 1000) {
+    if(fps.ticks() >= 2500) {
       if(!debug_test_refresh_done) {
-        debug_test_refresh_done = true;
-        hello_text.update("Use WASD to move, F4 to toggle debug menu, F5 to give 5 xp"); // will not mess up alignment ;)
+        // used for debugging future features
         
-        test_player.decrease_money(50);
-        test_player.damage(5);
+        debug_test_refresh_done = true;
       }
     }
     
     
     
     // BEGIN, PLAYER LEVEL & XP UI
-    if(test_player.xp() > last_player_xp) {
-      UI_text["player_xp"]->update(format_number(test_player.xp()) + "/" + format_number(test_player.xp_to_level()) + " xp");
+    if(player.xp() > last_player_xp) {
+      UI_text["player_xp"]->update(format_number(player.xp()) + "/" + format_number(player.xp_to_level()) + " xp");
       
-      if(test_player.level() > 1) {
-        if(test_player.has_leveled_up()) {
-          if(xp_rates[test_player.level() - 2] > last_xp_required_to_level) {
-            last_xp_required_to_level = xp_rates[test_player.level() - 2];
+      if(player.level() > 1) {
+        if(player.has_leveled_up()) {
+          if(xp_rates[player.level() - 2] > last_xp_required_to_level) {
+            last_xp_required_to_level = xp_rates[player.level() - 2];
           }
           
-          UI_text["player_level"]->update("Level " + to_string(test_player.level()));
+          UI_text["player_level"]->update("Level " + to_string(player.level()));
         }
       }
       
-      int player_xp = (test_player.xp() - last_xp_required_to_level);
-      int required_xp = (test_player.xp_to_level() - last_xp_required_to_level);
+      int player_xp = (player.xp() - last_xp_required_to_level);
+      int required_xp = (player.xp_to_level() - last_xp_required_to_level);
       int progress_to_level = (((float) player_xp / (float) required_xp) * 100);
       
       player_level_bar.set_progress(progress_to_level);
@@ -227,6 +242,8 @@ int main() {
     // END, PLAYER LEVEL & XP UI
     
     
+
+    UI_base.render();
     
     // render UI text
     for(auto const& value : UI_text) {
@@ -235,34 +252,13 @@ int main() {
     
     
     
-    // BEGIN, DEBUG TEXT UPDATING & RENDERING
-    debug_info["frames"]->update("Frames: " + format_number(fps.frame_count()));
-    debug_info["ticks"]->update("Ticks: " + format_number(fps.ticks()));
+    UI_active_slot.set_x(inv_slots[current_slot]);
+    UI_active_slot.render();
     
-    if((fps.ticks() % 500) < 250) {
-      debug_info["fps"]->update("FPS: " + to_fixed(fps.get()));
-    }
     
-    debug_info["delta_time"]->update("Delta Time: " + to_string(fps.delta_time()));
     
-    // Char-specific text-update
-    debug_info["player_hp"]->update("Health: " + format_number(test_player.health()));
-    debug_info["player_xp"]->update("XP: " + format_number(test_player.xp()) + "/" + format_number(test_player.xp_to_level()));
-    debug_info["player_lvl"]->update("Level: " + format_number(test_player.level()) + "/" + to_string(max_level));
-    debug_info["player_money"]->update("Money: " + format_number(test_player.money()));
-    debug_info["player_xy"]->update("X: " + to_string(test_world.get_player_x()) + ", Y: " + to_string(test_world.get_player_y()));
-    debug_info["player_pos"]->update("Position (ROW x COL): " + test_world.get_player_row_and_col());
-
-
-    UI_debug.render();
-    
-    if(debug_mode) {
-      for(auto const& value : debug_info) {
-        value.second->render();
-      }
-    }
-    // END, DEBUG TEXT UPDATING & RENDERING
-
+    update_debug_info(debug_info, fps, player, world);
+    if(debug_mode) render_debug_info(debug_info);
     
     ren.update(); // update the screen
     // SDL_Delay(1000); // <= sometimes used for debuggning issues
