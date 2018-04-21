@@ -31,14 +31,14 @@ Player::Player(Window& win, Renderer& ren) {
   UI_active_slot->set_x(_inv_slots[0]);
   
   
-  _skills.at(PLAYER_SKILL) = new Skill(*_win, *_ren, "Player");
+  _skills.at(PLAYER_SKILL) = new Skill(*_win, *_ren, "Player", 127, 12, 25, 22);
   _hp = this->max_health();
   
-  _skills.at(WOODCUTTING_SKILL) = new Skill(*_win, *_ren, "Woodcutting");
-  _skills.at(MINING_SKILL) = new Skill(*_win, *_ren, "Mining");
-  _skills.at(SMITHING_SKILL) = new Skill(*_win, *_ren, "Smithing");
-  _skills.at(FISHING_SKILL) = new Skill(*_win, *_ren, "Fishing");
-  _skills.at(COOKING_SKILL) = new Skill(*_win, *_ren, "Cooking");
+  _skills.at(WOODCUTTING_SKILL) = new Skill(*_win, *_ren, "Woodcutting", 142, 8, 64, 512);
+  _skills.at(MINING_SKILL) = new Skill(*_win, *_ren, "Mining", 142, 8, 64, 549);
+  _skills.at(SMITHING_SKILL) = new Skill(*_win, *_ren, "Smithing", 142, 8, 64, 586);
+  _skills.at(FISHING_SKILL) = new Skill(*_win, *_ren, "Fishing", 142, 8, 64, 623);
+  _skills.at(COOKING_SKILL) = new Skill(*_win, *_ren, "Cooking", 142, 8, 64, 660);
 }
 
 
@@ -181,4 +181,9 @@ void Player::render_inventory() {
 
 void Player::render() {
   _character->render();
+  
+  
+  for(Skill* value: _skills) {
+    value->render();
+  }
 }

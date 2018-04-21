@@ -74,10 +74,6 @@ int main() {
 
   SDL_Surface* icon = IMG_Load(icon_path);
   SDL_SetWindowIcon(win.get(), icon);
-
-  // used for player level & xp UI
-  int last_player_xp = 0;
-  int last_xp_required_to_level = 0;
   
 
   //BMP test_char(win, ren, "images/test_char_2.bmp", 0, 0);
@@ -89,18 +85,14 @@ int main() {
   PNG UI_base(win, ren, base_ui_image_path, 0, 0);
   
   
-  map<string, Text*> UI_text {
+  /*map<string, Text*> UI_text {
     { "player_title", new Text(win, ren, fonts["main_16"], color_white, "Player", 30, 22) },
     { "player_level", new Text(win, ren, fonts["main_14"], color_white, "Level 1", 0, 23) },
     { "player_xp", new Text(win, ren, fonts["main_12"], color_white, ("0/" + format_number(xp_rates[0]) + " xp"), 157, 40) }
   };
   
   UI_text["player_level"]->align_right();
-  UI_text["player_level"]->set_x(114);
-  
-  
-  SDL_Color bar_color = { 130, 160, 0 };
-  Progress player_level_bar(win, ren, bar_color, 127, 12, 25, 42);
+  UI_text["player_level"]->set_x(114);*/
   
   
   
@@ -142,7 +134,13 @@ int main() {
     while(SDL_PollEvent(&event)) {
       if(event.type == SDL_QUIT) game_running = false;
       else if(event.type == SDL_KEYDOWN) {
-        if(event.key.keysym.sym == SDLK_F5) player.increase_xp(500);
+        if(event.key.keysym.sym == SDLK_F5) player.increase_xp(5);
+        else if(event.key.keysym.sym == SDLK_F6) player.skill("Woodcutting")->increase_xp(5);
+        else if(event.key.keysym.sym == SDLK_F7) player.skill("Mining")->increase_xp(5);
+        else if(event.key.keysym.sym == SDLK_F8) player.skill("Smithing")->increase_xp(5);
+        else if(event.key.keysym.sym == SDLK_F9) player.skill("Fishing")->increase_xp(5);
+        else if(event.key.keysym.sym == SDLK_F10) player.skill("Cooking")->increase_xp(5);
+        
         else if(event.key.keysym.sym == SDLK_F1) debug_mode = !debug_mode;
         else if(event.key.keysym.sym == SDLK_q) {
           player.prev_inventory_slot();
@@ -185,39 +183,13 @@ int main() {
     
     
     
-    // BEGIN, PLAYER LEVEL & XP UI
-    if(player.xp() > last_player_xp) {
-      UI_text["player_xp"]->update(format_number(player.xp()) + "/" + format_number(player.xp_to_level()) + " xp");
-      
-      if(player.level() > 1) {
-        if(player.has_leveled_up()) {
-          if(xp_rates[player.level() - 2] > last_xp_required_to_level) {
-            last_xp_required_to_level = xp_rates[player.level() - 2];
-          }
-          
-          UI_text["player_level"]->update("Level " + to_string(player.level()));
-        }
-      }
-      
-      int player_xp = (player.xp() - last_xp_required_to_level);
-      int required_xp = (player.xp_to_level() - last_xp_required_to_level);
-      int progress_to_level = (((float) player_xp / (float) required_xp) * 100);
-      if(player.level() == max_level) progress_to_level = 100;
-      
-      player_level_bar.set_progress(progress_to_level);
-    }
     
-    player_level_bar.render();
-    // END, PLAYER LEVEL & XP UI
-    
-    
-
     UI_base.render();
     
     // render UI text
-    for(auto const& value : UI_text) {
+    /*for(auto const& value : UI_text) {
       value.second->render();
-    }
+    }*/
     
     
     player.render_inventory();
