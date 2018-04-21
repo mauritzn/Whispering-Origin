@@ -36,6 +36,7 @@ const string active_slot_image_path = "images/active_slot.png";
 
 
 // Fonts
+const bool anti_aliased_font = true;
 const char* main_font_path = "fonts/Ubuntu_C.ttf";
 map<string, TTF_Font*> fonts;
 

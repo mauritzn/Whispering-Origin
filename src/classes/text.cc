@@ -1,5 +1,6 @@
 #include <iostream>
 #include "text.h"
+#include "../config.h"
 
 
 Text::Text(Window& win, Renderer& ren, TTF_Font* font, SDL_Color color, string text, int x, int y) {
@@ -18,7 +19,9 @@ Text::Text(Window& win, Renderer& ren, TTF_Font* font, SDL_Color color, string t
   else if(_y == -100) _y_alignment = 1;
   
   
-  _surface = TTF_RenderText_Solid(_font, text.c_str(), _color);
+  if(anti_aliased_font) _surface = TTF_RenderUTF8_Blended(_font, text.c_str(), _color);
+  else _surface = TTF_RenderUTF8_Solid(_font, text.c_str(), _color);
+  
   if(_surface == NULL) {
     cout << "TTF_RenderText_Solid Error: " << SDL_GetError() << endl;
     SDL_Quit();
@@ -51,7 +54,9 @@ Text::~Text() {
 
 
 void Text::update(string text) {
-  _surface = TTF_RenderText_Solid(_font, text.c_str(), _color);
+  if(anti_aliased_font) _surface = TTF_RenderUTF8_Blended(_font, text.c_str(), _color);
+  else _surface = TTF_RenderUTF8_Solid(_font, text.c_str(), _color);
+  
   if(_surface == NULL) {
     cout << "TTF_RenderText_Solid Error: " << SDL_GetError() << endl;
     SDL_Quit();

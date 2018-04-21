@@ -65,6 +65,7 @@ extern const string active_slot_image_path;
 
 
 // Fonts
+extern const bool anti_aliased_font;
 extern const char* main_font_path; // define where the main font is stored [TTF]
 extern map<string, TTF_Font*> fonts;
 
