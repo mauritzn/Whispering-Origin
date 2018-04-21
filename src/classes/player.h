@@ -10,6 +10,7 @@
 #include "window.h"
 #include "renderer.h"
 #include "images.h"
+#include "skill.h"
 
 using namespace std;
 
@@ -42,6 +43,16 @@ enum inventory_slots {
 };
 
 
+enum skill_anchor {
+  PLAYER_SKILL,
+  WOODCUTTING_SKILL,
+  MINING_SKILL,
+  SMITHING_SKILL,
+  FISHING_SKILL,
+  COOKING_SKILL
+};
+
+
 
 class Player {
   private:
@@ -50,7 +61,6 @@ class Player {
     
     PNG* _character;
     
-    int _max_hp = 10;
     int _hp;
     uint32_t _money = 0;
     int _acc = 7;   // Player Accuracy
@@ -63,9 +73,7 @@ class Player {
       SLOT_1, SLOT_2, SLOT_3, SLOT_4, SLOT_5, SLOT_6, SLOT_7, SLOT_8, SLOT_9, SLOT_10, SLOT_11, SLOT_12
     };
     
-    uint32_t _leveled_up_at = 0;
-    int _player_level = 1;
-    int _player_xp = 0;
+    vector<Skill*> _skills = { NULL, NULL, NULL, NULL, NULL, NULL };
 
 
   public:

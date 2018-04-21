@@ -145,7 +145,7 @@ int main() {
     while(SDL_PollEvent(&event)) {
       if(event.type == SDL_QUIT) game_running = false;
       else if(event.type == SDL_KEYDOWN) {
-        if(event.key.keysym.sym == SDLK_F5) player.increase_xp(5);
+        if(event.key.keysym.sym == SDLK_F5) player.increase_xp(500);
         else if(event.key.keysym.sym == SDLK_F1) debug_mode = !debug_mode;
         else if(event.key.keysym.sym == SDLK_q) {
           player.prev_inventory_slot();

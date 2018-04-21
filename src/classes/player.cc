@@ -9,6 +9,7 @@
 #include "images.h"
 #include "functions.h"
 #include "../config.h"
+#include "skill.h"
 
 using namespace std;
 
@@ -25,11 +26,19 @@ Player::Player(Window& win, Renderer& ren) {
   _character->align_center();
   _character->set_image_y(SOUTH);
   
-  _hp = _max_hp;
-  
   UI_active_slot = new PNG(*_win, *_ren, active_slot_image_path, 0, 0);
   UI_active_slot->align_bottom();
   UI_active_slot->set_x(_inv_slots[0]);
+  
+  
+  _skills.at(PLAYER_SKILL) = new Skill(*_win, *_ren, "Player");
+  _hp = this->max_health();
+  
+  _skills.at(WOODCUTTING_SKILL) = new Skill(*_win, *_ren, "Woodcutting");
+  _skills.at(MINING_SKILL) = new Skill(*_win, *_ren, "Mining");
+  _skills.at(SMITHING_SKILL) = new Skill(*_win, *_ren, "Smithing");
+  _skills.at(FISHING_SKILL) = new Skill(*_win, *_ren, "Fishing");
+  _skills.at(COOKING_SKILL) = new Skill(*_win, *_ren, "Cooking");
 }
 
 
@@ -49,17 +58,17 @@ void Player::set_direction(player_direction new_direction) {
 }
 
 
-int Player::max_health() { return _max_hp; }
+int Player::max_health() { return (5 * (this->level() + 1)); }
 int Player::health() { return _hp; }
 uint32_t Player::money() { return _money; }
 
-int Player::level() { return _player_level; }
-int Player::xp() { return _player_xp; }
+int Player::level() { return _skills.at(PLAYER_SKILL)->level(); }
+int Player::xp() { return _skills.at(PLAYER_SKILL)->xp(); }
 
 
 void Player::heal(int amount) {
   _hp += amount;
-  if(_hp > _max_hp) _hp = _max_hp;
+  if(_hp > this->max_health()) _hp = this->max_health();
 }
 
 void Player::damage(int amount) {
@@ -134,50 +143,19 @@ void Player::set_money(int amount) {
 
 
 int Player::xp_to_level() {
-  if(_player_level == max_level) {
-    return xp_rates[_player_level - 2];
-  } else {
-    return xp_rates[_player_level - 1];
-  }
+  return _skills.at(PLAYER_SKILL)->xp_to_level();
 }
 
 
 void Player::increase_xp(int amount) {
-  bool check_for_level_up = true;
-  
-  if(_player_level < max_level) {
-    if(amount > 0) _player_xp += amount;
-    
-    while(check_for_level_up) {
-      if(_player_level < max_level) {
-        if(_player_xp >= this->xp_to_level()) {
-            _player_level++;
-            _leveled_up_at = SDL_GetTicks();
-            
-            if(_player_level == max_level) {
-              _player_xp = this->xp_to_level();
-            }
-            
-            _max_hp += 5;
-            _hp = _max_hp;
-        } else {
-          check_for_level_up = false;
-        }
-      } else {
-        check_for_level_up = false;
-      }
-    }
-  }
+  _skills.at(PLAYER_SKILL)->increase_xp(amount);
 }
 
 
 bool Player::has_leveled_up() {
-  if(_leveled_up_at > 0) {
-    if((SDL_GetTicks() - _leveled_up_at) <= (unsigned) time_to_display_level_up_message) {
-      return true;
-    } else {
-      return false;
-    }
+  if(_skills.at(PLAYER_SKILL)->has_leveled_up()) {
+    _hp = this->max_health();
+    return true;
   } else {
     return false;
   }
