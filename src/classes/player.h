@@ -95,6 +95,8 @@ class Player {
     int level();
     int xp();
     
+    Skill* skill(string);
+    
     void heal(int);
     void damage(int);
     bool is_alive();

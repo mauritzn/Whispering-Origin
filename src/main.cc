@@ -39,6 +39,7 @@
 #include "classes/player.h"
 #include "classes/world.h"
 #include "classes/progress_bar.h"
+#include "classes/skill.h"
 using namespace std;
 
 
@@ -131,10 +132,6 @@ int main() {
   };
   
   init_debug_info_position(debug_info);
-  
-  
-  
-
   
   
   

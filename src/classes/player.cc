@@ -66,6 +66,19 @@ int Player::level() { return _skills.at(PLAYER_SKILL)->level(); }
 int Player::xp() { return _skills.at(PLAYER_SKILL)->xp(); }
 
 
+Skill* Player::skill(string skill_name) {
+  if(skill_name != "Player") {
+    for(Skill* value: _skills) {
+      if(skill_name == value->name()) {
+        return value;
+      }
+    }
+  }
+  
+  return NULL;
+}
+
+
 void Player::heal(int amount) {
   _hp += amount;
   if(_hp > this->max_health()) _hp = this->max_health();
