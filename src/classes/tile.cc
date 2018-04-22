@@ -16,15 +16,21 @@
 using namespace std;
 
 
-Tile::Tile(Window& win, Renderer& ren, FPS& fps, Player& player, const grid_tile_type& type, const int id, int row, int col) {
+Tile::Tile(Window& win, Renderer& ren, FPS& fps, Player& player, const grid_tile_data& id, int row, int col) {
   _win = &win;
   _ren = &ren;
   _fps = &fps;
   //_world = &world;
   _player = &player;
 
-  _type = type;
   _id = id;
+  if(_id != -1) {
+    _type = get_tile_type(_id);
+    _tile_name = get_tile_name(_id);
+  } else {
+    _type = COLLIDER;
+    _tile_name = "Collider";
+  }
 
 
   _row = row;
@@ -155,9 +161,9 @@ int Tile::get_col() { return _col; }
 string Tile::get_row_and_col() { return _row_and_col; }
 
 
-string Tile::get_tile_name() { return _tile_name; }
-grid_tile_type Tile::get_type() { return _type; }
-int Tile::get_id() { return _id; }
+grid_tile_data Tile::id() { return _id; }
+grid_tile_type Tile::type() { return _type; }
+string Tile::tile_name() { return _tile_name; }
 
 
 void Tile::action() {

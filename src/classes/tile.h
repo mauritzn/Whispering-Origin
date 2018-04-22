@@ -27,6 +27,8 @@ class Tile {
     Text* _progress_text;
     int _tile_grid_size = 32;
 
+    grid_tile_data _id;
+    grid_tile_type _type;
     string _tile_name = "";
 
     int _x_start = 0;
@@ -38,8 +40,6 @@ class Tile {
     int _col = 0;
     string _row_and_col = "0x0";
 
-    grid_tile_type _type;
-    int _id = 0;
 
     int _resources = 0; // how much resources can the player get from this tile (in total)
     int _resources_left = 0;
@@ -49,7 +49,7 @@ class Tile {
 
 
   public:
-    Tile(Window&, Renderer&, FPS&, Player&, const grid_tile_type&, const int, int, int);
+    Tile(Window&, Renderer&, FPS&, Player&, const grid_tile_data&, int, int);
 
     int width();
     int height();
@@ -76,9 +76,9 @@ class Tile {
     string get_row_and_col();
 
 
-    string get_tile_name();
-    grid_tile_type get_type();
-    int get_id();
+    grid_tile_data id();
+    grid_tile_type type();
+    string tile_name();
 
 
     void action();

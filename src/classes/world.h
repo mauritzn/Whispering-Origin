@@ -79,7 +79,7 @@ class World {
     string get_player_row_and_col();
 
 
-    void add_to_grid(const string&, const grid_tile_type&);
+    void add_to_grid(const string&);
 
 
     void update_current_tile();
