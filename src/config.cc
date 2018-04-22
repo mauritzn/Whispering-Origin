@@ -9,7 +9,21 @@ using namespace std;
 
 
 
+const vector<grid_tile_type> grid_tile_types {
+  COLLIDER, TREE, ORE, FISH
+};
 
+const TILE_DATA grid_tiles {
+  { TREE_OAK, TREE },
+  { ORE_COPPER, ORE },
+  { FISH_SALMON, FISH }
+};
+
+const TILE_NAMES grid_tile_names {
+  { TREE_OAK, "Oak" },
+  { ORE_COPPER, "Copper" },
+  { FISH_SALMON, "Salmon" }
+};
 
 
 

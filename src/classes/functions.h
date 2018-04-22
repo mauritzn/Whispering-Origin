@@ -1,6 +1,7 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 
+#include <SDL2/SDL.h>
 #include <string>
 #include <vector>
 
@@ -9,6 +10,7 @@
 #include "fps.h"
 #include "player.h"
 #include "world.h"
+#include "../config.h"
 
 using namespace std;
 
@@ -26,7 +28,20 @@ extern string to_fixed(float);
 extern vector<string> explode_string(const string&, char);
 
 extern string combine_row_and_col(int, int);
-//extern void add_tile_to_grid(const string&, const tile_type&, GRID&);
+
+
+
+extern bool get_RGB(SDL_Color&, SDL_Surface*, int, int);
+extern int concat_RGB(SDL_Color&);
+
+
+extern bool is_valid_type(SDL_Color&);
+extern bool is_valid_tile(int);
+
+extern grid_tile_type get_tile_type(grid_tile_data);
+extern string get_tile_name(grid_tile_data);
+
+
 
 extern bool init_SDL();
 extern void init_game();

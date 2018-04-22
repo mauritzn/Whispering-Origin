@@ -21,105 +21,18 @@
 #include <fstream>
 #include <cmath>
 #include <map>
+
+#include "config.h"
+#include "classes/functions.h"
 using namespace std;
 
 
-enum grid_type {
-  PLAYER = 20522055,
-  COLLIDER = 245245245,
-  GRASS = 6517050, // unused
-  WATER = 20105155 // unused
+enum grid_pixel_type {
+  P_PLAYER = 20522055,
+  P_COLLIDER = 245245245,
+  P_GRASS = 6517050, // unused
+  P_WATER = 20105155 // unused
 };
-
-
-enum tile_type {
-  TREE = 10,
-  ORE = 20,
-  FISH = 30
-};
-
-enum tile_data {
-  TREE_OAK = 1000,
-  ORE_COPPER = 2000,
-  FISH_SALMON = 3000
-};
-
-
-typedef map<tile_data, tile_type> TILE_DATA;
-typedef map<tile_data, string> TILE_NAME;
-
-TILE_DATA tiles {
-  { TREE_OAK, TREE },
-  { ORE_COPPER, ORE },
-  { FISH_SALMON, FISH }
-};
-
-TILE_NAME tile_names {
-  { TREE_OAK, "Oak" },
-  { ORE_COPPER, "Copper" },
-  { FISH_SALMON, "Salmon" }
-};
-
-
-
-bool get_RGB(SDL_Color& color, SDL_Surface* surface, int x, int y) {
-  if(surface->format->BitsPerPixel == 32) {
-    uint32_t* pixels = (uint32_t*) surface->pixels;
-    uint32_t pixel = pixels[(y * surface->w) + x];
-
-    SDL_GetRGB(pixel, surface->format, &(color.r), &(color.g), &(color.b));
-    return true;
-  } else {
-    return false;
-  }
-}
-
-int concat_RGB(SDL_Color& color) {
-  stringstream concat;
-
-  concat << (unsigned) color.r
-         << (unsigned) color.g
-         << (unsigned) color.b;
-
-  return stoi(concat.str());
-}
-
-
-
-bool is_valid_type(SDL_Color& color) {
-  tile_type type = (tile_type) color.r;
-
-  if(type == TREE) return true;
-  else if(type == ORE) return true;
-  else if(type == FISH) return true;
-  else return false;
-}
-
-bool is_valid_tile(int data) {
-  auto search = tiles.find((tile_data) data);
-
-  if(search != tiles.end()) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-tile_type get_tile_type(tile_data tile) {
-  if(is_valid_tile((int) tile)) {
-    return tiles.at(tile);
-  }
-
-  return TREE;
-}
-
-string get_tile_name(tile_data tile) {
-  if(is_valid_tile((int) tile)) {
-    return tile_names.at(tile);
-  }
-
-  return "";
-}
 
 
 
@@ -179,11 +92,11 @@ int main() {
     int player_pos_x = floor(map_width / 2);
     int player_pos_y = floor(map_height / 2);
 
-    grid_type current_grid_type;
-    tile_type current_tile_type;
+    grid_pixel_type current_grid_type;
+    grid_tile_type current_tile_type;
 
     int coliders_found = 0;
-    map<tile_type, int> found_count {
+    map<grid_tile_type, int> found_count {
       { TREE, 0 },
       { ORE, 0 },
       { FISH, 0 }
@@ -216,12 +129,12 @@ int main() {
 
     while(parsing) {
       if(get_RGB(current_color, surface, current_x, current_y)) {
-        current_grid_type = (grid_type) concat_RGB(current_color);
+        current_grid_type = (grid_pixel_type) concat_RGB(current_color);
 
-        if(current_grid_type == COLLIDER) {
+        if(current_grid_type == P_COLLIDER) {
           if(get_RGB(current_color, surface, (current_x + 1), (current_y + 1))) {
             if(is_valid_tile(concat_RGB(current_color))) {
-              tile_data current_tile_data = (tile_data) concat_RGB(current_color);
+              grid_tile_data current_tile_data = (grid_tile_data) concat_RGB(current_color);
               current_tile_type = get_tile_type(current_tile_data);
 
               if(current_tile_type == TREE) {
@@ -249,7 +162,7 @@ int main() {
               coliders_found++;
             }
           }
-        } else if(current_grid_type == PLAYER) {
+        } else if(current_grid_type == P_PLAYER) {
           player_pos_x = current_x;
           player_pos_y = current_y;
           player_pos_found = true;

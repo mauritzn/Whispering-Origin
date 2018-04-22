@@ -16,7 +16,7 @@
 using namespace std;
 
 
-Tile::Tile(Window& win, Renderer& ren, FPS& fps, Player& player, const tile_type& type, const int id, int row, int col) {
+Tile::Tile(Window& win, Renderer& ren, FPS& fps, Player& player, const grid_tile_type& type, const int id, int row, int col) {
   _win = &win;
   _ren = &ren;
   _fps = &fps;
@@ -156,7 +156,7 @@ string Tile::get_row_and_col() { return _row_and_col; }
 
 
 string Tile::get_tile_name() { return _tile_name; }
-tile_type Tile::get_type() { return _type; }
+grid_tile_type Tile::get_type() { return _type; }
 int Tile::get_id() { return _id; }
 
 
@@ -167,7 +167,7 @@ void Tile::action() {
 
       _resources_left--;
       _progress_text->update((format_number(_resources_left) + "/" + format_number(_resources)));
-      
+
       if(_type == TREE) _player->skill("Woodcutting")->increase_xp(5);
       else if(_type == ORE) _player->skill("Mining")->increase_xp(5);
       //else if(_type == FISH) _player->skill("Fishing")->increase_xp(5);

@@ -17,41 +17,8 @@
 
 using namespace std;
 
-
-struct grid_tile {
-  string row_and_col = "0x0";
-
-  int row = 0;
-  int col = 0;
-
-  int x_start = 0;
-  int x_end = 0;
-  int y_start = 0;
-  int y_end = 0;
-
-  tile_type type = TERRAIN;
-  int id = -1;
-};
-
 typedef Tile* TILE;
 typedef vector<TILE> GRID;
-
-
-const string dir_text[4] = {
-  "North",
-  "East",
-  "South",
-  "West"
-};
-
-const string type_text[5] = {
-  "Collider",
-  "Tree",
-  "Ore",
-  "Fish",
-  "Terrain"
-};
-
 
 
 class World {
@@ -112,7 +79,7 @@ class World {
     string get_player_row_and_col();
 
 
-    void add_to_grid(const string&, const tile_type&);
+    void add_to_grid(const string&, const grid_tile_type&);
 
 
     void update_current_tile();

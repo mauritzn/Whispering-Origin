@@ -15,15 +15,27 @@
 using namespace std;
 
 
-
-
-enum tile_type {
-  COLLIDER,
-  TREE,
-  ORE,
-  FISH,
-  TERRAIN
+enum grid_tile_type {
+  COLLIDER = 0,
+  TREE = 10,
+  ORE = 20,
+  FISH = 30
 };
+
+enum grid_tile_data {
+  TREE_OAK = 1000,
+  ORE_COPPER = 2000,
+  FISH_SALMON = 3000
+};
+
+
+typedef map<grid_tile_data, grid_tile_type> TILE_DATA;
+typedef map<grid_tile_data, string> TILE_NAMES;
+
+extern const vector<grid_tile_type> grid_tile_types;
+extern const TILE_DATA grid_tiles;
+extern const TILE_NAMES grid_tile_names;
+
 
 enum neighbor_direction {
   N_NORTH,

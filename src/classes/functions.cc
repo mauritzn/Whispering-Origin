@@ -75,24 +75,71 @@ string combine_row_and_col(int row, int col) {
 }
 
 
-/*void add_tile_to_grid(const string& string_to_parse, const tile_type& type, GRID& grid) {
-  vector<string> exploded = explode_string(string_to_parse, 'x');
-
-  grid.push_back(*(new TILE()));
-  grid.back().row = stoi(exploded[0]);
 
 
-  if(exploded[1].find(':') != string::npos) {
-    exploded = explode_string(exploded[1], ':');
-    grid.back().col = stoi(exploded[0]);
-    grid.back().id = stoi(exploded[1]);
+
+
+bool get_RGB(SDL_Color& color, SDL_Surface* surface, int x, int y) {
+  if(surface->format->BitsPerPixel == 32) {
+    uint32_t* pixels = (uint32_t*) surface->pixels;
+    uint32_t pixel = pixels[(y * surface->w) + x];
+
+    SDL_GetRGB(pixel, surface->format, &(color.r), &(color.g), &(color.b));
+    return true;
   } else {
-    grid.back().col = stoi(exploded[1]);
-    grid.back().id = -1;
+    return false;
+  }
+}
+
+int concat_RGB(SDL_Color& color) {
+  stringstream concat;
+
+  concat << (unsigned) color.r
+         << (unsigned) color.g
+         << (unsigned) color.b;
+
+  return stoi(concat.str());
+}
+
+
+
+bool is_valid_type(SDL_Color& color) {
+  grid_tile_type type = (grid_tile_type) color.r;
+
+  if(type == TREE) return true;
+  else if(type == ORE) return true;
+  else if(type == FISH) return true;
+  else return false;
+}
+
+bool is_valid_tile(int data) {
+  auto search = grid_tiles.find((grid_tile_data) data);
+
+  if(search != grid_tiles.end()) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+grid_tile_type get_tile_type(grid_tile_data tile) {
+  if(is_valid_tile((int) tile)) {
+    return grid_tiles.at(tile);
   }
 
-  grid.back().row_and_col = combine_row_and_col(grid.back().row, grid.back().col);
-}*/
+  return TREE;
+}
+
+string get_tile_name(grid_tile_data tile) {
+  if(is_valid_tile((int) tile)) {
+    return grid_tile_names.at(tile);
+  }
+
+  return "";
+}
+
+
+
 
 
 

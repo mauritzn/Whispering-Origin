@@ -38,7 +38,7 @@ class Tile {
     int _col = 0;
     string _row_and_col = "0x0";
 
-    tile_type _type;
+    grid_tile_type _type;
     int _id = 0;
 
     int _resources = 0; // how much resources can the player get from this tile (in total)
@@ -49,7 +49,7 @@ class Tile {
 
 
   public:
-    Tile(Window&, Renderer&, FPS&, Player&, const tile_type&, const int, int, int);
+    Tile(Window&, Renderer&, FPS&, Player&, const grid_tile_type&, const int, int, int);
 
     int width();
     int height();
@@ -77,7 +77,7 @@ class Tile {
 
 
     string get_tile_name();
-    tile_type get_type();
+    grid_tile_type get_type();
     int get_id();
 
 
