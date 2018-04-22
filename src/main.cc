@@ -46,18 +46,18 @@ using namespace std;
 int main() {
   FPS fps;
   SDL_Event event;
-  
+
   bool game_running = true;
   bool debug_test_refresh_done = false;
-  
+
   if(init_SDL() != true) {
     cout << "Failed to init SDL!" << endl;
     return -1;
   }
-  
+
   init_game();
 
-  
+
   SDL_DisplayMode DM;
   SDL_GetCurrentDisplayMode(0, &DM);
   int display_width = DM.w;
@@ -74,47 +74,47 @@ int main() {
 
   SDL_Surface* icon = IMG_Load(icon_path);
   SDL_SetWindowIcon(win.get(), icon);
-  
+
 
   //BMP test_char(win, ren, "images/test_char_2.bmp", 0, 0);
   Player player(win, ren);
   World world(win, ren, fps, player);
 
 
-  
+
   PNG UI_base(win, ren, base_ui_image_path, 0, 0);
-  
-  
+
+
   /*map<string, Text*> UI_text {
     { "player_title", new Text(win, ren, fonts["main_16"], color_white, "Player", 30, 22) },
     { "player_level", new Text(win, ren, fonts["main_14"], color_white, "Level 1", 0, 23) },
     { "player_xp", new Text(win, ren, fonts["main_12"], color_white, ("0/" + format_number(xp_rates[0]) + " xp"), 157, 40) }
   };
-  
+
   UI_text["player_level"]->align_right();
   UI_text["player_level"]->set_x(114);*/
-  
-  
-  
+
+
+
   Text level_up(win, ren, fonts["main_32"], color_white, "Level up! You are now level ", 0, 0);
   level_up.align_center();
   level_up.set_y((level_up.get_y() - 55));
-  
-  
-  
+
+
+
   Text hello_text(win, ren, fonts["main_20"], color_white, "Use WASD to move, F1 to toggle debug menu, F5 to give 5 xp, Q / E to switch inventory slots", 0, 0);
   hello_text.align_center_x();
   hello_text.align_bottom();
   hello_text.set_y((hello_text.get_y() - 60));
 
-  
-  
+
+
   map<string, Text*> debug_info {
     { "ticks", new Text(win, ren, fonts["main_20"], color_white, "Ticks: 0", 0, 1) },
     { "frames", new Text(win, ren, fonts["main_20"], color_white, "Frames: 0", 0, 2) },
     { "fps", new Text(win, ren, fonts["main_20"], color_white, "FPS: 0", 0, 3) },
     { "delta_time", new Text(win, ren, fonts["main_20"], color_white, "Delta Time: 0", 0, 4) },
-    
+
     { "player_hp", new Text(win, ren, fonts["main_20"], color_white, "Health: 0/0", 0, 6) },
     { "player_lvl", new Text(win, ren, fonts["main_20"], color_white, "Level: 0", 0, 7) },
     { "player_xp", new Text(win, ren, fonts["main_20"], color_white, "XP: 0", 0, 8) },
@@ -122,14 +122,14 @@ int main() {
     { "player_xy", new Text(win, ren, fonts["main_20"], color_white, "X: 0, Y: 0", 0, 10) },
     { "player_pos", new Text(win, ren, fonts["main_20"], color_white, "Position (ROW x COL): 0x0", 0, 11) }
   };
-  
+
   init_debug_info_position(debug_info);
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
   while(game_running) {
     while(SDL_PollEvent(&event)) {
       if(event.type == SDL_QUIT) game_running = false;
@@ -140,7 +140,7 @@ int main() {
         else if(event.key.keysym.sym == SDLK_F8) player.skill("Smithing")->increase_xp(5);
         else if(event.key.keysym.sym == SDLK_F9) player.skill("Fishing")->increase_xp(5);
         else if(event.key.keysym.sym == SDLK_F10) player.skill("Cooking")->increase_xp(5);
-        
+
         else if(event.key.keysym.sym == SDLK_F1) debug_mode = !debug_mode;
         else if(event.key.keysym.sym == SDLK_q) {
           player.prev_inventory_slot();
@@ -155,55 +155,55 @@ int main() {
         //if(event.type != 1024 && event.type != 512) cout << ">> Event: " << event.type << endl;
       }
     }
-    
+
     fps.update();
     world.update();
-    
+
 
     ren.clear();
     world.render();
 
     hello_text.render();
-    
-    
-    
+
+
+
     if(player.has_leveled_up()) {
       level_up.update("Level up! You are now level " + format_number(player.level()));
       level_up.render();
     }
-    
-    
+
+
     if(fps.ticks() >= 2500) {
       if(!debug_test_refresh_done) {
         // used for debugging future features
-        
+
         debug_test_refresh_done = true;
       }
     }
-    
-    
-    
-    
+
+
+
+
     UI_base.render();
-    
+
     // render UI text
-    /*for(auto const& value : UI_text) {
+    /*for(const auto& value : UI_text) {
       value.second->render();
     }*/
-    
-    
+
+
     player.render_inventory();
-    
-    
+
+
     update_debug_info(debug_info, fps, player, world);
     if(debug_mode) render_debug_info(debug_info);
-    
+
     ren.update(); // update the screen
     // SDL_Delay(1000); // <= sometimes used for debuggning issues
   }
 
 
-  for(auto const& value : fonts) {
+  for(const auto& value : fonts) {
     TTF_CloseFont(value.second);
   }
 

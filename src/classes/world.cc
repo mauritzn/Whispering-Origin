@@ -76,7 +76,7 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
           data = line.substr(2); // remove data type
           tiles_to_add = explode_string(data, '|');
 
-          for(string const& value: tiles_to_add) {
+          for(const string& value: tiles_to_add) {
             if(line[0] == 'C') {
               this->add_to_grid(value, COLLIDER);
             } else if(line[0] == 'T') {
@@ -204,7 +204,7 @@ void World::update_neighbors() {
 
 
 
-  for(TILE const& value: _tiles) {
+  for(const TILE& value: _tiles) {
     if(value->get_type() != TERRAIN) {
       if(value->get_row_and_col() == row_and_col_north) {
         n_dir = N_NORTH;
@@ -388,7 +388,7 @@ void World::update() {
 
 
 
-  for(TILE const& value: _tiles) {
+  for(const TILE& value: _tiles) {
     if(value->get_type() != TERRAIN && value->get_type() != COLLIDER) {
       value->update();
     }
@@ -399,7 +399,7 @@ void World::update() {
 void World::render() {
   _texture->render();
 
-  for(TILE const& value: _tiles) {
+  for(const TILE& value: _tiles) {
     if(value->get_type() != TERRAIN && value->get_type() != COLLIDER) {
       value->set_x(value->get_original_x() + this->get_x());
       value->set_y(value->get_original_y() + this->get_y());
@@ -409,7 +409,7 @@ void World::render() {
   for(int row = 0; row < (this->width() / grid_size); row++) {
     if(this->get_player_row() == row) _player->render();
 
-    for(TILE const& value: _tiles) {
+    for(const TILE& value: _tiles) {
       // needs to be tweaked a bit
       if(floor((value->get_original_y() + (value->height() - grid_size)) / grid_size) == row) {
         value->render();
