@@ -20,8 +20,8 @@ const TILE_DATA grid_tiles {
 };
 
 const TILE_NAMES grid_tile_names {
-  { TREE_OAK, "Oak" },
-  { ORE_COPPER, "Copper" },
+  { TREE_OAK, "Oak Tree" },
+  { ORE_COPPER, "Copper Ore" },
   { FISH_SALMON, "Salmon" }
 };
 
