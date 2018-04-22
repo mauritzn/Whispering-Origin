@@ -172,6 +172,10 @@ void Item::action() {
         if(_depleted_at == 0) {
           _depleted_at = _fps->ticks();
           _item_image->set_image_x(_item_grid_size);
+          
+          if(_type == TREE) _player->skill("Woodcutting")->increase_xp(5);
+          else if(_type == ORE) _player->skill("Mining")->increase_xp(5);
+          //else if(_type == FISH) _player->skill("Fishing")->increase_xp(5);
         }
       }
     }
