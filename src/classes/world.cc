@@ -16,7 +16,7 @@
 #include "fps.h"
 #include "player.h"
 #include "text.h"
-#include "item.h"
+#include "tile.h"
 
 using namespace std;
 
@@ -28,46 +28,46 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
   _player = &player;
 
   _texture = new PNG(*_win, *_ren, world_texture_path, 0, 0);
-  
-  
-  
+
+
+
   for(int i = 0; i < 4; i++) {
   _debug_neighbor.push_back(new Text(*_win, *_ren, fonts["main_16"], color_white, dir_text[i], 0, 0));
   }
-  
+
   _debug_neighbor[N_NORTH]->align_center();
   _debug_neighbor[N_NORTH]->set_y((_debug_neighbor[N_NORTH]->get_y() - 40));
-  
+
   _debug_neighbor[N_SOUTH]->align_center();
   _debug_neighbor[N_SOUTH]->set_y((_debug_neighbor[N_SOUTH]->get_y() + 50));
-  
+
   _debug_neighbor[N_WEST]->align_center_y();
   _debug_neighbor[N_WEST]->align_right();
   _debug_neighbor[N_WEST]->set_x(((window_width / 2) - (_debug_neighbor[N_WEST]->width() / 2)) - 45);
-  
+
   _debug_neighbor[N_EAST]->align_center_y();
   _debug_neighbor[N_EAST]->set_x(((window_width / 2) - (_debug_neighbor[N_EAST]->width() / 2)) + 45);
-  
-  
-  
+
+
+
   string line;
   string data;
   vector<string> tiles_to_add;
   for(int i = 0; i < 4; i++) _neighbor_tiles.push_back(NULL);
-  
+
   ifstream map_data(world_data_path);
-  
+
   if(map_data.fail()) {
     cout << "!! FAILED TO READ MAP DATA (using default grid size) !!" << endl;
   } else {
     int line_nr = 1;
     while(getline(map_data, line)) {
       //cout << line << endl;
-      
+
       if(line_nr == 1) {
         vector<string> map_header = explode_string(line, ':');
         vector<string> map_size = explode_string(map_header[0], 'x');
-        
+
         _map_width = stoi(map_size[0]);
         _map_height = stoi(map_size[1]);
         grid_size = stoi(map_header[1]);
@@ -75,7 +75,7 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
         if(line.length() > 2) {
           data = line.substr(2); // remove data type
           tiles_to_add = explode_string(data, '|');
-          
+
           for(string const& value: tiles_to_add) {
             if(line[0] == 'C') {
               this->add_to_grid(value, COLLIDER);
@@ -89,29 +89,29 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
           }
         }
       }
-      
+
       line_nr++;
     }
-    
+
     map_data.close();
   }
-  
-  
-  
+
+
+
   // min value is 0
   // max value is -640 ((window_width / 2) * -1)
   //_texture->set_x((window_width / 4) * -1); // center
   _texture->set_x(304 * -1); // center
-  
+
   // min value is 0
   // max value is -360 ((window_height / 2) * -1)
   //_texture->set_y((window_height / 4) * -1); // center
   _texture->set_y(184 * -1); // center
-  
+
   _x = (float) _texture->get_x();
   _y = (float) _texture->get_y();
-  
-  
+
+
   this->update_current_tile();
   this->update_neighbors();
 }
@@ -155,11 +155,11 @@ string World::get_player_row_and_col() {
 
 void World::add_to_grid(const string& string_to_parse, const tile_type& type) {
   vector<string> exploded = explode_string(string_to_parse, 'x');
-  
+
   int row = stoi(exploded[0]);
   int col = 0;
   int id = -1;
-  
+
   if(exploded[1].find(':') != string::npos) {
     exploded = explode_string(exploded[1], ':');
     col = stoi(exploded[0]);
@@ -167,8 +167,8 @@ void World::add_to_grid(const string& string_to_parse, const tile_type& type) {
   } else {
     col = stoi(exploded[1]);
   }
-  
-  _items.push_back(new Item(*_win, *_ren, *_fps, *_player, type, id, row, col));
+
+  _tiles.push_back(new Tile(*_win, *_ren, *_fps, *_player, type, id, row, col));
 }
 
 
@@ -178,33 +178,33 @@ void World::update_current_tile() {
     if(_current_tile->get_row() != this->get_player_row()) {
       _current_tile->set_row(this->get_player_row());
     }
-    
+
     if(_current_tile->get_col() != this->get_player_col()) {
       _current_tile->set_col(this->get_player_col());
     }
   } else {
-    _current_tile = new Item(*_win, *_ren, *_fps, *_player, TERRAIN, -1, this->get_player_row(), this->get_player_col());
+    _current_tile = new Tile(*_win, *_ren, *_fps, *_player, TERRAIN, -1, this->get_player_row(), this->get_player_col());
   }
 }
 
 void World::update_neighbors() {
   bool neighbor_found = false;
   neighbor_direction n_dir = N_SOUTH;
-  
+
   string row_and_col_north = combine_row_and_col((_current_tile->get_row() - 1), _current_tile->get_col());
   string row_and_col_south = combine_row_and_col((_current_tile->get_row() + 1), _current_tile->get_col());
   string row_and_col_west = combine_row_and_col(_current_tile->get_row(), (_current_tile->get_col() - 1));
   string row_and_col_east = combine_row_and_col(_current_tile->get_row(), (_current_tile->get_col() + 1));
-  
-  
+
+
   // reset neighbors
   for(int i = 0; i < 4; i++) {
     _neighbor_tiles[i] = NULL;
   }
-  
-  
-  
-  for(TILE const& value: _items) {
+
+
+
+  for(TILE const& value: _tiles) {
     if(value->get_type() != TERRAIN) {
       if(value->get_row_and_col() == row_and_col_north) {
         n_dir = N_NORTH;
@@ -221,7 +221,7 @@ void World::update_neighbors() {
       } else {
         neighbor_found = false;
       }
-      
+
       if(neighbor_found) _neighbor_tiles[n_dir] = value;
     }
   }
@@ -249,10 +249,10 @@ void World::key_released(SDL_Keycode key){
 
 void World::update() {
   float delta_velocity = (world_velocity * _fps->delta_time());
-  
+
   if(_moving_up) {
     _player->set_direction(NORTH);
-    
+
     if((this->get_player_y() - delta_velocity) > 0) {
       if(_neighbor_tiles[N_NORTH] == NULL) {
         _y += delta_velocity;
@@ -267,10 +267,10 @@ void World::update() {
       }
     }
   }
-  
+
   if(_moving_down) {
     _player->set_direction(SOUTH);
-    
+
     if((this->get_player_y() + delta_velocity) < (_texture->height() - grid_size)) {
       if(_neighbor_tiles[N_SOUTH] == NULL) {
         _y -= delta_velocity;
@@ -285,11 +285,11 @@ void World::update() {
       }
     }
   }
-  
-  
+
+
   if(_moving_left) {
     _player->set_direction(WEST);
-    
+
     if((this->get_player_x() - delta_velocity) > 0) {
       if(_neighbor_tiles[N_WEST] == NULL) {
         _x += delta_velocity;
@@ -304,13 +304,13 @@ void World::update() {
       }
     }
   }
-  
+
   if(_moving_right) {
     _player->set_direction(EAST);
-    
+
     if((this->get_player_x() + delta_velocity) < (_texture->width() - grid_size)) {
       //_x -= delta_velocity;
-      
+
       if(_neighbor_tiles[N_EAST] == NULL) {
         _x -= delta_velocity;
       } else {
@@ -324,21 +324,21 @@ void World::update() {
       }
     }
   }
-  
-  
+
+
   if(_moving_up || _moving_down) {
     _texture->set_y((int) _y);
   }
-  
+
   if(_moving_left || _moving_right) {
     _texture->set_x((int) _x);
   }
-  
-  
+
+
   if(this->get_player_row_and_col() != _current_tile->get_row_and_col()) {
     this->update_current_tile();
     this->update_neighbors();
-    
+
     /*
     if(debug_mode) {
       cout << "PLAYER moved to new tile (" << _current_tile->get_row_and_col() << ")" << endl;
@@ -349,24 +349,24 @@ void World::update() {
       cout << endl;
     }
     */
-    
+
     for(int i = 0; i < 4; i++) {
       if(_neighbor_tiles[i] != NULL) _debug_neighbor[i]->update(type_text[(_neighbor_tiles[i]->get_type())]);
       else _debug_neighbor[i]->update(type_text[4]);
     }
   }
-  
-  
-  
+
+
+
   player_direction to_check = NORTH;
-    
+
   for(int i = 0; i < 4; i++) {
     if(i == N_NORTH) to_check = NORTH;
     else if(i == N_SOUTH) to_check = SOUTH;
     else if(i == N_WEST) to_check = WEST;
     else if(i == N_EAST) to_check = EAST;
-    
-    
+
+
     if(_player->get_direction() == to_check) {
       if(_neighbor_tiles[i] != NULL) {
         if(_action_key_pressed) {
@@ -374,7 +374,7 @@ void World::update() {
             _neighbor_tiles[i]->action();
           }
         }
-        
+
         if(debug_mode) {
           if(_neighbor_tiles[i]->action_on_cooldown()) {
             _debug_neighbor[i]->update(type_text[(_neighbor_tiles[i]->get_type())] + " [ACTION]");
@@ -385,10 +385,10 @@ void World::update() {
       }
     }
   }
-  
-  
-  
-  for(TILE const& value: _items) {
+
+
+
+  for(TILE const& value: _tiles) {
     if(value->get_type() != TERRAIN && value->get_type() != COLLIDER) {
       value->update();
     }
@@ -398,18 +398,18 @@ void World::update() {
 
 void World::render() {
   _texture->render();
-  
-  for(TILE const& value: _items) {
+
+  for(TILE const& value: _tiles) {
     if(value->get_type() != TERRAIN && value->get_type() != COLLIDER) {
       value->set_x(value->get_original_x() + this->get_x());
       value->set_y(value->get_original_y() + this->get_y());
     }
   }
-  
+
   for(int row = 0; row < (this->width() / grid_size); row++) {
     if(this->get_player_row() == row) _player->render();
-    
-    for(TILE const& value: _items) {
+
+    for(TILE const& value: _tiles) {
       // needs to be tweaked a bit
       if(floor((value->get_original_y() + (value->height() - grid_size)) / grid_size) == row) {
         value->render();
@@ -417,20 +417,20 @@ void World::render() {
     }
   }
 
-  
+
   neighbor_direction n_dir = N_SOUTH;
   if(_player->get_direction() == NORTH) n_dir = N_NORTH;
   else if(_player->get_direction() == SOUTH) n_dir = N_SOUTH;
   else if(_player->get_direction() == WEST) n_dir = N_WEST;
   else if(_player->get_direction() == EAST) n_dir = N_EAST;
-  
+
   if(_neighbor_tiles[n_dir] != NULL) {
     if(_neighbor_tiles[n_dir]->get_type() != TERRAIN && _neighbor_tiles[n_dir]->get_type() != COLLIDER) {
       _neighbor_tiles[n_dir]->show_progress();
     }
   }
-  
-  
+
+
   if(debug_mode) {
     for(int i = 0; i < 4; i++) {
       _debug_neighbor[i]->render();

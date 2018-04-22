@@ -42,6 +42,45 @@ enum tree_type {
 };
 
 
+enum player_direction {
+  NORTH = 0,
+  SOUTH = 128,
+  WEST = 64,
+  EAST = 192
+};
+
+
+enum inventory_slots {
+  TOOL_1 = 300,
+  TOOL_2 = 342,
+  TOOL_3 = 384,
+  TOOL_4 = 426,
+
+  SLOT_1 = 475,
+  SLOT_2 = 517,
+  SLOT_3 = 559,
+  SLOT_4 = 601,
+  SLOT_5 = 643,
+  SLOT_6 = 685,
+  SLOT_7 = 727,
+  SLOT_8 = 769,
+  SLOT_9 = 811,
+  SLOT_10 = 853,
+  SLOT_11 = 895,
+  SLOT_12 = 937
+};
+
+
+enum skill_anchor {
+  PLAYER_SKILL,
+  WOODCUTTING_SKILL,
+  MINING_SKILL,
+  SMITHING_SKILL,
+  FISHING_SKILL,
+  COOKING_SKILL
+};
+
+
 
 // General
 extern const int window_width; // define the window's width created by SDL
