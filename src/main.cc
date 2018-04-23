@@ -29,7 +29,6 @@
 #include <cmath>
 
 #include "config.h"
-#include "items.h"
 #include "classes/window.h"
 #include "classes/renderer.h"
 #include "classes/functions.h"
@@ -49,6 +48,7 @@ int main() {
 
   bool game_running = true;
   bool debug_test_refresh_done = false;
+  bool shift_key_pressed = false;
 
   if(init_SDL() != true) {
     cout << "Failed to init SDL!" << endl;
@@ -102,7 +102,7 @@ int main() {
 
 
 
-  Text hello_text(win, ren, fonts["main_20"], color_white, "Use WASD to move, F1 to toggle debug menu, F5 to give 5 xp, Q / E to switch inventory slots", 0, 0);
+  Text hello_text(win, ren, fonts["main_20"], color_white, "Use WASD to move, F1 to toggle debug menu, F5-10 to give 5 xp, Q / E to switch inventory slots, G to drop", 0, 0);
   hello_text.align_center_x();
   hello_text.align_bottom();
   hello_text.set_y((hello_text.get_y() - 60));
@@ -146,10 +146,22 @@ int main() {
           player.prev_inventory_slot();
         } else if(event.key.keysym.sym == SDLK_e) {
           player.next_inventory_slot();
+        } else if(event.key.keysym.sym == SDLK_g) {
+          if(shift_key_pressed) {
+            player.drop_active_stack();
+          } else {
+            player.drop_active_item();
+          }
         } else {
+          if(event.key.keysym.sym == SDLK_LSHIFT || event.key.keysym.sym == SDLK_RSHIFT) {
+            shift_key_pressed = true;
+          }
           world.key_pressed(event.key.keysym.sym);
         }
-      } else if(event.type == SDL_KEYUP) {
+      } else if(event.type == SDL_KEYUP || event.key.keysym.sym == SDLK_RSHIFT) {
+        if(event.key.keysym.sym == SDLK_LSHIFT) {
+          shift_key_pressed = false;
+        }
         world.key_released(event.key.keysym.sym);
       } else {
         //if(event.type != 1024 && event.type != 512) cout << ">> Event: " << event.type << endl;

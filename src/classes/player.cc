@@ -169,8 +169,26 @@ void Player::add_item(items item_to_add) {
   }
 }
 
-void Player::drop_active_item() {}
-void Player::drop_active_stack() {}
+void Player::drop_active_item() {
+  if(_inv_slots[_current_inventory_slot] != NULL) {
+    _inv_slots[_current_inventory_slot]->quantity--;
+
+    if(_inv_slots[_current_inventory_slot]->quantity <= 0) {
+      _inv_slot_texts[_current_inventory_slot]->update("0");
+      _inv_slots[_current_inventory_slot] = NULL;
+    } else {
+      _inv_slot_texts[_current_inventory_slot]->update(format_number(_inv_slots[_current_inventory_slot]->quantity));
+    }
+  }
+}
+
+void Player::drop_active_stack() {
+  if(_inv_slots[_current_inventory_slot] != NULL) {
+    _inv_slots[_current_inventory_slot]->quantity = 0;
+    _inv_slots[_current_inventory_slot] = NULL;
+    _inv_slot_texts[_current_inventory_slot]->update("0");
+  }
+}
 
 
 int Player::current_inventory_slot() {

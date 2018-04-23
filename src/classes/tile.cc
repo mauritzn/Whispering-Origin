@@ -5,7 +5,6 @@
 #include <sstream>
 
 #include "tile.h"
-#include "../items.h"
 #include "functions.h"
 #include "images.h"
 #include "../config.h"
