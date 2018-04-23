@@ -15,6 +15,11 @@
 
 using namespace std;
 
+struct inv_slot {
+  items item;
+  int quantity = 0;
+};
+
 
 class Player {
   private:
@@ -25,14 +30,11 @@ class Player {
 
     int _hp;
     uint32_t _money = 0;
-    int _acc = 7;   // Player Accuracy
 
     PNG* UI_active_slot;
 
     int _current_inventory_slot = 0;
-    vector<inventory_slots> _inv_slots = {
-      SLOT_1, SLOT_2, SLOT_3, SLOT_4, SLOT_5, SLOT_6, SLOT_7, SLOT_8, SLOT_9, SLOT_10, SLOT_11, SLOT_12
-    };
+    vector<inv_slot*> _inv_slots;
 
     vector<Skill*> _skills = { NULL, NULL, NULL, NULL, NULL, NULL };
 
@@ -62,6 +64,10 @@ class Player {
     void damage(int);
     bool is_alive();
 
+
+    void add_item(items item_to_add);
+    void drop_active_item();
+    void drop_active_stack();
 
     int current_inventory_slot();
     void set_inventory_slot(int);

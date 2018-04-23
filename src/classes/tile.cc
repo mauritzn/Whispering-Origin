@@ -178,6 +178,8 @@ void Tile::action() {
       else if(_type == ORE) _player->skill("Mining")->increase_xp(5);
       //else if(_type == FISH) _player->skill("Fishing")->increase_xp(5);
 
+      _player->add_item(grid_tile_drops.at(_id));
+
       if(_resources_left == 0) {
         if(_depleted_at == 0) {
           _depleted_at = _fps->ticks();

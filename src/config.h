@@ -62,7 +62,7 @@ enum player_direction {
 };
 
 
-enum inventory_slots {
+enum inventory_slot_positions {
   TOOL_1 = 300,
   TOOL_2 = 342,
   TOOL_3 = 384,
@@ -81,6 +81,20 @@ enum inventory_slots {
   SLOT_11 = 895,
   SLOT_12 = 937
 };
+
+extern const vector<inventory_slot_positions> inv_slot_pos;
+
+
+enum items {
+  I_OAK_LOG,
+  I_COPPER_ORE,
+  I_SALMON
+};
+
+typedef map<grid_tile_data, items> TILE_DROPS;
+typedef map<items, string> ITEM_NAMES;
+extern const TILE_DROPS grid_tile_drops;
+extern const ITEM_NAMES item_names;
 
 
 enum skill_anchor {
@@ -150,6 +164,7 @@ extern const int monster_grid_size;
 // Player
 extern const int max_level; // define how far the player can level
 extern const uint32_t max_money; // define how much money the player can have
+extern const int max_item_stack;
 
 extern const int time_to_display_level_up_message; // define how long the level up message should be shown (in milliseconds)
 

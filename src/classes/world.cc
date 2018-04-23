@@ -68,7 +68,6 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
   string line;
   string data;
   vector<string> tiles_to_add;
-  for(int i = 0; i < 4; i++) _neighbor_tiles.push_back(NULL);
 
   ifstream map_data(world_data_path);
 

@@ -26,6 +26,24 @@ const TILE_NAMES grid_tile_names {
 };
 
 
+const vector<inventory_slot_positions> inv_slot_pos = {
+  SLOT_1, SLOT_2, SLOT_3, SLOT_4, SLOT_5, SLOT_6, SLOT_7, SLOT_8, SLOT_9, SLOT_10, SLOT_11, SLOT_12
+};
+
+
+const TILE_DROPS grid_tile_drops {
+  { TREE_OAK, I_OAK_LOG },
+  { ORE_COPPER, I_COPPER_ORE },
+  { FISH_SALMON, I_SALMON }
+};
+
+const ITEM_NAMES item_names {
+  { I_OAK_LOG, "Oak Log" },
+  { I_COPPER_ORE, "Copper Ore" },
+  { I_SALMON, "Salmon" }
+};
+
+
 
 
 // General
@@ -84,5 +102,6 @@ const string monster_image_path = "images/beetle5.PNG";
 // Player
 const int max_level = 20;
 const uint32_t max_money = 2000000;
+const int max_item_stack = 10;
 
 const int time_to_display_level_up_message = 3500;

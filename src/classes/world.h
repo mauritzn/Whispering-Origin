@@ -50,7 +50,7 @@ class World {
     bool _action_key_pressed = false;
 
     TILE _current_tile = NULL;
-    vector<TILE> _neighbor_tiles;
+    vector<TILE> _neighbor_tiles = { NULL, NULL, NULL, NULL };
 
     GRID _tiles;
 

@@ -22,23 +22,28 @@ Player::Player(Window& win, Renderer& ren) {
   _character->set_container_height(character_grid_size);
   _character->set_image_width(character_grid_size);
   _character->set_image_height(character_grid_size);
-  
+
   _character->align_center();
   _character->set_image_y(SOUTH);
-  
+
   UI_active_slot = new PNG(*_win, *_ren, active_slot_image_path, 0, 0);
   UI_active_slot->align_bottom();
-  UI_active_slot->set_x(_inv_slots[0]);
-  
-  
+  UI_active_slot->set_x(inv_slot_pos[0]);
+
+
   _skills.at(PLAYER_SKILL) = new Skill(*_win, *_ren, "Player", 127, 12, 25, 22);
   _hp = this->max_health();
-  
+
   _skills.at(WOODCUTTING_SKILL) = new Skill(*_win, *_ren, "Woodcutting", 142, 8, 64, 512);
   _skills.at(MINING_SKILL) = new Skill(*_win, *_ren, "Mining", 142, 8, 64, 549);
   _skills.at(SMITHING_SKILL) = new Skill(*_win, *_ren, "Smithing", 142, 8, 64, 586);
   _skills.at(FISHING_SKILL) = new Skill(*_win, *_ren, "Fishing", 142, 8, 64, 623);
   _skills.at(COOKING_SKILL) = new Skill(*_win, *_ren, "Cooking", 142, 8, 64, 660);
+
+
+  for(int i = 0; (unsigned) i < inv_slot_pos.size(); i++) {
+    _inv_slots.push_back(NULL);
+  }
 }
 
 
@@ -74,7 +79,7 @@ Skill* Player::skill(string skill_name) {
       }
     }
   }
-  
+
   return NULL;
 }
 
@@ -103,25 +108,73 @@ bool Player::is_alive() {
 
 
 
+void Player::add_item(items item_to_add) {
+  inv_slot* add_to = NULL;
+
+  for(inv_slot*& value: _inv_slots) {
+    if(value != NULL) {
+      if(value->item == item_to_add) {
+        if(value->quantity < max_item_stack) {
+          add_to = value;
+        }
+      }
+    }
+  }
+
+  if(add_to == NULL) {
+    for(inv_slot*& value: _inv_slots) {
+      if(value == NULL) {
+        if(add_to == NULL) {
+          value = new inv_slot();
+          value->item = item_to_add;
+          value->quantity = 0;
+          add_to = value;
+        }
+      }
+    }
+  }
+
+  if(add_to != NULL) {
+    add_to->quantity++;
+
+    cout << "Added item to inventory || " << item_names.at(item_to_add) << endl;
+
+    int slot_nr = 1;
+    for(inv_slot*& value: _inv_slots) {
+      if(value != NULL) {
+        cout << "Slot #" << slot_nr++ << " => " << item_names.at(value->item) << " || " << value->quantity << "/10" << endl;
+      } else {
+        cout << "Slot #" << slot_nr++ << " => " << "EMPTY" << endl;
+      }
+    }
+
+    cout << endl;
+  }
+}
+
+void Player::drop_active_item() {}
+void Player::drop_active_stack() {}
+
+
 int Player::current_inventory_slot() {
   return _current_inventory_slot;
 }
 
 void Player::set_inventory_slot(int new_slot) {
-  _current_inventory_slot = constrain(new_slot, 0, (_inv_slots.size() - 1));
-  UI_active_slot->set_x(_inv_slots[_current_inventory_slot]);
+  _current_inventory_slot = constrain(new_slot, 0, (inv_slot_pos.size() - 1));
+  UI_active_slot->set_x(inv_slot_pos[_current_inventory_slot]);
 }
 
 void Player::prev_inventory_slot() {
   _current_inventory_slot--;
-  if(_current_inventory_slot < 0) _current_inventory_slot = (_inv_slots.size() - 1);
-  UI_active_slot->set_x(_inv_slots[_current_inventory_slot]);
+  if(_current_inventory_slot < 0) _current_inventory_slot = (inv_slot_pos.size() - 1);
+  UI_active_slot->set_x(inv_slot_pos[_current_inventory_slot]);
 }
 
 void Player::next_inventory_slot() {
   _current_inventory_slot++;
-  if((unsigned) _current_inventory_slot >= _inv_slots.size()) _current_inventory_slot = 0;
-  UI_active_slot->set_x(_inv_slots[_current_inventory_slot]);
+  if((unsigned) _current_inventory_slot >= inv_slot_pos.size()) _current_inventory_slot = 0;
+  UI_active_slot->set_x(inv_slot_pos[_current_inventory_slot]);
 }
 
 
@@ -181,8 +234,8 @@ void Player::render_inventory() {
 
 void Player::render() {
   _character->render();
-  
-  
+
+
   for(Skill* value: _skills) {
     value->render();
   }
