@@ -91,10 +91,17 @@ enum items {
   I_SALMON
 };
 
+struct pos_xy {
+  int x = 0;
+  int y = 0;
+};
+
 typedef map<grid_tile_data, items> TILE_DROPS;
 typedef map<items, string> ITEM_NAMES;
+typedef map<items, pos_xy> ITEM_POS;
 extern const TILE_DROPS grid_tile_drops;
 extern const ITEM_NAMES item_names;
+extern const ITEM_POS item_pos;
 
 
 enum skill_anchor {
@@ -167,5 +174,11 @@ extern const uint32_t max_money; // define how much money the player can have
 extern const int max_item_stack;
 
 extern const int time_to_display_level_up_message; // define how long the level up message should be shown (in milliseconds)
+
+
+// Items
+extern const string items_image_path;
+extern const int item_grid_size;
+
 
 #endif

@@ -35,6 +35,8 @@ class Player {
 
     int _current_inventory_slot = 0;
     vector<inv_slot*> _inv_slots;
+    vector<Text*> _inv_slot_texts;
+    vector<PNG*> _inv_slot_images;
 
     vector<Skill*> _skills = { NULL, NULL, NULL, NULL, NULL, NULL };
 

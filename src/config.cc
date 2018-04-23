@@ -43,6 +43,12 @@ const ITEM_NAMES item_names {
   { I_SALMON, "Salmon" }
 };
 
+const ITEM_POS item_pos {
+  { I_OAK_LOG, { 0, 0 } },
+  { I_COPPER_ORE, { 0, 40 } },
+  { I_SALMON, { 0, 80 } }
+};
+
 
 
 
@@ -105,3 +111,8 @@ const uint32_t max_money = 2000000;
 const int max_item_stack = 10;
 
 const int time_to_display_level_up_message = 3500;
+
+
+// Items
+const string items_image_path = "images/items.png";
+const int item_grid_size = 40;

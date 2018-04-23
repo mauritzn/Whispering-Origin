@@ -10,6 +10,7 @@
 #include "functions.h"
 #include "../config.h"
 #include "skill.h"
+#include "text.h"
 
 using namespace std;
 
@@ -41,8 +42,20 @@ Player::Player(Window& win, Renderer& ren) {
   _skills.at(COOKING_SKILL) = new Skill(*_win, *_ren, "Cooking", 142, 8, 64, 660);
 
 
-  for(int i = 0; (unsigned) i < inv_slot_pos.size(); i++) {
+  for(const inventory_slot_positions& value: inv_slot_pos) {
     _inv_slots.push_back(NULL);
+    //_debug_neighbor.push_back(new Text(*_win, *_ren, fonts["main_16"], color_white, dir_text[i], 0, 0));
+
+    _inv_slot_texts.push_back(new Text(*_win, *_ren, fonts["main_16"], color_white, "0", 0, 700));
+    _inv_slot_texts.back()->align_right();
+    _inv_slot_texts.back()->set_x(value + (item_grid_size - _inv_slot_texts.back()->width()) - 1);
+
+    _inv_slot_images.push_back(new PNG(*_win, *_ren, items_image_path, (value + 2), 678));
+    _inv_slot_images.back()->set_container_width(item_grid_size);
+    _inv_slot_images.back()->set_container_height(item_grid_size);
+    _inv_slot_images.back()->set_image_width(item_grid_size);
+    _inv_slot_images.back()->set_image_height(item_grid_size);
+    _inv_slot_images.back()->set_image_y(0);
   }
 }
 
@@ -136,19 +149,23 @@ void Player::add_item(items item_to_add) {
 
   if(add_to != NULL) {
     add_to->quantity++;
+    //cout << "Added item to inventory || " << item_names.at(item_to_add) << endl;
 
-    cout << "Added item to inventory || " << item_names.at(item_to_add) << endl;
-
-    int slot_nr = 1;
+    int slot_nr = 0;
     for(inv_slot*& value: _inv_slots) {
       if(value != NULL) {
-        cout << "Slot #" << slot_nr++ << " => " << item_names.at(value->item) << " || " << value->quantity << "/10" << endl;
+        //cout << "Slot #" << (slot_nr + 1) << " => " << item_names.at(value->item) << " || " << value->quantity << "/10" << endl;
+        _inv_slot_texts[slot_nr]->update(format_number(value->quantity));
+        _inv_slot_images[slot_nr]->set_image_y(item_pos.at(value->item).y);
       } else {
-        cout << "Slot #" << slot_nr++ << " => " << "EMPTY" << endl;
+        //cout << "Slot #" << (slot_nr + 1) << " => " << "EMPTY" << endl;
+        _inv_slot_texts[slot_nr]->update("0");
       }
+
+      slot_nr++;
     }
 
-    cout << endl;
+    //cout << endl;
   }
 }
 
@@ -230,11 +247,20 @@ bool Player::has_leveled_up() {
 
 void Player::render_inventory() {
   UI_active_slot->render();
+
+  int slot_nr = 0;
+  for(inv_slot*& value: _inv_slots) {
+    if(value != NULL) {
+      _inv_slot_images[slot_nr]->render();
+      _inv_slot_texts[slot_nr]->render();
+    }
+
+    slot_nr++;
+  }
 }
 
 void Player::render() {
   _character->render();
-
 
   for(Skill* value: _skills) {
     value->render();
