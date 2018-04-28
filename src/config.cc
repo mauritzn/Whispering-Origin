@@ -70,6 +70,17 @@ const int SDL_image_flags = IMG_INIT_JPG|IMG_INIT_PNG;
 
 vector<int> xp_rates;
 
+const vector<string> dir_text = {
+  "North",
+  "North East",
+  "East",
+  "South East",
+  "South",
+  "South West",
+  "West",
+  "North West"
+};
+
 
 // UI
 const string base_ui_image_path = "images/UI.png";

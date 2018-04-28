@@ -28,14 +28,6 @@ class World {
     FPS* _fps; // used to get delta time
     Player* _player; // (will be) used to change the player sprite
 
-
-
-
-    vector<Text*> _debug_neighbor;
-
-
-
-
     Image* _texture;
     float _x = 0;
     float _y = 0;
@@ -50,8 +42,8 @@ class World {
     bool _action_key_pressed = false;
 
     TILE _current_tile = NULL;
-    vector<TILE> _neighbor_tiles = { NULL, NULL, NULL, NULL };
-
+    vector<TILE> _neighbor_tiles;
+    vector<Text*> _debug_neighbor;
     GRID _tiles;
 
     vector<Image*> _to_render;

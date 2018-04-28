@@ -21,21 +21,6 @@
 using namespace std;
 
 
-const string dir_text[4] = {
-  "North",
-  "East",
-  "South",
-  "West"
-};
-
-/*
-COLLIDER = 0,
-TREE = 10,
-ORE = 20,
-FISH = 30
-*/
-
-
 World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
   _win = &win;
   _ren = &ren;
@@ -45,10 +30,11 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
   _texture = new Image(*_win, *_ren, world_texture_path, 0, 0);
 
 
-
-  for(int i = 0; i < 4; i++) {
+  for(int i = 0; i < (signed) dir_text.size(); i++) _neighbor_tiles.push_back(NULL);
+  for(int i = 0; i < (signed) dir_text.size(); i++) {
     _debug_neighbor.push_back(new Text(*_win, *_ren, fonts["main_16"], color_white, dir_text[i], 0, 0));
   }
+
 
   _debug_neighbor[N_NORTH]->align_center();
   _debug_neighbor[N_NORTH]->y((_debug_neighbor[N_NORTH]->y() - 40));
@@ -208,7 +194,7 @@ void World::update_neighbors() {
 
 
   // reset neighbors
-  for(int i = 0; i < 4; i++) {
+  for(int i = 0; i < (signed) _neighbor_tiles.size(); i++) {
     _neighbor_tiles[i] = NULL;
   }
 
@@ -344,7 +330,7 @@ void World::update() {
     }*/
 
 
-    for(int i = 0; i < 4; i++) {
+    for(int i = 0; i < (signed) _neighbor_tiles.size(); i++) {
       if(_neighbor_tiles[i] != NULL) _debug_neighbor[i]->update(_neighbor_tiles[i]->tile_name());
       else _debug_neighbor[i]->update("Terrain");
     }
@@ -352,34 +338,28 @@ void World::update() {
 
 
 
-  player_direction to_check = NORTH;
 
-  for(int i = 0; i < 4; i++) {
-    if(i == N_NORTH) to_check = NORTH;
-    else if(i == N_SOUTH) to_check = SOUTH;
-    else if(i == N_WEST) to_check = WEST;
-    else if(i == N_EAST) to_check = EAST;
+  neighbor_direction n_dir = N_SOUTH;
+  if(_player->direction() == NORTH) n_dir = N_NORTH;
+  else if(_player->direction() == SOUTH) n_dir = N_SOUTH;
+  else if(_player->direction() == WEST) n_dir = N_WEST;
+  else if(_player->direction() == EAST) n_dir = N_EAST;
 
+  if(_neighbor_tiles[n_dir] != NULL) {
+    if(_action_key_pressed) {
+      if(_neighbor_tiles[n_dir]->type() != COLLIDER) {
+        _neighbor_tiles[n_dir]->action();
+      }
+    }
 
-    if(_player->direction() == to_check) {
-      if(_neighbor_tiles[i] != NULL) {
-        if(_action_key_pressed) {
-          if(_neighbor_tiles[i]->type() != COLLIDER) {
-            _neighbor_tiles[i]->action();
-          }
-        }
-
-        if(debug_mode) {
-          if(_neighbor_tiles[i]->action_on_cooldown()) {
-            _debug_neighbor[i]->update(_neighbor_tiles[i]->tile_name() + " [ACTION]");
-          } else {
-            _debug_neighbor[i]->update(_neighbor_tiles[i]->tile_name());
-          }
-        }
+    if(debug_mode) {
+      if(_neighbor_tiles[n_dir]->action_on_cooldown()) {
+        _debug_neighbor[n_dir]->update(_neighbor_tiles[n_dir]->tile_name() + " [ACTION]");
+      } else {
+        _debug_neighbor[n_dir]->update(_neighbor_tiles[n_dir]->tile_name());
       }
     }
   }
-
 
 
   for(const TILE& value: _tiles) {
@@ -426,8 +406,10 @@ void World::render() {
 
 
   if(debug_mode) {
-    for(int i = 0; i < 4; i++) {
-      _debug_neighbor[i]->render();
+    for(int i = 0; i < (signed) _debug_neighbor.size(); i++) {
+      if(i == N_NORTH || i == N_EAST || i == N_SOUTH || i == N_WEST) {
+        _debug_neighbor[i]->render();
+      }
     }
   }
 }

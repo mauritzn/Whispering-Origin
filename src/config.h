@@ -39,9 +39,13 @@ extern const TILE_NAMES grid_tile_names;
 
 enum neighbor_direction {
   N_NORTH,
+  N_NORTH_EAST,
   N_EAST,
+  N_SOUTH_EAST,
   N_SOUTH,
-  N_WEST
+  N_SOUTH_WEST,
+  N_WEST,
+  N_NORTH_WEST
 };
 
 enum tree_state {
@@ -131,6 +135,7 @@ extern const int debug_info_y_padding;
 extern const int SDL_image_flags;
 
 extern vector<int> xp_rates;
+extern const vector<string> dir_text;
 
 
 // UI
