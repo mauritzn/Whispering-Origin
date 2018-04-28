@@ -74,14 +74,14 @@ Tile::Tile(Window& win, Renderer& ren, FPS& fps, Player& player, const grid_tile
 
     _tile_image = new PNG(*_win, *_ren, tile_image_path, tile_x, tile_y);
 
-    _tile_image->set_container_width(_tile_grid_size);
-    _tile_image->set_container_height(_tile_grid_size);
-    _tile_image->set_image_width(_tile_grid_size);
-    _tile_image->set_image_height(_tile_grid_size);
+    _tile_image->container_width(_tile_grid_size);
+    _tile_image->container_height(_tile_grid_size);
+    _tile_image->image_width(_tile_grid_size);
+    _tile_image->image_height(_tile_grid_size);
 
     // 0 value is temporary
-    _tile_image->set_image_x(0);
-    _tile_image->set_image_y(0);
+    _tile_image->image_x(0);
+    _tile_image->image_y(0);
   } else {
     _tile_image = NULL;
   }
@@ -105,41 +105,41 @@ int Tile::height() {
 }
 
 
-int Tile::get_x_start() { return _x_start; }
-int Tile::get_x_end() { return _x_end; }
+int Tile::x_start() { return _x_start; }
+int Tile::x_end() { return _x_end; }
 
-int Tile::get_y_start() { return _y_start; }
-int Tile::get_y_end() { return _y_end; }
+int Tile::y_start() { return _y_start; }
+int Tile::y_end() { return _y_end; }
 
 
-int Tile::get_original_x() {
+int Tile::original_x() {
   if(_tile_image != NULL) {
-    return _tile_image->get_original_x();
+    return _tile_image->original_x();
   } else {
     return 0;
   }
 }
-int Tile::get_original_y() {
+int Tile::original_y() {
   if(_tile_image != NULL) {
-    return _tile_image->get_original_y();
+    return _tile_image->original_y();
   } else {
     return 0;
   }
 }
 
-void Tile::set_x(int new_x) {
+void Tile::x(int new_x) {
   if(_tile_image != NULL) {
-    _tile_image->set_x(new_x);
+    _tile_image->x(new_x);
   }
 }
-void Tile::set_y(int new_y) {
+void Tile::y(int new_y) {
   if(_tile_image != NULL) {
-    _tile_image->set_y(new_y);
+    _tile_image->y(new_y);
   }
 }
 
 
-void Tile::set_row(int new_row) {
+void Tile::row(int new_row) {
   _row = new_row;
   _row_and_col = combine_row_and_col(_row, _col);
 
@@ -147,7 +147,7 @@ void Tile::set_row(int new_row) {
   _y_end = (_y_start + grid_size);
 }
 
-void Tile::set_col(int new_col) {
+void Tile::col(int new_col) {
   _col = new_col;
   _row_and_col = combine_row_and_col(_row, _col);
 
@@ -155,9 +155,9 @@ void Tile::set_col(int new_col) {
   _x_end = (_x_start + grid_size);
 }
 
-int Tile::get_row() { return _row; }
-int Tile::get_col() { return _col; }
-string Tile::get_row_and_col() { return _row_and_col; }
+int Tile::row() { return _row; }
+int Tile::col() { return _col; }
+string Tile::row_and_col() { return _row_and_col; }
 
 
 grid_tile_data Tile::id() { return _id; }
@@ -182,7 +182,7 @@ void Tile::action() {
       if(_resources_left == 0) {
         if(_depleted_at == 0) {
           _depleted_at = _fps->ticks();
-          _tile_image->set_image_x(_tile_grid_size);
+          _tile_image->image_x(_tile_grid_size);
         }
       }
     }
@@ -199,10 +199,10 @@ bool Tile::action_on_cooldown() {
 
 
 void Tile::show_progress() {
-  _progress_text->set_x(_tile_image->get_x() + ((_tile_image->width() / 2) - (_progress_text->width() / 2)));
-  _progress_text->set_y(_tile_image->get_y());
+  _progress_text->x(_tile_image->x() + ((_tile_image->width() / 2) - (_progress_text->width() / 2)));
+  _progress_text->y(_tile_image->y());
 
-  if(_type == ORE) _progress_text->set_y(_progress_text->get_y() - 30);
+  if(_type == ORE) _progress_text->y(_progress_text->y() - 30);
 
   _progress_text->render();
 }
@@ -212,7 +212,7 @@ void Tile::update() {
   if(_depleted_at > 0) {
     if(_fps->ticks() - _depleted_at >= 5000) {
       _depleted_at = 0;
-      _tile_image->set_image_x(0);
+      _tile_image->image_x(0);
       _resources_left = _resources;
       _progress_text->update((format_number(_resources_left) + "/" + format_number(_resources)));
     } else {

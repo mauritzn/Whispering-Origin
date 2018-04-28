@@ -43,10 +43,10 @@ float FPS::delta_time() {
   return _delta_time;
 }
 
-float FPS::get() {
+float FPS::current() {
   return _fps_current;
 }
 
-float FPS::get_prev() {
+float FPS::prev() {
   return _fps_last;
 }

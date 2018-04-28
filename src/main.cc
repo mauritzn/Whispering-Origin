@@ -92,20 +92,20 @@ int main() {
   };
 
   UI_text["player_level"]->align_right();
-  UI_text["player_level"]->set_x(114);*/
+  UI_text["player_level"]->x(114);*/
 
 
 
   Text level_up(win, ren, fonts["main_32"], color_white, "Level up! You are now level ", 0, 0);
   level_up.align_center();
-  level_up.set_y((level_up.get_y() - 55));
+  level_up.y((level_up.y() - 55));
 
 
 
   Text hello_text(win, ren, fonts["main_20"], color_white, "Use WASD to move, F1 to toggle debug menu, F5-10 to give 5 xp, Q / E to switch inventory slots, G to drop", 0, 0);
   hello_text.align_center_x();
   hello_text.align_bottom();
-  hello_text.set_y((hello_text.get_y() - 60));
+  hello_text.y((hello_text.y() - 60));
 
 
 

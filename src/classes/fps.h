@@ -27,8 +27,8 @@ class FPS {
     uint32_t ticks_prev(); // get the previous SDL Tick count
 
     float delta_time(); // get current delta time
-    float get(); // get the current FPS count
-    float get_prev(); // get the previous FPS count
+    float current(); // get the current FPS count
+    float prev(); // get the previous FPS count
 };
 
 #endif

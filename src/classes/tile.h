@@ -54,26 +54,26 @@ class Tile {
     int width();
     int height();
 
-    int get_x_start();
-    int get_x_end();
+    int x_start();
+    int x_end();
 
-    int get_y_start();
-    int get_y_end();
-
-
-    int get_original_x();
-    int get_original_y();
-
-    void set_x(int);
-    void set_y(int);
+    int y_start();
+    int y_end();
 
 
-    void set_row(int);
-    void set_col(int);
+    int original_x();
+    int original_y();
 
-    int get_row();
-    int get_col();
-    string get_row_and_col();
+    void x(int);
+    void y(int);
+
+
+    void row(int);
+    void col(int);
+
+    int row();
+    int col();
+    string row_and_col();
 
 
     grid_tile_data id();

@@ -19,17 +19,17 @@ Player::Player(Window& win, Renderer& ren) {
   _ren = &ren;
 
   _character = new PNG(*_win, *_ren, character_image_path, 0, 0);
-  _character->set_container_width(character_grid_size);
-  _character->set_container_height(character_grid_size);
-  _character->set_image_width(character_grid_size);
-  _character->set_image_height(character_grid_size);
+  _character->container_width(character_grid_size);
+  _character->container_height(character_grid_size);
+  _character->image_width(character_grid_size);
+  _character->image_height(character_grid_size);
 
   _character->align_center();
-  _character->set_image_y(SOUTH);
+  _character->image_y(SOUTH);
 
   UI_active_slot = new PNG(*_win, *_ren, active_slot_image_path, 0, 0);
   UI_active_slot->align_bottom();
-  UI_active_slot->set_x(inv_slot_pos[0]);
+  UI_active_slot->x(inv_slot_pos[0]);
 
 
   _skills.at(PLAYER_SKILL) = new Skill(*_win, *_ren, "Player", 127, 12, 25, 22);
@@ -48,37 +48,36 @@ Player::Player(Window& win, Renderer& ren) {
 
     _inv_slot_texts.push_back(new Text(*_win, *_ren, fonts["main_16"], color_white, "0", 0, 700));
     _inv_slot_texts.back()->align_right();
-    _inv_slot_texts.back()->set_x(value + (item_grid_size - _inv_slot_texts.back()->width()) - 1);
+    _inv_slot_texts.back()->x(value + (item_grid_size - _inv_slot_texts.back()->width()) - 1);
 
     _inv_slot_images.push_back(new PNG(*_win, *_ren, items_image_path, (value + 2), 678));
-    _inv_slot_images.back()->set_container_width(item_grid_size);
-    _inv_slot_images.back()->set_container_height(item_grid_size);
-    _inv_slot_images.back()->set_image_width(item_grid_size);
-    _inv_slot_images.back()->set_image_height(item_grid_size);
-    _inv_slot_images.back()->set_image_y(0);
+    _inv_slot_images.back()->container_width(item_grid_size);
+    _inv_slot_images.back()->container_height(item_grid_size);
+    _inv_slot_images.back()->image_width(item_grid_size);
+    _inv_slot_images.back()->image_height(item_grid_size);
+    _inv_slot_images.back()->image_y(0);
   }
 }
 
 
-int Player::get_x() { return _character->get_x(); }
-int Player::get_y() { return _character->get_y(); }
+int Player::x() { return _character->x(); }
+int Player::y() { return _character->y(); }
 
-void Player::set_x(int new_x) { _character->set_x(new_x); }
-void Player::set_y(int new_y) { _character->set_y(new_y); }
+void Player::x(int new_x) { _character->x(new_x); }
+void Player::y(int new_y) { _character->y(new_y); }
 
 
-player_direction Player::get_direction() {
-  return (player_direction) _character->get_image_y();
+player_direction Player::direction() {
+  return (player_direction) _character->image_y();
 }
 
-void Player::set_direction(player_direction new_direction) {
-  _character->set_image_y(new_direction);
+void Player::direction(player_direction new_direction) {
+  _character->image_y(new_direction);
 }
 
 
 int Player::max_health() { return (5 * (this->level() + 1)); }
 int Player::health() { return _hp; }
-uint32_t Player::money() { return _money; }
 
 int Player::level() { return _skills.at(PLAYER_SKILL)->level(); }
 int Player::xp() { return _skills.at(PLAYER_SKILL)->xp(); }
@@ -156,7 +155,7 @@ void Player::add_item(items item_to_add) {
       if(value != NULL) {
         //cout << "Slot #" << (slot_nr + 1) << " => " << item_names.at(value->item) << " || " << value->quantity << "/10" << endl;
         _inv_slot_texts[slot_nr]->update(format_number(value->quantity));
-        _inv_slot_images[slot_nr]->set_image_y(item_pos.at(value->item).y);
+        _inv_slot_images[slot_nr]->image_y(item_pos.at(value->item).y);
       } else {
         //cout << "Slot #" << (slot_nr + 1) << " => " << "EMPTY" << endl;
         _inv_slot_texts[slot_nr]->update("0");
@@ -195,23 +194,31 @@ int Player::current_inventory_slot() {
   return _current_inventory_slot;
 }
 
-void Player::set_inventory_slot(int new_slot) {
+void Player::inventory_slot(int new_slot) {
   _current_inventory_slot = constrain(new_slot, 0, (inv_slot_pos.size() - 1));
-  UI_active_slot->set_x(inv_slot_pos[_current_inventory_slot]);
+  UI_active_slot->x(inv_slot_pos[_current_inventory_slot]);
 }
 
 void Player::prev_inventory_slot() {
   _current_inventory_slot--;
   if(_current_inventory_slot < 0) _current_inventory_slot = (inv_slot_pos.size() - 1);
-  UI_active_slot->set_x(inv_slot_pos[_current_inventory_slot]);
+  UI_active_slot->x(inv_slot_pos[_current_inventory_slot]);
 }
 
 void Player::next_inventory_slot() {
   _current_inventory_slot++;
   if((unsigned) _current_inventory_slot >= inv_slot_pos.size()) _current_inventory_slot = 0;
-  UI_active_slot->set_x(inv_slot_pos[_current_inventory_slot]);
+  UI_active_slot->x(inv_slot_pos[_current_inventory_slot]);
 }
 
+
+
+uint32_t Player::money() { return _money; }
+
+void Player::money(int amount) {
+  if((unsigned) amount > max_money) amount = max_money;
+  _money = amount;
+}
 
 void Player::increase_money(int amount) {
   if(amount > 0) {
@@ -235,11 +242,6 @@ void Player::decrease_money(int amount) {
       }
     }
   }
-}
-
-void Player::set_money(int amount) {
-  if((unsigned) amount > max_money) amount = max_money;
-  _money = amount;
 }
 
 

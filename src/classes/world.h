@@ -63,20 +63,20 @@ class World {
     int width();
     int height();
 
-    int get_x();
-    int get_y();
+    int x();
+    int y();
 
-    void set_x(int);
-    void set_y(int);
-
-
-    int get_player_x();
-    int get_player_y();
+    void x(int);
+    void y(int);
 
 
-    int get_player_row();
-    int get_player_col();
-    string get_player_row_and_col();
+    int player_x();
+    int player_y();
+
+
+    int player_row();
+    int player_col();
+    string player_row_and_col();
 
 
     void add_to_grid(const string&);

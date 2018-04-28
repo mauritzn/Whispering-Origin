@@ -184,19 +184,19 @@ void init_game() {
 void init_debug_info_position(const map<string, Text*>& info) {
   Text* first_debug_text;
   for(const auto& value : info) {
-    if(value.second->get_y() == 1) {
+    if(value.second->y() == 1) {
       first_debug_text = value.second;
-      first_debug_text->set_y(debug_info_y_start);
+      first_debug_text->y(debug_info_y_start);
     }
 
-    value.second->set_x(debug_info_x_start);
+    value.second->x(debug_info_x_start);
   }
 
   for(const auto& value : info) {
-    int pos = value.second->get_y();
+    int pos = value.second->y();
 
     if(pos != debug_info_y_start) {
-      value.second->set_y((first_debug_text->get_y() + (value.second->height() * (pos - 1))) + (debug_info_y_padding * (pos - 1)));
+      value.second->y((first_debug_text->y() + (value.second->height() * (pos - 1))) + (debug_info_y_padding * (pos - 1)));
     }
   }
 }
@@ -207,7 +207,7 @@ void update_debug_info(map<string, Text*>& info, FPS& fps, Player& player, World
   info["ticks"]->update("Ticks: " + format_number(fps.ticks()));
 
   if((fps.ticks() % 500) < 250) {
-    info["fps"]->update("FPS: " + to_fixed(fps.get()));
+    info["fps"]->update("FPS: " + to_fixed(fps.current()));
   }
 
   info["delta_time"]->update("Delta Time: " + to_string(fps.delta_time()));
@@ -217,8 +217,8 @@ void update_debug_info(map<string, Text*>& info, FPS& fps, Player& player, World
   info["player_xp"]->update("XP: " + format_number(player.xp()) + "/" + format_number(player.xp_to_level()));
   info["player_lvl"]->update("Level: " + format_number(player.level()) + "/" + to_string(max_level));
   info["player_money"]->update("Money: " + format_number(player.money()));
-  info["player_xy"]->update("X: " + to_string(world.get_player_x()) + ", Y: " + to_string(world.get_player_y()));
-  info["player_pos"]->update("Position (ROW x COL): " + world.get_player_row_and_col());
+  info["player_xy"]->update("X: " + to_string(world.player_x()) + ", Y: " + to_string(world.player_y()));
+  info["player_pos"]->update("Position (ROW x COL): " + world.player_row_and_col());
 }
 
 

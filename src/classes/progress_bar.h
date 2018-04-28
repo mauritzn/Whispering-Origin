@@ -13,17 +13,17 @@ class Progress {
   private:
     Window* _win;
     Renderer* _ren;
-    
+
     int _border_size = 1;
     int _progress = 0; // 0-100
-    
+
     SDL_Color _bar_color;
     SDL_Color _background_color = { 255, 255, 255 };
     SDL_Color _border_color = { 0, 0, 0 };
-    
+
     int _original_x;
     int _original_y;
-    
+
     SDL_Rect _bar_rect;
     SDL_Rect _background_rect;
     SDL_Rect _border_rect;
@@ -31,40 +31,39 @@ class Progress {
 
   public:
     Progress(Window&, Renderer&, SDL_Color, int, int, int, int);
-    
+
     int width();
     int height();
-    
-    void set_width(int);
-    void set_height(int);
-    
+
+    void width(int);
+    void height(int);
+
     int border_size();
-    void set_border_size(int);
-    
-    
-    SDL_Color get_bar_color();
-    SDL_Color get_background_color();
-    SDL_Color get_border_color();
-    
-    void set_bar_color(SDL_Color);
-    void set_background_color(SDL_Color);
-    void set_border_color(SDL_Color);
-    
-    
-    int get_original_x();
-    int get_original_y();
-    
-    int get_x();
-    int get_y();
-    
-    void set_x(int);
-    void set_y(int);
-    
-    
-    void set_progress(int);
-    int get_progress();
-    
-    
+    void border_size(int);
+
+
+    SDL_Color bar_color();
+    SDL_Color background_color();
+    SDL_Color border_color();
+
+    void bar_color(SDL_Color);
+    void background_color(SDL_Color);
+    void border_color(SDL_Color);
+
+
+    int original_x();
+    int original_y();
+
+    int x();
+    int y();
+    void x(int);
+    void y(int);
+
+
+    void progress(int);
+    int progress();
+
+
     void render();
 };
 

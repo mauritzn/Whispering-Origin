@@ -51,17 +51,17 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
   }
 
   _debug_neighbor[N_NORTH]->align_center();
-  _debug_neighbor[N_NORTH]->set_y((_debug_neighbor[N_NORTH]->get_y() - 40));
+  _debug_neighbor[N_NORTH]->y((_debug_neighbor[N_NORTH]->y() - 40));
 
   _debug_neighbor[N_SOUTH]->align_center();
-  _debug_neighbor[N_SOUTH]->set_y((_debug_neighbor[N_SOUTH]->get_y() + 50));
+  _debug_neighbor[N_SOUTH]->y((_debug_neighbor[N_SOUTH]->y() + 50));
 
   _debug_neighbor[N_WEST]->align_center_y();
   _debug_neighbor[N_WEST]->align_right();
-  _debug_neighbor[N_WEST]->set_x(((window_width / 2) - (_debug_neighbor[N_WEST]->width() / 2)) - 45);
+  _debug_neighbor[N_WEST]->x(((window_width / 2) - (_debug_neighbor[N_WEST]->width() / 2)) - 45);
 
   _debug_neighbor[N_EAST]->align_center_y();
-  _debug_neighbor[N_EAST]->set_x(((window_width / 2) - (_debug_neighbor[N_EAST]->width() / 2)) + 45);
+  _debug_neighbor[N_EAST]->x(((window_width / 2) - (_debug_neighbor[N_EAST]->width() / 2)) + 45);
 
 
 
@@ -108,16 +108,16 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
 
   // min value is 0
   // max value is -640 ((window_width / 2) * -1)
-  //_texture->set_x((window_width / 4) * -1); // center
-  _texture->set_x(304 * -1); // center
+  //_texture->x((window_width / 4) * -1); // center
+  _texture->x(304 * -1); // center
 
   // min value is 0
   // max value is -360 ((window_height / 2) * -1)
-  //_texture->set_y((window_height / 4) * -1); // center
-  _texture->set_y(184 * -1); // center
+  //_texture->y((window_height / 4) * -1); // center
+  _texture->y(184 * -1); // center
 
-  _x = (float) _texture->get_x();
-  _y = (float) _texture->get_y();
+  _x = (float) _texture->x();
+  _y = (float) _texture->y();
 
 
   this->update_current_tile();
@@ -129,34 +129,34 @@ int World::width() { return _texture->width(); }
 int World::height() { return _texture->height(); }
 
 
-int World::get_x() { return _texture->get_x(); }
-int World::get_y() { return _texture->get_y(); }
+int World::x() { return _texture->x(); }
+int World::y() { return _texture->y(); }
 
-void World::set_x(int new_x) { _texture->set_x(new_x); }
-void World::set_y(int new_y) { _texture->set_y(new_y); }
+void World::x(int new_x) { _texture->x(new_x); }
+void World::y(int new_y) { _texture->y(new_y); }
 
 
-int World::get_player_x() {
-  int test_x = this->get_x() - (window_width / 2) + (grid_size / 2);
+int World::player_x() {
+  int test_x = this->x() - (window_width / 2) + (grid_size / 2);
   test_x *= -1;
   return test_x;
 }
-int World::get_player_y() {
-  int test_y = this->get_y() - (window_height / 2);
+int World::player_y() {
+  int test_y = this->y() - (window_height / 2);
   test_y *= -1;
   return test_y;
 }
 
 
-int World::get_player_row() {
-  return round(this->get_player_y() / (float) grid_size);
+int World::player_row() {
+  return round(this->player_y() / (float) grid_size);
 }
-int World::get_player_col() {
-  return round(this->get_player_x() / (float) grid_size);
+int World::player_col() {
+  return round(this->player_x() / (float) grid_size);
 }
 
-string World::get_player_row_and_col() {
-  return combine_row_and_col(this->get_player_row(), this->get_player_col());
+string World::player_row_and_col() {
+  return combine_row_and_col(this->player_row(), this->player_col());
 }
 
 
@@ -185,15 +185,15 @@ void World::add_to_grid(const string& string_to_parse) {
 
 void World::update_current_tile() {
   if(_current_tile != NULL) {
-    if(_current_tile->get_row() != this->get_player_row()) {
-      _current_tile->set_row(this->get_player_row());
+    if(_current_tile->row() != this->player_row()) {
+      _current_tile->row(this->player_row());
     }
 
-    if(_current_tile->get_col() != this->get_player_col()) {
-      _current_tile->set_col(this->get_player_col());
+    if(_current_tile->col() != this->player_col()) {
+      _current_tile->col(this->player_col());
     }
   } else {
-    _current_tile = new Tile(*_win, *_ren, *_fps, *_player, (grid_tile_data) -1, this->get_player_row(), this->get_player_col());
+    _current_tile = new Tile(*_win, *_ren, *_fps, *_player, (grid_tile_data) -1, this->player_row(), this->player_col());
   }
 }
 
@@ -201,10 +201,10 @@ void World::update_neighbors() {
   bool neighbor_found = false;
   neighbor_direction n_dir = N_SOUTH;
 
-  string row_and_col_north = combine_row_and_col((_current_tile->get_row() - 1), _current_tile->get_col());
-  string row_and_col_south = combine_row_and_col((_current_tile->get_row() + 1), _current_tile->get_col());
-  string row_and_col_west = combine_row_and_col(_current_tile->get_row(), (_current_tile->get_col() - 1));
-  string row_and_col_east = combine_row_and_col(_current_tile->get_row(), (_current_tile->get_col() + 1));
+  string row_and_col_north = combine_row_and_col((_current_tile->row() - 1), _current_tile->col());
+  string row_and_col_south = combine_row_and_col((_current_tile->row() + 1), _current_tile->col());
+  string row_and_col_west = combine_row_and_col(_current_tile->row(), (_current_tile->col() - 1));
+  string row_and_col_east = combine_row_and_col(_current_tile->row(), (_current_tile->col() + 1));
 
 
   // reset neighbors
@@ -215,16 +215,16 @@ void World::update_neighbors() {
 
 
   for(const TILE& value: _tiles) {
-    if(value->get_row_and_col() == row_and_col_north) {
+    if(value->row_and_col() == row_and_col_north) {
       n_dir = N_NORTH;
       neighbor_found = true;
-    } else if(value->get_row_and_col() == row_and_col_south) {
+    } else if(value->row_and_col() == row_and_col_south) {
       n_dir = N_SOUTH;
       neighbor_found = true;
-    } else if(value->get_row_and_col() == row_and_col_west) {
+    } else if(value->row_and_col() == row_and_col_west) {
       n_dir = N_WEST;
       neighbor_found = true;
-    } else if(value->get_row_and_col() == row_and_col_east) {
+    } else if(value->row_and_col() == row_and_col_east) {
       n_dir = N_EAST;
       neighbor_found = true;
     } else {
@@ -259,13 +259,13 @@ void World::update() {
   float delta_velocity = (world_velocity * _fps->delta_time());
 
   if(_moving_up) {
-    _player->set_direction(NORTH);
+    _player->direction(NORTH);
 
-    if((this->get_player_y() - delta_velocity) > 0) {
+    if((this->player_y() - delta_velocity) > 0) {
       if(_neighbor_tiles[N_NORTH] == NULL) {
         _y += delta_velocity;
       } else {
-        if((this->get_player_y() - delta_velocity) > (_neighbor_tiles[N_NORTH]->get_y_end() - 15)) {
+        if((this->player_y() - delta_velocity) > (_neighbor_tiles[N_NORTH]->y_end() - 15)) {
           _y += delta_velocity;
         }
       }
@@ -273,13 +273,13 @@ void World::update() {
   }
 
   if(_moving_down) {
-    _player->set_direction(SOUTH);
+    _player->direction(SOUTH);
 
-    if((this->get_player_y() + delta_velocity) < (_texture->height() - grid_size)) {
+    if((this->player_y() + delta_velocity) < (_texture->height() - grid_size)) {
       if(_neighbor_tiles[N_SOUTH] == NULL) {
         _y -= delta_velocity;
       } else {
-        if((this->get_player_y() + delta_velocity) < ((_neighbor_tiles[N_SOUTH]->get_y_start() - grid_size) + 0)) {
+        if((this->player_y() + delta_velocity) < ((_neighbor_tiles[N_SOUTH]->y_start() - grid_size) + 0)) {
           _y -= delta_velocity;
         }
       }
@@ -288,13 +288,13 @@ void World::update() {
 
 
   if(_moving_left) {
-    _player->set_direction(WEST);
+    _player->direction(WEST);
 
-    if((this->get_player_x() - delta_velocity) > 0) {
+    if((this->player_x() - delta_velocity) > 0) {
       if(_neighbor_tiles[N_WEST] == NULL) {
         _x += delta_velocity;
       } else {
-        if((this->get_player_x() - delta_velocity) > (_neighbor_tiles[N_WEST]->get_x_end() - 10)) {
+        if((this->player_x() - delta_velocity) > (_neighbor_tiles[N_WEST]->x_end() - 10)) {
           _x += delta_velocity;
         }
       }
@@ -302,15 +302,15 @@ void World::update() {
   }
 
   if(_moving_right) {
-    _player->set_direction(EAST);
+    _player->direction(EAST);
 
-    if((this->get_player_x() + delta_velocity) < (_texture->width() - grid_size)) {
+    if((this->player_x() + delta_velocity) < (_texture->width() - grid_size)) {
       //_x -= delta_velocity;
 
       if(_neighbor_tiles[N_EAST] == NULL) {
         _x -= delta_velocity;
       } else {
-        if((this->get_player_x() + delta_velocity) < ((_neighbor_tiles[N_EAST]->get_x_start() - grid_size) + 8)) {
+        if((this->player_x() + delta_velocity) < ((_neighbor_tiles[N_EAST]->x_start() - grid_size) + 8)) {
           _x -= delta_velocity;
         }
       }
@@ -319,25 +319,25 @@ void World::update() {
 
 
   if(_moving_up || _moving_down) {
-    _texture->set_y((int) _y);
+    _texture->y((int) _y);
   }
 
   if(_moving_left || _moving_right) {
-    _texture->set_x((int) _x);
+    _texture->x((int) _x);
   }
 
 
-  if(this->get_player_row_and_col() != _current_tile->get_row_and_col()) {
+  if(this->player_row_and_col() != _current_tile->row_and_col()) {
     this->update_current_tile();
     this->update_neighbors();
 
 
     /*if(debug_mode) {
-      cout << "PLAYER moved to new tile (" << _current_tile->get_row_and_col() << ")" << endl;
+      cout << "PLAYER moved to new tile (" << _current_tile->row_and_col() << ")" << endl;
       for(int i = 0; i < 4; i++) {
         if(_neighbor_tiles[i] != NULL) {
-          cout << " > Neighbor " << dir_text[i] << ": " << _neighbor_tiles[i]->get_row_and_col() << " => " << _neighbor_tiles[i]->tile_name()
-               << " || x: " << _neighbor_tiles[i]->get_x_start() << ", y: " << _neighbor_tiles[i]->get_y_start() << endl;
+          cout << " > Neighbor " << dir_text[i] << ": " << _neighbor_tiles[i]->row_and_col() << " => " << _neighbor_tiles[i]->tile_name()
+               << " || x: " << _neighbor_tiles[i]->x_start() << ", y: " << _neighbor_tiles[i]->y_start() << endl;
         }
       }
       cout << endl;
@@ -361,7 +361,7 @@ void World::update() {
     else if(i == N_EAST) to_check = EAST;
 
 
-    if(_player->get_direction() == to_check) {
+    if(_player->direction() == to_check) {
       if(_neighbor_tiles[i] != NULL) {
         if(_action_key_pressed) {
           if(_neighbor_tiles[i]->type() != COLLIDER) {
@@ -395,17 +395,17 @@ void World::render() {
 
   for(const TILE& value: _tiles) {
     if(value->type() != COLLIDER) {
-      value->set_x(value->get_original_x() + this->get_x());
-      value->set_y(value->get_original_y() + this->get_y());
+      value->x(value->original_x() + this->x());
+      value->y(value->original_y() + this->y());
     }
   }
 
   for(int row = 0; row < (this->width() / grid_size); row++) {
-    if(this->get_player_row() == row) _player->render();
+    if(this->player_row() == row) _player->render();
 
     for(const TILE& value: _tiles) {
       // needs to be tweaked a bit
-      if(floor((value->get_original_y() + (value->height() - grid_size)) / grid_size) == row) {
+      if(floor((value->original_y() + (value->height() - grid_size)) / grid_size) == row) {
         value->render();
       }
     }
@@ -413,10 +413,10 @@ void World::render() {
 
 
   neighbor_direction n_dir = N_SOUTH;
-  if(_player->get_direction() == NORTH) n_dir = N_NORTH;
-  else if(_player->get_direction() == SOUTH) n_dir = N_SOUTH;
-  else if(_player->get_direction() == WEST) n_dir = N_WEST;
-  else if(_player->get_direction() == EAST) n_dir = N_EAST;
+  if(_player->direction() == NORTH) n_dir = N_NORTH;
+  else if(_player->direction() == SOUTH) n_dir = N_SOUTH;
+  else if(_player->direction() == WEST) n_dir = N_WEST;
+  else if(_player->direction() == EAST) n_dir = N_EAST;
 
   if(_neighbor_tiles[n_dir] != NULL) {
     if(_neighbor_tiles[n_dir]->type() != COLLIDER) {

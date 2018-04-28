@@ -44,19 +44,18 @@ class Player {
   public:
     Player(Window&, Renderer&);
 
-    int get_x();
-    int get_y();
+    int x();
+    int y();
 
-    void set_x(int);
-    void set_y(int);
+    void x(int);
+    void y(int);
 
 
-    player_direction get_direction();
-    void set_direction(player_direction);
+    player_direction direction();
+    void direction(player_direction);
 
     int max_health();
     int health();
-    uint32_t money();
     int level();
     int xp();
 
@@ -72,14 +71,15 @@ class Player {
     void drop_active_stack();
 
     int current_inventory_slot();
-    void set_inventory_slot(int);
+    void inventory_slot(int);
     void prev_inventory_slot();
     void next_inventory_slot();
 
 
+    uint32_t money();
+    void money(int);
     void increase_money(int);
     void decrease_money(int);
-    void set_money(int);
 
     int xp_to_level();
     void increase_xp(int);
