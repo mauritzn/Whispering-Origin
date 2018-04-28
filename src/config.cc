@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_image.h>
 
 #include "config.h"
 #include <string>
@@ -65,6 +66,8 @@ const int debug_info_x_start = 25;
 const int debug_info_y_start = 105;
 const int debug_info_y_padding = 2;
 
+const int SDL_image_flags = IMG_INIT_JPG|IMG_INIT_PNG;
+
 vector<int> xp_rates;
 
 
@@ -100,9 +103,6 @@ const int tree_grid_size = 160;
 
 const string ore_image_path = "images/ores.png";
 const int ore_grid_size = 32;
-
-const string monster_image_path = "images/beetle5.PNG";
-// const int monster_grid_size = ?;
 
 
 // Player

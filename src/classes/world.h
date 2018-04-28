@@ -8,7 +8,7 @@
 
 #include "window.h"
 #include "renderer.h"
-#include "images.h"
+#include "image.h"
 #include "../config.h"
 #include "fps.h"
 #include "player.h"
@@ -36,7 +36,7 @@ class World {
 
 
 
-    PNG* _texture;
+    Image* _texture;
     float _x = 0;
     float _y = 0;
 
@@ -54,7 +54,7 @@ class World {
 
     GRID _tiles;
 
-    vector<PNG*> _to_render;
+    vector<Image*> _to_render;
 
 
   public:

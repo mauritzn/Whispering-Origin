@@ -6,7 +6,7 @@
 
 #include "tile.h"
 #include "functions.h"
-#include "images.h"
+#include "image.h"
 #include "../config.h"
 #include "fps.h"
 #include "player.h"
@@ -72,7 +72,7 @@ Tile::Tile(Window& win, Renderer& ren, FPS& fps, Player& player, const grid_tile
     int tile_y = _y_start - (_tile_grid_size - grid_size);
 
 
-    _tile_image = new PNG(*_win, *_ren, tile_image_path, tile_x, tile_y);
+    _tile_image = new Image(*_win, *_ren, tile_image_path, tile_x, tile_y);
 
     _tile_image->container_width(_tile_grid_size);
     _tile_image->container_height(_tile_grid_size);

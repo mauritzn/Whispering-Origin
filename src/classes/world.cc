@@ -11,7 +11,7 @@
 
 #include "world.h"
 #include "functions.h"
-#include "images.h"
+#include "image.h"
 #include "../config.h"
 #include "fps.h"
 #include "player.h"
@@ -42,7 +42,7 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
   _fps = &fps;
   _player = &player;
 
-  _texture = new PNG(*_win, *_ren, world_texture_path, 0, 0);
+  _texture = new Image(*_win, *_ren, world_texture_path, 0, 0);
 
 
 

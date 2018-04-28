@@ -32,7 +32,7 @@
 #include "classes/window.h"
 #include "classes/renderer.h"
 #include "classes/functions.h"
-#include "classes/images.h"
+#include "classes/image.h"
 #include "classes/text.h"
 #include "classes/fps.h"
 #include "classes/player.h"
@@ -82,7 +82,7 @@ int main() {
 
 
 
-  PNG UI_base(win, ren, base_ui_image_path, 0, 0);
+  Image UI_base(win, ren, base_ui_image_path, 0, 0);
 
 
   /*map<string, Text*> UI_text {

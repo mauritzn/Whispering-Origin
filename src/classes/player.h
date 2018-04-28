@@ -9,7 +9,7 @@
 
 #include "window.h"
 #include "renderer.h"
-#include "images.h"
+#include "image.h"
 #include "skill.h"
 #include "../config.h"
 
@@ -26,17 +26,17 @@ class Player {
     Window* _win;
     Renderer* _ren;
 
-    PNG* _character;
+    Image* _character;
 
     int _hp;
     uint32_t _money = 0;
 
-    PNG* UI_active_slot;
+    Image* UI_active_slot;
 
     int _current_inventory_slot = 0;
     vector<inv_slot*> _inv_slots;
     vector<Text*> _inv_slot_texts;
-    vector<PNG*> _inv_slot_images;
+    vector<Image*> _inv_slot_images;
 
     vector<Skill*> _skills = { NULL, NULL, NULL, NULL, NULL, NULL };
 

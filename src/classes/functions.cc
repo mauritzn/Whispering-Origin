@@ -12,7 +12,7 @@
 
 #include "functions.h"
 #include "window.h"
-#include "images.h"
+#include "image.h"
 #include "fps.h"
 #include "player.h"
 #include "world.h"
@@ -26,15 +26,6 @@ int constrain(int number, int min, int max) {
   if(number > max) number = max;
 
   return number;
-}
-
-
-int constrain_png_width(int number, Window& win, PNG& png) {
-  return constrain(number, 0, (win.width() - png.width()));
-}
-
-int constrain_png_height(int number, Window& win, PNG& png) {
-  return constrain(number, 0, (win.height() - png.height()));
 }
 
 
@@ -154,7 +145,6 @@ bool init_SDL() {
     return false;
   }
 
-  int SDL_image_flags = IMG_INIT_PNG;
   if(!(IMG_Init(SDL_image_flags) & SDL_image_flags)) {
     cout << "IMG_Init Error: " << SDL_GetError() << endl;
     return false;

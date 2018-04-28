@@ -6,7 +6,7 @@
 
 #include "window.h"
 #include "renderer.h"
-#include "images.h"
+#include "image.h"
 #include "../config.h"
 #include "fps.h"
 #include "player.h"
@@ -23,7 +23,7 @@ class Tile {
     //World* _world; // used to get the grid size of the world
     Player* _player; // (will be) used to get the players tool/level/inventory
 
-    PNG* _tile_image;
+    Image* _tile_image;
     Text* _progress_text;
     int _tile_grid_size = 32;
 

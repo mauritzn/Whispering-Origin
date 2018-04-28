@@ -6,7 +6,7 @@
 #include <cmath>
 
 #include "player.h"
-#include "images.h"
+#include "image.h"
 #include "functions.h"
 #include "../config.h"
 #include "skill.h"
@@ -18,7 +18,7 @@ Player::Player(Window& win, Renderer& ren) {
   _win = &win;
   _ren = &ren;
 
-  _character = new PNG(*_win, *_ren, character_image_path, 0, 0);
+  _character = new Image(*_win, *_ren, character_image_path, 0, 0);
   _character->container_width(character_grid_size);
   _character->container_height(character_grid_size);
   _character->image_width(character_grid_size);
@@ -27,7 +27,7 @@ Player::Player(Window& win, Renderer& ren) {
   _character->align_center();
   _character->image_y(SOUTH);
 
-  UI_active_slot = new PNG(*_win, *_ren, active_slot_image_path, 0, 0);
+  UI_active_slot = new Image(*_win, *_ren, active_slot_image_path, 0, 0);
   UI_active_slot->align_bottom();
   UI_active_slot->x(inv_slot_pos[0]);
 
@@ -50,7 +50,7 @@ Player::Player(Window& win, Renderer& ren) {
     _inv_slot_texts.back()->align_right();
     _inv_slot_texts.back()->x(value + (item_grid_size - _inv_slot_texts.back()->width()) - 1);
 
-    _inv_slot_images.push_back(new PNG(*_win, *_ren, items_image_path, (value + 2), 678));
+    _inv_slot_images.push_back(new Image(*_win, *_ren, items_image_path, (value + 2), 678));
     _inv_slot_images.back()->container_width(item_grid_size);
     _inv_slot_images.back()->container_height(item_grid_size);
     _inv_slot_images.back()->image_width(item_grid_size);

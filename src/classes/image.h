@@ -9,50 +9,12 @@
 #include "renderer.h"
 
 
-class BMP {
+class Image {
   private:
     Window* _win;
     Renderer* _ren;
 
-    SDL_Surface* _bmp;
-    SDL_Texture* _tex;
-
-    SDL_Rect _src_rect;  // defines the images position inside the container
-    SDL_Rect _dest_rect; // defines the images position inside the window
-
-    int _width = 0;
-    int _height = 0;
-
-
-  public:
-    BMP(Window&, Renderer&, string, int, int);
-    ~BMP(); // free textures when the object is destroyed
-
-
-    int width();  // get image width
-    int height(); // get image height
-
-    int x(); // get the images x position
-    int y(); // get the images y position
-
-    void x(int); // set the images x position
-    void y(int); // set the images y position
-
-    void render(); // render the texture to the renderer (-> window)
-};
-
-
-
-
-
-
-
-class PNG {
-  private:
-    Window* _win;
-    Renderer* _ren;
-
-    SDL_Surface* _png;
+    SDL_Surface* _img;
     SDL_Texture* _tex;
 
     SDL_Rect _src_rect;  // defines the images position inside the container
@@ -67,8 +29,8 @@ class PNG {
 
 
   public:
-    PNG(Window&, Renderer&, string, int, int);
-    ~PNG(); // free textures when the object is destroyed
+    Image(Window&, Renderer&, string, int, int);
+    ~Image(); // free textures when the object is destroyed
 
 
     int width();  // get image width

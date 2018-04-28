@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "window.h"
-#include "images.h"
+#include "image.h"
 #include "fps.h"
 #include "player.h"
 #include "world.h"
@@ -16,10 +16,6 @@ using namespace std;
 
 
 extern int constrain(int, int, int);
-
-extern int constrain_png_width(int, Window&, PNG&);
-extern int constrain_png_height(int, Window&, PNG&);
-
 
 extern string format_number(int);
 extern string to_fixed(float);
