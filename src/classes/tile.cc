@@ -68,11 +68,10 @@ Tile::Tile(Window& win, Renderer& ren, FPS& fps, Player& player, const grid_tile
 
 
   if(tile_image_path != "") {
-    int tile_x = _x_start - (_tile_grid_size / 2) + (grid_size / 2);
-    int tile_y = _y_start - (_tile_grid_size - grid_size);
+    _original_x = _x_start - (_tile_grid_size / 2) + (grid_size / 2);
+    _original_y = _y_start - (_tile_grid_size - grid_size);
 
-
-    _tile_image = new Image(*_win, *_ren, tile_image_path, tile_x, tile_y);
+    _tile_image = new Image(*_win, *_ren, tile_image_path, _original_x, _original_y);
 
     _tile_image->container_width(_tile_grid_size);
     _tile_image->container_height(_tile_grid_size);
@@ -105,6 +104,7 @@ int Tile::height() {
 }
 
 
+
 int Tile::x_start() { return _x_start; }
 int Tile::x_end() { return _x_end; }
 
@@ -112,16 +112,21 @@ int Tile::y_start() { return _y_start; }
 int Tile::y_end() { return _y_end; }
 
 
-int Tile::original_x() {
+
+int Tile::original_x() { return _original_x; }
+int Tile::original_y() { return _original_y; }
+
+
+int Tile::x() {
   if(_tile_image != NULL) {
-    return _tile_image->original_x();
+    return _tile_image->x();
   } else {
     return 0;
   }
 }
-int Tile::original_y() {
+int Tile::y() {
   if(_tile_image != NULL) {
-    return _tile_image->original_y();
+    return _tile_image->y();
   } else {
     return 0;
   }

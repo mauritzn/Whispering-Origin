@@ -31,6 +31,9 @@ class Tile {
     grid_tile_type _type;
     string _tile_name = "";
 
+    int _original_x = 0;
+    int _original_y = 0;
+
     int _x_start = 0;
     int _x_end = 0;
     int _y_start = 0;
@@ -64,6 +67,8 @@ class Tile {
     int original_x();
     int original_y();
 
+    int x();
+    int y();
     void x(int);
     void y(int);
 

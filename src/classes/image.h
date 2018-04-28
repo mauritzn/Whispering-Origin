@@ -23,10 +23,6 @@ class Image {
     int _width = 0;
     int _height = 0;
 
-    // TEMP (only used until ITEM class is completed)
-    int _original_x = 0;
-    int _original_y = 0;
-
 
   public:
     Image(Window&, Renderer&, string, int, int);
@@ -64,10 +60,6 @@ class Image {
 
     int image_x(); // get the image's x position
     int image_y(); // get the image's y position
-
-    // TEMP (only used until ITEM class is completed)
-    int original_x(); // get the container's original x position
-    int original_y(); // get the container's original y position
 
     void render(); // render the texture to the renderer (-> window)
 };

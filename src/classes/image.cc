@@ -41,10 +41,6 @@ Image::Image(Window& win, Renderer& ren, string path_to_image, int x, int y) {
     _src_rect.w = _width;
     _src_rect.h = _height;
 
-    // TEMP (only used until ITEM class is completed)
-    _original_x = x;
-    _original_y = y;
-
     // defines container positions
     _dest_rect.x = x;
     _dest_rect.y = y;
@@ -131,9 +127,6 @@ void Image::y(int y) { _dest_rect.y = y; }
 
 int Image::image_x() { return _src_rect.x; }
 int Image::image_y() { return _src_rect.y; }
-
-int Image::original_x() { return _original_x; }
-int Image::original_y() { return _original_y; }
 
 
 void Image::render() {
