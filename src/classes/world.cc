@@ -192,6 +192,11 @@ void World::update_neighbors() {
   string row_and_col_west = combine_row_and_col(_current_tile->row(), (_current_tile->col() - 1));
   string row_and_col_east = combine_row_and_col(_current_tile->row(), (_current_tile->col() + 1));
 
+  string row_and_col_north_west = combine_row_and_col((_current_tile->row() - 1), (_current_tile->col() - 1));
+  string row_and_col_north_east = combine_row_and_col((_current_tile->row() - 1), (_current_tile->col() + 1));
+  string row_and_col_south_west = combine_row_and_col((_current_tile->row() + 1), (_current_tile->col() - 1));
+  string row_and_col_south_east = combine_row_and_col((_current_tile->row() + 1), (_current_tile->col() + 1));
+
 
   // reset neighbors
   for(int i = 0; i < (signed) _neighbor_tiles.size(); i++) {
@@ -212,6 +217,18 @@ void World::update_neighbors() {
       neighbor_found = true;
     } else if(value->row_and_col() == row_and_col_east) {
       n_dir = N_EAST;
+      neighbor_found = true;
+    } else if(value->row_and_col() == row_and_col_north_west) {
+      n_dir = N_NORTH_WEST;
+      neighbor_found = true;
+    } else if(value->row_and_col() == row_and_col_north_east) {
+      n_dir = N_NORTH_EAST;
+      neighbor_found = true;
+    } else if(value->row_and_col() == row_and_col_south_west) {
+      n_dir = N_SOUTH_WEST;
+      neighbor_found = true;
+    } else if(value->row_and_col() == row_and_col_south_east) {
+      n_dir = N_SOUTH_EAST;
       neighbor_found = true;
     } else {
       neighbor_found = false;
