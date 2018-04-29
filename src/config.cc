@@ -94,8 +94,8 @@ map<string, TTF_Font*> fonts;
 
 
 // Colors
-const SDL_Color color_game_background = { 21, 108, 153, 1 };
-const SDL_Color color_white = { 255, 255, 255, 1 };
+const SDL_Color color_game_background = { 21, 108, 153, 255 };
+const SDL_Color color_white = { 255, 255, 255, 255 };
 
 
 // World
@@ -122,6 +122,7 @@ const uint32_t max_money = 2000000;
 const int max_item_stack = 10;
 
 const int time_to_display_level_up_message = 3500;
+const SDL_Color xp_bar_color = { 130, 160, 0, 255 };
 
 
 // Items

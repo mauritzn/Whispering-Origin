@@ -48,6 +48,9 @@ class Image {
     void align_left();
     void align_right();
 
+    
+    int image_x(); // get the image's x position
+    int image_y(); // get the image's y position
 
     void image_x(int); // set the image's x position (without centering check)
     void image_y(int); // set the image's y position (without centering check)
@@ -57,9 +60,6 @@ class Image {
 
     void x(int); // set the container's x position
     void y(int); // set the container's y position
-
-    int image_x(); // get the image's x position
-    int image_y(); // get the image's y position
 
     void render(); // render the texture to the renderer (-> window)
 };

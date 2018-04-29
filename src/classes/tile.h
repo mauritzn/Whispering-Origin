@@ -25,7 +25,7 @@ class Tile {
 
     Image* _tile_image;
     Text* _progress_text;
-    int _tile_grid_size = 32;
+    int _tile_grid_size;
 
     grid_tile_data _id;
     grid_tile_type _type;
@@ -73,11 +73,12 @@ class Tile {
     void y(int);
 
 
-    void row(int);
-    void col(int);
 
     int row();
     int col();
+    void row(int);
+    void col(int);
+
     string row_and_col();
 
 

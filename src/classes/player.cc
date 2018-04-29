@@ -44,7 +44,6 @@ Player::Player(Window& win, Renderer& ren) {
 
   for(const inventory_slot_positions& value: inv_slot_pos) {
     _inv_slots.push_back(NULL);
-    //_debug_neighbor.push_back(new Text(*_win, *_ren, fonts["main_16"], color_white, dir_text[i], 0, 0));
 
     _inv_slot_texts.push_back(new Text(*_win, *_ren, fonts["main_16"], color_white, "0", 0, 700));
     _inv_slot_texts.back()->align_right();

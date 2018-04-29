@@ -32,22 +32,22 @@ World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
 
   for(int i = 0; i < (signed) dir_text.size(); i++) _neighbor_tiles.push_back(NULL);
   for(int i = 0; i < (signed) dir_text.size(); i++) {
-    _debug_neighbor.push_back(new Text(*_win, *_ren, fonts["main_16"], color_white, dir_text[i], 0, 0));
+    _debug_neighbors.push_back(new Text(*_win, *_ren, fonts["main_16"], color_white, dir_text[i], 0, 0));
   }
 
 
-  _debug_neighbor[N_NORTH]->align_center();
-  _debug_neighbor[N_NORTH]->y((_debug_neighbor[N_NORTH]->y() - 40));
+  _debug_neighbors[N_NORTH]->align_center();
+  _debug_neighbors[N_NORTH]->y((_debug_neighbors[N_NORTH]->y() - 40));
 
-  _debug_neighbor[N_SOUTH]->align_center();
-  _debug_neighbor[N_SOUTH]->y((_debug_neighbor[N_SOUTH]->y() + 50));
+  _debug_neighbors[N_SOUTH]->align_center();
+  _debug_neighbors[N_SOUTH]->y((_debug_neighbors[N_SOUTH]->y() + 50));
 
-  _debug_neighbor[N_WEST]->align_center_y();
-  _debug_neighbor[N_WEST]->align_right();
-  _debug_neighbor[N_WEST]->x(((window_width / 2) - (_debug_neighbor[N_WEST]->width() / 2)) - 45);
+  _debug_neighbors[N_WEST]->align_center_y();
+  _debug_neighbors[N_WEST]->align_right();
+  _debug_neighbors[N_WEST]->x(((window_width / 2) - (_debug_neighbors[N_WEST]->width() / 2)) - 45);
 
-  _debug_neighbor[N_EAST]->align_center_y();
-  _debug_neighbor[N_EAST]->x(((window_width / 2) - (_debug_neighbor[N_EAST]->width() / 2)) + 45);
+  _debug_neighbors[N_EAST]->align_center_y();
+  _debug_neighbors[N_EAST]->x(((window_width / 2) - (_debug_neighbors[N_EAST]->width() / 2)) + 45);
 
 
 
@@ -348,8 +348,8 @@ void World::update() {
 
 
     for(int i = 0; i < (signed) _neighbor_tiles.size(); i++) {
-      if(_neighbor_tiles[i] != NULL) _debug_neighbor[i]->update(_neighbor_tiles[i]->tile_name());
-      else _debug_neighbor[i]->update("Terrain");
+      if(_neighbor_tiles[i] != NULL) _debug_neighbors[i]->update(_neighbor_tiles[i]->tile_name());
+      else _debug_neighbors[i]->update("Terrain");
     }
   }
 
@@ -371,9 +371,9 @@ void World::update() {
 
     if(debug_mode) {
       if(_neighbor_tiles[n_dir]->action_on_cooldown()) {
-        _debug_neighbor[n_dir]->update(_neighbor_tiles[n_dir]->tile_name() + " [ACTION]");
+        _debug_neighbors[n_dir]->update(_neighbor_tiles[n_dir]->tile_name() + " [ACTION]");
       } else {
-        _debug_neighbor[n_dir]->update(_neighbor_tiles[n_dir]->tile_name());
+        _debug_neighbors[n_dir]->update(_neighbor_tiles[n_dir]->tile_name());
       }
     }
   }
@@ -423,9 +423,9 @@ void World::render() {
 
 
   if(debug_mode) {
-    for(int i = 0; i < (signed) _debug_neighbor.size(); i++) {
+    for(int i = 0; i < (signed) _debug_neighbors.size(); i++) {
       if(i == N_NORTH || i == N_EAST || i == N_SOUTH || i == N_WEST) {
-        _debug_neighbor[i]->render();
+        _debug_neighbors[i]->render();
       }
     }
   }

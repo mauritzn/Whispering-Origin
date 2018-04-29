@@ -16,7 +16,7 @@ class Text {
     Renderer* _ren;
 
     SDL_Surface* _surface;
-    SDL_Texture* _text;
+    SDL_Texture* _tex;
 
     TTF_Font* _font;
     SDL_Color _color;

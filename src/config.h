@@ -178,6 +178,7 @@ extern const uint32_t max_money; // define how much money the player can have
 extern const int max_item_stack;
 
 extern const int time_to_display_level_up_message; // define how long the level up message should be shown (in milliseconds)
+extern const SDL_Color xp_bar_color;
 
 
 // Items

@@ -27,14 +27,14 @@ Text::Text(Window& win, Renderer& ren, TTF_Font* font, SDL_Color color, string t
     SDL_Quit();
   }
 
-  _text = SDL_CreateTextureFromSurface(_ren->get(), _surface);
+  _tex = SDL_CreateTextureFromSurface(_ren->get(), _surface);
   SDL_FreeSurface(_surface);
 
-  if(_text == NULL) {
+  if(_tex == NULL) {
     cout << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << endl;
     SDL_Quit();
   } else {
-    SDL_QueryTexture(_text, NULL, NULL, &_width, &_height);
+    SDL_QueryTexture(_tex, NULL, NULL, &_width, &_height);
 
 
     if(_x_alignment == 0) _x = ((_win->width() / 2) - (_width / 2));
@@ -48,7 +48,7 @@ Text::Text(Window& win, Renderer& ren, TTF_Font* font, SDL_Color color, string t
 }
 
 Text::~Text() {
-  SDL_DestroyTexture(_text);
+  SDL_DestroyTexture(_tex);
 }
 
 
@@ -62,17 +62,17 @@ void Text::update(string text) {
     SDL_Quit();
   }
 
-  SDL_DestroyTexture(_text);
-  _text = SDL_CreateTextureFromSurface(_ren->get(), _surface);
+  SDL_DestroyTexture(_tex);
+  _tex = SDL_CreateTextureFromSurface(_ren->get(), _surface);
   SDL_FreeSurface(_surface);
 
-  if(_text == NULL) {
+  if(_tex == NULL) {
     cout << "SDL_CreateTextureFromSurface Error: " << SDL_GetError() << endl;
     SDL_Quit();
   } else {
     int old_width = _width;
 
-    SDL_QueryTexture(_text, NULL, NULL, &_width, &_height);
+    SDL_QueryTexture(_tex, NULL, NULL, &_width, &_height);
     if(_x_alignment == 0) {
       if(_width > old_width) _x -= (_width - old_width) / 2;
       else if(_width < old_width) _x += (old_width - _width) / 2;
@@ -165,5 +165,5 @@ void Text::y(int y) {
 
 
 void Text::render() {
-  SDL_RenderCopy(_ren->get(), _text, NULL, &_dest_rect);
+  SDL_RenderCopy(_ren->get(), _tex, NULL, &_dest_rect);
 }

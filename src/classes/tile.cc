@@ -21,6 +21,7 @@ Tile::Tile(Window& win, Renderer& ren, FPS& fps, Player& player, const grid_tile
   _fps = &fps;
   //_world = &world;
   _player = &player;
+  _tile_grid_size = grid_size;
 
   _id = id;
   if(_id != -1) {
@@ -144,6 +145,9 @@ void Tile::y(int new_y) {
 }
 
 
+int Tile::row() { return _row; }
+int Tile::col() { return _col; }
+
 void Tile::row(int new_row) {
   _row = new_row;
   _row_and_col = combine_row_and_col(_row, _col);
@@ -160,8 +164,6 @@ void Tile::col(int new_col) {
   _x_end = (_x_start + grid_size);
 }
 
-int Tile::row() { return _row; }
-int Tile::col() { return _col; }
 string Tile::row_and_col() { return _row_and_col; }
 
 

@@ -43,7 +43,7 @@ class World {
 
     TILE _current_tile = NULL;
     vector<TILE> _neighbor_tiles;
-    vector<Text*> _debug_neighbor;
+    vector<Text*> _debug_neighbors;
     GRID _tiles;
 
     vector<Image*> _to_render;

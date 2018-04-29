@@ -21,7 +21,7 @@ Skill::Skill(Window& win, Renderer& ren, string skill_name, int progress_width, 
 
   _name = skill_name;
 
-  _progress = new Progress(*_win, *_ren, _bar_color, progress_width, progress_height, 0, 0);
+  _progress = new Progress(*_win, *_ren, xp_bar_color, progress_width, progress_height, 0, 0);
   _progress_x = progress_x;
   _progress_y = progress_y;
 

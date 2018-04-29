@@ -114,6 +114,9 @@ void Image::align_right() {
 
 
 
+int Image::image_x() { return _src_rect.x; }
+int Image::image_y() { return _src_rect.y; }
+
 void Image::image_x(int x) { _src_rect.x = x; }
 void Image::image_y(int y) { _src_rect.y = y; }
 
@@ -123,10 +126,6 @@ int Image::y() { return _dest_rect.y; }
 
 void Image::x(int x) { _dest_rect.x = x; }
 void Image::y(int y) { _dest_rect.y = y; }
-
-
-int Image::image_x() { return _src_rect.x; }
-int Image::image_y() { return _src_rect.y; }
 
 
 void Image::render() {
