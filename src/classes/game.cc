@@ -52,4 +52,41 @@ int Game::display_width() { return _display_width; }
 int Game::display_height() { return _display_height; }
 
 
+void Game::press_key(SDL_Keycode key) {
+  _pressed_keys[key] = true;
+}
+
+void Game::release_key(SDL_Keycode key) {
+  _pressed_keys[key] = false;
+  _key_timeouts[key] = 0;
+}
+
+bool Game::key_pressed(SDL_Keycode key) {
+  auto search = _pressed_keys.find(key);
+
+  if(search != _pressed_keys.end()) {
+    return _pressed_keys.at(key);
+  } else {
+    return false;
+  }
+}
+
+bool Game::key_ready(SDL_Keycode key) {
+  return key_ready(key, 100);
+}
+
+bool Game::key_ready(SDL_Keycode key, uint32_t timeout) {
+  if(this->key_pressed(key)) {
+    while(SDL_TICKS_PASSED(SDL_GetTicks(), _key_timeouts[key])) {
+      _key_timeouts[key] = (SDL_GetTicks() + timeout);
+      return true;
+    }
+
+    return false;
+  } else {
+    return false;
+  }
+}
+
+
 void Game::render() {}

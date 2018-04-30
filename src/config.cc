@@ -117,6 +117,18 @@ const int max_item_stack = 10;
 
 const int time_to_display_level_up_message = 3500;
 const SDL_Color xp_bar_color = { 130, 160, 0, 255 };
+const map<string, SDL_Keycode> keys {
+  { "move_up", SDLK_w },
+  { "move_down", SDLK_s },
+  { "move_left", SDLK_a },
+  { "move_right", SDLK_d },
+  { "action_key", SDLK_SPACE },
+
+  { "inv_prev", SDLK_q },
+  { "inv_next", SDLK_e },
+  { "drop_key", SDLK_g },
+  { "action_key", SDLK_SPACE }
+};
 
 
 // Items

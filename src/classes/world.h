@@ -29,12 +29,6 @@ class World {
     int _map_width = 0;
     int _map_height = 0;
 
-    bool _moving_up = false;
-    bool _moving_down = false;
-    bool _moving_left = false;
-    bool _moving_right = false;
-    bool _action_key_pressed = false;
-
     TILE _current_tile = NULL;
     vector<TILE> _neighbor_tiles;
     vector<Text*> _debug_neighbors;
@@ -70,10 +64,6 @@ class World {
 
     void update_current_tile();
     void update_neighbors();
-
-
-    void key_pressed(SDL_Keycode);
-    void key_released(SDL_Keycode);
 
     void update();
     void render();

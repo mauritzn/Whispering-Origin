@@ -1,6 +1,8 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include <SDL2/SDL.h>
+
 // forward declarations
 class Game;
 class Image;
@@ -9,6 +11,7 @@ class Skill;
 class Progress;
 class Tile;
 
+#include <map>
 #include "window.h"
 #include "renderer.h"
 #include "fps.h"
@@ -33,6 +36,9 @@ class Game {
     int _display_width = 0;
     int _display_height = 0;
 
+    map<SDL_Keycode, bool> _pressed_keys;
+    map<SDL_Keycode, uint32_t> _key_timeouts;
+
 
   public:
     Game();
@@ -51,6 +57,12 @@ class Game {
 
     int display_width();
     int display_height();
+
+    void press_key(SDL_Keycode);
+    void release_key(SDL_Keycode);
+    bool key_pressed(SDL_Keycode);
+    bool key_ready(SDL_Keycode);
+    bool key_ready(SDL_Keycode, uint32_t);
 
     void render();
 };

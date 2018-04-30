@@ -227,28 +227,10 @@ void World::update_neighbors() {
 
 
 
-void World::key_pressed(SDL_Keycode key) {
-  if(key == SDLK_w) _moving_up = true;
-  if(key == SDLK_s) _moving_down = true;
-  if(key == SDLK_a) _moving_left = true;
-  if(key == SDLK_d) _moving_right = true;
-  if(key == SDLK_SPACE) _action_key_pressed = true;
-}
-
-void World::key_released(SDL_Keycode key){
-  if(key == SDLK_w) _moving_up = false;
-  if(key == SDLK_s) _moving_down = false;
-  if(key == SDLK_a) _moving_left = false;
-  if(key == SDLK_d) _moving_right = false;
-  if(key == SDLK_SPACE) _action_key_pressed = false;
-}
-
-
-
 void World::update() {
   float delta_velocity = (world_velocity * _game->fps()->delta_time());
 
-  if(_moving_up) {
+  if(_game->key_pressed(keys.at("move_up"))) {
     _game->player()->direction(NORTH);
 
     if((this->player_y() - delta_velocity) > 0) {
@@ -262,7 +244,7 @@ void World::update() {
     }
   }
 
-  if(_moving_down) {
+  if(_game->key_pressed(keys.at("move_down"))) {
     _game->player()->direction(SOUTH);
 
     if((this->player_y() + delta_velocity) < (_texture->height() - grid_size)) {
@@ -277,7 +259,7 @@ void World::update() {
   }
 
 
-  if(_moving_left) {
+  if(_game->key_pressed(keys.at("move_left"))) {
     _game->player()->direction(WEST);
 
     if((this->player_x() - delta_velocity) > 0) {
@@ -291,7 +273,7 @@ void World::update() {
     }
   }
 
-  if(_moving_right) {
+  if(_game->key_pressed(keys.at("move_right"))) {
     _game->player()->direction(EAST);
 
     if((this->player_x() + delta_velocity) < (_texture->width() - grid_size)) {
@@ -308,11 +290,11 @@ void World::update() {
   }
 
 
-  if(_moving_up || _moving_down) {
+  if(_game->key_pressed(keys.at("move_up")) || _game->key_pressed(keys.at("move_down"))) {
     _texture->y((int) _y);
   }
 
-  if(_moving_left || _moving_right) {
+  if(_game->key_pressed(keys.at("move_left")) || _game->key_pressed(keys.at("move_right"))) {
     _texture->x((int) _x);
   }
 
@@ -350,7 +332,7 @@ void World::update() {
   else if(_game->player()->direction() == EAST) n_dir = N_EAST;
 
   if(_neighbor_tiles[n_dir] != NULL) {
-    if(_action_key_pressed) {
+    if(_game->key_pressed(keys.at("action_key"))) {
       if(_neighbor_tiles[n_dir]->type() != COLLIDER) {
         _neighbor_tiles[n_dir]->action();
       }

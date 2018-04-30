@@ -48,13 +48,10 @@ int main() {
 
   bool game_running = true;
   bool debug_test_refresh_done = false;
-  bool shift_key_pressed = false;
 
   Game game;
-  Player init_player(game);
-  World init_world(game);
-  game.player(init_player);
-  game.world(init_world);
+  game.player(*(new Player(game)));
+  game.world(*(new World(game)));
 
 
 
@@ -102,47 +99,45 @@ int main() {
   init_debug_info_position(debug_info);
 
 
-
-
-
-
   while(game_running) {
     while(SDL_PollEvent(&event)) {
       if(event.type == SDL_QUIT) game_running = false;
-      else if(event.type == SDL_KEYDOWN) {
-        if(event.key.keysym.sym == SDLK_F5) game.player()->increase_xp(5);
-        else if(event.key.keysym.sym == SDLK_F6) game.player()->skill("Woodcutting")->increase_xp(5);
-        else if(event.key.keysym.sym == SDLK_F7) game.player()->skill("Mining")->increase_xp(5);
-        else if(event.key.keysym.sym == SDLK_F8) game.player()->skill("Smithing")->increase_xp(5);
-        else if(event.key.keysym.sym == SDLK_F9) game.player()->skill("Fishing")->increase_xp(5);
-        else if(event.key.keysym.sym == SDLK_F10) game.player()->skill("Cooking")->increase_xp(5);
-
-        else if(event.key.keysym.sym == SDLK_F1) debug_mode = !debug_mode;
-        else if(event.key.keysym.sym == SDLK_q) {
-          game.player()->prev_inventory_slot();
-        } else if(event.key.keysym.sym == SDLK_e) {
-          game.player()->next_inventory_slot();
-        } else if(event.key.keysym.sym == SDLK_g) {
-          if(shift_key_pressed) {
-            game.player()->drop_active_stack();
-          } else {
-            game.player()->drop_active_item();
-          }
-        } else {
-          if(event.key.keysym.sym == SDLK_LSHIFT || event.key.keysym.sym == SDLK_RSHIFT) {
-            shift_key_pressed = true;
-          }
-          game.world()->key_pressed(event.key.keysym.sym);
-        }
-      } else if(event.type == SDL_KEYUP || event.key.keysym.sym == SDLK_RSHIFT) {
-        if(event.key.keysym.sym == SDLK_LSHIFT) {
-          shift_key_pressed = false;
-        }
-        game.world()->key_released(event.key.keysym.sym);
+      else if(event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) {
+        if(event.type == SDL_KEYDOWN) game.press_key(event.key.keysym.sym);
+        else if(event.type == SDL_KEYUP) game.release_key(event.key.keysym.sym);
       } else {
         //if(event.type != 1024 && event.type != 512) cout << ">> Event: " << event.type << endl;
       }
     }
+
+
+
+    if(game.key_ready(SDLK_F1, 250)) debug_mode = !debug_mode;
+
+    if(game.key_ready(SDLK_F5)) game.player()->increase_xp(5);
+    if(game.key_ready(SDLK_F6)) game.player()->skill("Woodcutting")->increase_xp(5);
+    if(game.key_ready(SDLK_F7)) game.player()->skill("Mining")->increase_xp(5);
+    if(game.key_ready(SDLK_F8)) game.player()->skill("Smithing")->increase_xp(5);
+    if(game.key_ready(SDLK_F9)) game.player()->skill("Fishing")->increase_xp(5);
+    if(game.key_ready(SDLK_F10)) game.player()->skill("Cooking")->increase_xp(5);
+
+
+    if(game.key_ready(keys.at("inv_prev"))) {
+      game.player()->prev_inventory_slot();
+    }
+
+    if(game.key_ready(keys.at("inv_next"))) {
+      game.player()->next_inventory_slot();
+    }
+
+    if(game.key_ready(keys.at("drop_key"))) {
+      if(game.key_pressed(SDLK_LSHIFT) || game.key_pressed(SDLK_RSHIFT)) {
+        game.player()->drop_active_stack();
+      } else {
+        game.player()->drop_active_item();
+      }
+    }
+
 
     game.fps()->update();
     game.world()->update();
@@ -150,8 +145,6 @@ int main() {
 
     game.renderer()->clear();
     game.world()->render();
-
-    hello_text.render();
 
 
 
@@ -161,6 +154,13 @@ int main() {
     }
 
 
+    UI_base.render();
+    game.player()->render_inventory();
+
+
+
+    hello_text.render();
+
     if(game.fps()->ticks() >= 2500) {
       if(!debug_test_refresh_done) {
         // used for debugging future features
@@ -169,18 +169,10 @@ int main() {
       }
     }
 
-
-
-
-    UI_base.render();
-
     // render UI text
     /*for(const auto& value : UI_text) {
       value.second->render();
     }*/
-
-
-    game.player()->render_inventory();
 
 
     update_debug_info(debug_info, game);
