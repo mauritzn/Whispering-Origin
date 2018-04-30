@@ -1,39 +1,26 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
-
-#include <iostream>
-#include <string>
-
 #include "skill.h"
-#include "window.h"
-#include "renderer.h"
 #include "functions.h"
-#include "../config.h"
-#include "text.h"
-#include "progress_bar.h"
 
 using namespace std;
 
 
-Skill::Skill(Window& win, Renderer& ren, string skill_name, int progress_width, int progress_height, int progress_x, int progress_y) {
-  _win = &win;
-  _ren = &ren;
-
+Skill::Skill(Game& game, string skill_name, int progress_width, int progress_height, int progress_x, int progress_y) {
+  _game = &game;
   _name = skill_name;
 
-  _progress = new Progress(*_win, *_ren, xp_bar_color, progress_width, progress_height, 0, 0);
+  _progress = new Progress(*_game, xp_bar_color, progress_width, progress_height, 0, 0);
   _progress_x = progress_x;
   _progress_y = progress_y;
 
-  _name_text = new Text(*_win, *_ren, fonts["main_16"], color_white, _name, (_progress_x + 3), _progress_y);
+  _name_text = new Text(*_game, fonts["main_16"], color_white, _name, (_progress_x + 3), _progress_y);
   _progress->x(_progress_x);
   _progress->y(_progress_y + 20);
 
-  _level_text = new Text(*_win, *_ren, fonts["main_14"], color_white, "Level 1", 0, (_progress_y + 1));
+  _level_text = new Text(*_game, fonts["main_14"], color_white, "Level 1", 0, (_progress_y + 1));
   _level_text->align_right();
   _level_text->x((_progress->width() + _progress_x) - (_level_text->width() - 1));
 
-  _xp_text = new Text(*_win, *_ren, fonts["main_12"], color_white, "0/" + format_number(this->xp_to_level()) + " xp", 0, 0);
+  _xp_text = new Text(*_game, fonts["main_12"], color_white, "0/" + format_number(this->xp_to_level()) + " xp", 0, 0);
   _xp_text->x((_progress->width() + _progress_x) + 7);
   _xp_text->y(_progress->y() + ((_progress->height() / 2) - (_xp_text->height() / 2)));
 }
@@ -75,7 +62,7 @@ void Skill::increase_xp(int amount) {
         if(_level < max_level) {
           if(_xp >= this->xp_to_level()) {
               _level++;
-              _leveled_up_at = SDL_GetTicks();
+              _leveled_up_at = _game->fps()->ticks();
               _level_text->update("Level " + format_number(_level));
 
               if(_level == max_level) {
@@ -104,7 +91,7 @@ void Skill::increase_xp(int amount) {
 
 bool Skill::has_leveled_up() {
   if(_leveled_up_at > 0) {
-    if((SDL_GetTicks() - _leveled_up_at) <= (unsigned) time_to_display_level_up_message) {
+    if((_game->fps()->ticks() - _leveled_up_at) <= (unsigned) time_to_display_level_up_message) {
       return true;
     } else {
       return false;

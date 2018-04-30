@@ -1,13 +1,7 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
 
 #include "config.h"
-#include <string>
-#include <vector>
-#include <map>
 using namespace std;
-
 
 
 const vector<grid_tile_type> grid_tile_types {

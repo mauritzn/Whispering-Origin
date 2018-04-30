@@ -1,31 +1,20 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-
-#include<iostream>
 #include <vector>
 
-#include "window.h"
-#include "renderer.h"
+#include "game.h"
 #include "image.h"
 #include "skill.h"
+#include "text.h"
 #include "../config.h"
 
 using namespace std;
 
-struct inv_slot {
-  items item;
-  int quantity = 0;
-};
-
 
 class Player {
   private:
-    Window* _win;
-    Renderer* _ren;
-
+    Game* _game;
     Image* _character;
 
     int _hp;
@@ -42,7 +31,7 @@ class Player {
 
 
   public:
-    Player(Window&, Renderer&);
+    Player(Game&);
 
     int x();
     int y();

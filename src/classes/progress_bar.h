@@ -2,17 +2,14 @@
 #define PROGRESS_BAR_H
 
 #include <SDL2/SDL.h>
-
-#include "window.h"
-#include "renderer.h"
+#include "game.h"
 
 using namespace std;
 
 
 class Progress {
   private:
-    Window* _win;
-    Renderer* _ren;
+    Game* _game;
 
     int _border_size = 1;
     int _progress = 0; // 0-100
@@ -30,7 +27,7 @@ class Progress {
 
 
   public:
-    Progress(Window&, Renderer&, SDL_Color, int, int, int, int);
+    Progress(Game&, SDL_Color, int, int, int, int);
 
     int width();
     int height();

@@ -1,22 +1,13 @@
-#include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
 
 #include <iostream>
-#include <string>
-#include <vector>
 #include <sstream>
 #include <iomanip>
 #include <utility>
 #include <map>
 
 #include "functions.h"
-#include "window.h"
-#include "image.h"
-#include "fps.h"
-#include "player.h"
-#include "world.h"
-#include "../config.h"
 
 using namespace std;
 
@@ -192,23 +183,23 @@ void init_debug_info_position(const map<string, Text*>& info) {
 }
 
 
-void update_debug_info(map<string, Text*>& info, FPS& fps, Player& player, World& world) {
-  info["frames"]->update("Frames: " + format_number(fps.frame_count()));
-  info["ticks"]->update("Ticks: " + format_number(fps.ticks()));
+void update_debug_info(map<string, Text*>& info, Game& game) {
+  info["frames"]->update("Frames: " + format_number(game.fps()->frame_count()));
+  info["ticks"]->update("Ticks: " + format_number(game.fps()->ticks()));
 
-  if((fps.ticks() % 500) < 250) {
-    info["fps"]->update("FPS: " + to_fixed(fps.current()));
+  if((game.fps()->ticks() % 500) < 250) {
+    info["fps"]->update("FPS: " + to_fixed(game.fps()->current()));
   }
 
-  info["delta_time"]->update("Delta Time: " + to_string(fps.delta_time()));
+  info["delta_time"]->update("Delta Time: " + to_string(game.fps()->delta_time()));
 
   // Char-specific text-update
-  info["player_hp"]->update("Health: " + format_number(player.health()) + "/" + format_number(player.max_health()));
-  info["player_xp"]->update("XP: " + format_number(player.xp()) + "/" + format_number(player.xp_to_level()));
-  info["player_lvl"]->update("Level: " + format_number(player.level()) + "/" + to_string(max_level));
-  info["player_money"]->update("Money: " + format_number(player.money()));
-  info["player_xy"]->update("X: " + to_string(world.player_x()) + ", Y: " + to_string(world.player_y()));
-  info["player_pos"]->update("Position (ROW x COL): " + world.player_row_and_col());
+  info["player_hp"]->update("Health: " + format_number(game.player()->health()) + "/" + format_number(game.player()->max_health()));
+  info["player_xp"]->update("XP: " + format_number(game.player()->xp()) + "/" + format_number(game.player()->xp_to_level()));
+  info["player_lvl"]->update("Level: " + format_number(game.player()->level()) + "/" + to_string(max_level));
+  info["player_money"]->update("Money: " + format_number(game.player()->money()));
+  info["player_xy"]->update("X: " + to_string(game.world()->player_x()) + ", Y: " + to_string(game.world()->player_y()));
+  info["player_pos"]->update("Position (ROW x COL): " + game.world()->player_row_and_col());
 }
 
 

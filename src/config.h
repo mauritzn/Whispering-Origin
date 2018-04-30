@@ -95,6 +95,11 @@ enum items {
   I_SALMON
 };
 
+struct inv_slot {
+  items item;
+  int quantity = 0;
+};
+
 struct pos_xy {
   int x = 0;
   int y = 0;

@@ -1,26 +1,12 @@
-#include <SDL2/SDL.h>
-
-#include <iostream>
-#include <string>
 #include <sstream>
-
 #include "tile.h"
 #include "functions.h"
-#include "image.h"
-#include "../config.h"
-#include "fps.h"
-#include "player.h"
-#include "text.h"
 
 using namespace std;
 
 
-Tile::Tile(Window& win, Renderer& ren, FPS& fps, Player& player, const grid_tile_data& id, int row, int col) {
-  _win = &win;
-  _ren = &ren;
-  _fps = &fps;
-  //_world = &world;
-  _player = &player;
+Tile::Tile(Game& game, const grid_tile_data& id, int row, int col) {
+  _game = &game;
   _tile_grid_size = grid_size;
 
   _id = id;
@@ -57,9 +43,8 @@ Tile::Tile(Window& win, Renderer& ren, FPS& fps, Player& player, const grid_tile
   //else if(_type == FISH) _tile_grid_size = fish_grid_size;
 
 
-  _progress_text = new Text(*_win, *_ren, fonts["main_18"], color_white, (format_number(_resources_left) + "/" + format_number(_resources)), 0, 0);
+  _progress_text = new Text(*_game, fonts["main_18"], color_white, (format_number(_resources_left) + "/" + format_number(_resources)), 0, 0);
   _progress_text->align_center_y();
-  //if(tile_image_path != "") cout << "tile Image Path: " << tile_image_path << endl;
 
 
   _x_start = (_col * grid_size);
@@ -72,7 +57,7 @@ Tile::Tile(Window& win, Renderer& ren, FPS& fps, Player& player, const grid_tile
     _original_x = _x_start - (_tile_grid_size / 2) + (grid_size / 2);
     _original_y = _y_start - (_tile_grid_size - grid_size);
 
-    _tile_image = new Image(*_win, *_ren, tile_image_path, _original_x, _original_y);
+    _tile_image = new Image(*_game, tile_image_path, _original_x, _original_y);
 
     _tile_image->container_width(_tile_grid_size);
     _tile_image->container_height(_tile_grid_size);
@@ -173,22 +158,22 @@ string Tile::tile_name() { return _tile_name; }
 
 
 void Tile::action() {
-  if((_fps->ticks() - _last_action_at) >= 1000) {
+  if((_game->fps()->ticks() - _last_action_at) >= 1000) {
     if(_resources_left > 0) {
-      _last_action_at = _fps->ticks();
+      _last_action_at = _game->fps()->ticks();
 
       _resources_left--;
       _progress_text->update((format_number(_resources_left) + "/" + format_number(_resources)));
 
-      if(_type == TREE) _player->skill("Woodcutting")->increase_xp(5);
-      else if(_type == ORE) _player->skill("Mining")->increase_xp(5);
-      //else if(_type == FISH) _player->skill("Fishing")->increase_xp(5);
+      if(_type == TREE) _game->player()->skill("Woodcutting")->increase_xp(5);
+      else if(_type == ORE) _game->player()->skill("Mining")->increase_xp(5);
+      //else if(_type == FISH) _game->player()->skill("Fishing")->increase_xp(5);
 
-      _player->add_item(grid_tile_drops.at(_id));
+      _game->player()->add_item(grid_tile_drops.at(_id));
 
       if(_resources_left == 0) {
         if(_depleted_at == 0) {
-          _depleted_at = _fps->ticks();
+          _depleted_at = _game->fps()->ticks();
           _tile_image->image_x(_tile_grid_size);
         }
       }
@@ -197,7 +182,7 @@ void Tile::action() {
 }
 
 bool Tile::action_on_cooldown() {
-  if((_fps->ticks() - _last_action_at) >= 1000) {
+  if((_game->fps()->ticks() - _last_action_at) >= 1000) {
     return false;
   } else {
     return true;
@@ -217,13 +202,13 @@ void Tile::show_progress() {
 
 void Tile::update() {
   if(_depleted_at > 0) {
-    if(_fps->ticks() - _depleted_at >= 5000) {
+    if(_game->fps()->ticks() - _depleted_at >= 5000) {
       _depleted_at = 0;
       _tile_image->image_x(0);
       _resources_left = _resources;
       _progress_text->update((format_number(_resources_left) + "/" + format_number(_resources)));
     } else {
-      _progress_text->update(format_number(((5000 - (_fps->ticks() - _depleted_at)) / 1000) + 1) + "s");
+      _progress_text->update(format_number(((5000 - (_game->fps()->ticks() - _depleted_at)) / 1000) + 1) + "s");
     }
   }
 }

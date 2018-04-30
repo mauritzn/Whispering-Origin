@@ -1,23 +1,19 @@
 #ifndef SKILL_H
 #define SKILL_H
 
-#include <SDL2/SDL.h>
 #include <string>
 
-#include "window.h"
-#include "renderer.h"
-#include "../config.h"
+#include "game.h"
 #include "text.h"
 #include "progress_bar.h"
+#include "../config.h"
 
 using namespace std;
 
 
 class Skill {
   private:
-    Window* _win;
-    Renderer* _ren;
-
+    Game* _game;
     string _name;
 
     uint32_t _leveled_up_at = 0;
@@ -34,7 +30,7 @@ class Skill {
 
 
   public:
-    Skill(Window&, Renderer&, string, int, int, int, int);
+    Skill(Game&, string, int, int, int, int);
 
     string name();
 

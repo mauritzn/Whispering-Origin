@@ -1,27 +1,19 @@
 #ifndef TILE_H
 #define TILE_H
 
-#include <SDL2/SDL.h>
 #include <string>
 
-#include "window.h"
-#include "renderer.h"
+#include "game.h"
 #include "image.h"
-#include "../config.h"
-#include "fps.h"
-#include "player.h"
 #include "text.h"
+#include "../config.h"
 
 using namespace std;
 
 
 class Tile {
   private:
-    Window* _win;
-    Renderer* _ren;
-    FPS* _fps; // used to get delta time
-    //World* _world; // used to get the grid size of the world
-    Player* _player; // (will be) used to get the players tool/level/inventory
+    Game* _game;
 
     Image* _tile_image;
     Text* _progress_text;
@@ -52,7 +44,7 @@ class Tile {
 
 
   public:
-    Tile(Window&, Renderer&, FPS&, Player&, const grid_tile_data&, int, int);
+    Tile(Game&, const grid_tile_data&, int, int);
 
     int width();
     int height();

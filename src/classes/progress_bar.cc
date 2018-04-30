@@ -1,7 +1,3 @@
-#include <SDL2/SDL.h>
-
-#include <iostream>
-
 #include "progress_bar.h"
 #include "functions.h"
 #include "../config.h"
@@ -9,10 +5,8 @@
 using namespace std;
 
 
-Progress::Progress(Window& win, Renderer& ren, SDL_Color bar_color, int width, int height, int x, int y) {
-  _win = &win;
-  _ren = &ren;
-
+Progress::Progress(Game& game, SDL_Color bar_color, int width, int height, int x, int y) {
+  _game = &game;
   _bar_color = bar_color;
 
   _original_x = x;
@@ -105,15 +99,15 @@ int Progress::progress() {
 
 
 void Progress::render() {
-  SDL_SetRenderDrawColor(_ren->get(), _border_color.r, _border_color.g, _border_color.b, 255);
-  SDL_RenderFillRect(_ren->get(), &_border_rect);
+  SDL_SetRenderDrawColor(_game->renderer()->get(), _border_color.r, _border_color.g, _border_color.b, 255);
+  SDL_RenderFillRect(_game->renderer()->get(), &_border_rect);
 
-  SDL_SetRenderDrawColor(_ren->get(), _background_color.r, _background_color.g, _background_color.b, 255);
-  SDL_RenderFillRect(_ren->get(), &_background_rect);
+  SDL_SetRenderDrawColor(_game->renderer()->get(), _background_color.r, _background_color.g, _background_color.b, 255);
+  SDL_RenderFillRect(_game->renderer()->get(), &_background_rect);
 
-  SDL_SetRenderDrawColor(_ren->get(), _bar_color.r, _bar_color.g, _bar_color.b, 255);
-  SDL_RenderFillRect(_ren->get(), &_bar_rect);
+  SDL_SetRenderDrawColor(_game->renderer()->get(), _bar_color.r, _bar_color.g, _bar_color.b, 255);
+  SDL_RenderFillRect(_game->renderer()->get(), &_bar_rect);
 
 
-  SDL_SetRenderDrawColor(_ren->get(), color_game_background.r, color_game_background.g, color_game_background.b, 255); // reset
+  SDL_SetRenderDrawColor(_game->renderer()->get(), color_game_background.r, color_game_background.g, color_game_background.b, 255); // reset
 }

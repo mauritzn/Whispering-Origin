@@ -6,10 +6,8 @@
 #include <vector>
 
 #include "window.h"
+#include "game.h"
 #include "image.h"
-#include "fps.h"
-#include "player.h"
-#include "world.h"
 #include "../config.h"
 
 using namespace std;
@@ -43,7 +41,7 @@ extern bool init_SDL();
 extern void init_game();
 
 extern void init_debug_info_position(const map<string, Text*>&);
-extern void update_debug_info(map<string, Text*>&, FPS&, Player&, World&);
+extern void update_debug_info(map<string, Text*>&, Game&);
 extern void render_debug_info(const map<string, Text*>&);
 
 #endif

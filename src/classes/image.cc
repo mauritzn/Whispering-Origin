@@ -1,14 +1,14 @@
 #include <iostream>
 #include <algorithm>
-#include <string>
 #include <vector>
+
 #include "image.h"
 #include "functions.h"
+
 using namespace std;
 
-Image::Image(Window& win, Renderer& ren, string path_to_image, int x, int y) {
-  _win = &win;
-  _ren = &ren;
+Image::Image(Game& game, string path_to_image, int x, int y) {
+  _game = &game;
 
   vector<string> path_exploded = explode_string(path_to_image, '.');
   string ext = path_exploded.back();
@@ -27,7 +27,7 @@ Image::Image(Window& win, Renderer& ren, string path_to_image, int x, int y) {
     _width = _img->w;
     _height = _img->h;
 
-    _tex = SDL_CreateTextureFromSurface(_ren->get(), _img);
+    _tex = SDL_CreateTextureFromSurface(_game->renderer()->get(), _img);
     SDL_FreeSurface(_img);
   }
 
@@ -80,16 +80,16 @@ void Image::container_height(int new_height) {
 
 void Image::align_center() {
   // defines container positions
-  _dest_rect.x = ((_win->width() / 2) - (_width / 2));
-  _dest_rect.y = ((_win->height() / 2) - (_height / 2));
+  _dest_rect.x = ((_game->window()->width() / 2) - (_width / 2));
+  _dest_rect.y = ((_game->window()->height() / 2) - (_height / 2));
 }
 void Image::align_center_x() {
   // defines container position
-  _dest_rect.x = ((_win->width() / 2) - (_width / 2));
+  _dest_rect.x = ((_game->window()->width() / 2) - (_width / 2));
 }
 void Image::align_center_y() {
   // defines container position
-  _dest_rect.y = ((_win->height() / 2) - (_height / 2));
+  _dest_rect.y = ((_game->window()->height() / 2) - (_height / 2));
 }
 
 void Image::align_top() {
@@ -99,7 +99,7 @@ void Image::align_top() {
 
 void Image::align_bottom() {
   // defines container position
-  _dest_rect.y = (_win->height() - _height);
+  _dest_rect.y = (_game->window()->height() - _height);
 }
 
 void Image::align_left() {
@@ -109,7 +109,7 @@ void Image::align_left() {
 
 void Image::align_right() {
   // defines container position
-  _dest_rect.x = (_win->width() - _width);
+  _dest_rect.x = (_game->window()->width() - _width);
 }
 
 
@@ -129,5 +129,5 @@ void Image::y(int y) { _dest_rect.y = y; }
 
 
 void Image::render() {
-  SDL_RenderCopy(_ren->get(), _tex, &_src_rect, &_dest_rect);
+  SDL_RenderCopy(_game->renderer()->get(), _tex, &_src_rect, &_dest_rect);
 }

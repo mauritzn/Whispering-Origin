@@ -1,24 +1,15 @@
-#include <SDL2/SDL.h>
-
-#include <iostream>
 #include <string>
-#include <vector>
 #include <cmath>
 
 #include "player.h"
-#include "image.h"
 #include "functions.h"
-#include "../config.h"
-#include "skill.h"
-#include "text.h"
 
 using namespace std;
 
-Player::Player(Window& win, Renderer& ren) {
-  _win = &win;
-  _ren = &ren;
+Player::Player(Game& game) {
+  _game = &game;
 
-  _character = new Image(*_win, *_ren, character_image_path, 0, 0);
+  _character = new Image(*_game, character_image_path, 0, 0);
   _character->container_width(character_grid_size);
   _character->container_height(character_grid_size);
   _character->image_width(character_grid_size);
@@ -27,29 +18,29 @@ Player::Player(Window& win, Renderer& ren) {
   _character->align_center();
   _character->image_y(SOUTH);
 
-  UI_active_slot = new Image(*_win, *_ren, active_slot_image_path, 0, 0);
+  UI_active_slot = new Image(*_game, active_slot_image_path, 0, 0);
   UI_active_slot->align_bottom();
   UI_active_slot->x(inv_slot_pos[0]);
 
 
-  _skills.at(PLAYER_SKILL) = new Skill(*_win, *_ren, "Player", 127, 12, 25, 22);
+  _skills.at(PLAYER_SKILL) = new Skill(*_game, "Player", 127, 12, 25, 22);
   _hp = this->max_health();
 
-  _skills.at(WOODCUTTING_SKILL) = new Skill(*_win, *_ren, "Woodcutting", 142, 8, 64, 512);
-  _skills.at(MINING_SKILL) = new Skill(*_win, *_ren, "Mining", 142, 8, 64, 549);
-  _skills.at(SMITHING_SKILL) = new Skill(*_win, *_ren, "Smithing", 142, 8, 64, 586);
-  _skills.at(FISHING_SKILL) = new Skill(*_win, *_ren, "Fishing", 142, 8, 64, 623);
-  _skills.at(COOKING_SKILL) = new Skill(*_win, *_ren, "Cooking", 142, 8, 64, 660);
+  _skills.at(WOODCUTTING_SKILL) = new Skill(*_game, "Woodcutting", 142, 8, 64, 512);
+  _skills.at(MINING_SKILL) = new Skill(*_game, "Mining", 142, 8, 64, 549);
+  _skills.at(SMITHING_SKILL) = new Skill(*_game, "Smithing", 142, 8, 64, 586);
+  _skills.at(FISHING_SKILL) = new Skill(*_game, "Fishing", 142, 8, 64, 623);
+  _skills.at(COOKING_SKILL) = new Skill(*_game, "Cooking", 142, 8, 64, 660);
 
 
   for(const inventory_slot_positions& value: inv_slot_pos) {
     _inv_slots.push_back(NULL);
 
-    _inv_slot_texts.push_back(new Text(*_win, *_ren, fonts["main_16"], color_white, "0", 0, 700));
+    _inv_slot_texts.push_back(new Text(*_game, fonts["main_16"], color_white, "0", 0, 700));
     _inv_slot_texts.back()->align_right();
     _inv_slot_texts.back()->x(value + (item_grid_size - _inv_slot_texts.back()->width()) - 1);
 
-    _inv_slot_images.push_back(new Image(*_win, *_ren, items_image_path, (value + 2), 678));
+    _inv_slot_images.push_back(new Image(*_game, items_image_path, (value + 2), 678));
     _inv_slot_images.back()->container_width(item_grid_size);
     _inv_slot_images.back()->container_height(item_grid_size);
     _inv_slot_images.back()->image_width(item_grid_size);
@@ -147,23 +138,18 @@ void Player::add_item(items item_to_add) {
 
   if(add_to != NULL) {
     add_to->quantity++;
-    //cout << "Added item to inventory || " << item_names.at(item_to_add) << endl;
 
     int slot_nr = 0;
     for(inv_slot*& value: _inv_slots) {
       if(value != NULL) {
-        //cout << "Slot #" << (slot_nr + 1) << " => " << item_names.at(value->item) << " || " << value->quantity << "/10" << endl;
         _inv_slot_texts[slot_nr]->update(format_number(value->quantity));
         _inv_slot_images[slot_nr]->image_y(item_pos.at(value->item).y);
       } else {
-        //cout << "Slot #" << (slot_nr + 1) << " => " << "EMPTY" << endl;
         _inv_slot_texts[slot_nr]->update("0");
       }
 
       slot_nr++;
     }
-
-    //cout << endl;
   }
 }
 

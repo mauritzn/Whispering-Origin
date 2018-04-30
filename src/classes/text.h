@@ -5,15 +5,13 @@
 #include <SDL2/SDL_ttf.h>
 
 #include <string>
-#include "window.h"
-#include "renderer.h"
+#include "game.h"
 using namespace std;
 
 
 class Text {
   private:
-    Window* _win;
-    Renderer* _ren;
+    Game* _game;
 
     SDL_Surface* _surface;
     SDL_Texture* _tex;
@@ -35,7 +33,7 @@ class Text {
 
 
   public:
-    Text(Window&, Renderer&, TTF_Font*, SDL_Color, string, int, int);
+    Text(Game&, TTF_Font*, SDL_Color, string, int, int);
     ~Text(); // free the textures when the object is destroyed
 
 

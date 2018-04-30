@@ -6,14 +6,11 @@
 #include <vector>
 #include <map>
 
-#include "window.h"
-#include "renderer.h"
+#include "game.h"
 #include "image.h"
-#include "../config.h"
-#include "fps.h"
-#include "player.h"
 #include "text.h"
 #include "tile.h"
+#include "../config.h"
 
 using namespace std;
 
@@ -23,12 +20,9 @@ typedef vector<TILE> GRID;
 
 class World {
   private:
-    Window* _win;
-    Renderer* _ren;
-    FPS* _fps; // used to get delta time
-    Player* _player; // (will be) used to change the player sprite
-
+    Game* _game;
     Image* _texture;
+
     float _x = 0;
     float _y = 0;
 
@@ -50,7 +44,7 @@ class World {
 
 
   public:
-    World(Window&, Renderer&, FPS&, Player&);
+    World(Game&);
 
     int width();
     int height();

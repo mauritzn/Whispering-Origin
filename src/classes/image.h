@@ -5,14 +5,12 @@
 #include <SDL2/SDL_image.h>
 
 #include <string>
-#include "window.h"
-#include "renderer.h"
+#include "game.h"
 
 
 class Image {
   private:
-    Window* _win;
-    Renderer* _ren;
+    Game* _game;
 
     SDL_Surface* _img;
     SDL_Texture* _tex;
@@ -25,7 +23,7 @@ class Image {
 
 
   public:
-    Image(Window&, Renderer&, string, int, int);
+    Image(Game&, string, int, int);
     ~Image(); // free textures when the object is destroyed
 
 
@@ -48,7 +46,7 @@ class Image {
     void align_left();
     void align_right();
 
-    
+
     int image_x(); // get the image's x position
     int image_y(); // get the image's y position
 

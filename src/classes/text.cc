@@ -3,9 +3,8 @@
 #include "../config.h"
 
 
-Text::Text(Window& win, Renderer& ren, TTF_Font* font, SDL_Color color, string text, int x, int y) {
-  _win = &win;
-  _ren = &ren;
+Text::Text(Game& game, TTF_Font* font, SDL_Color color, string text, int x, int y) {
+  _game = &game;
 
   _font = font;
   _color = color;
@@ -27,7 +26,7 @@ Text::Text(Window& win, Renderer& ren, TTF_Font* font, SDL_Color color, string t
     SDL_Quit();
   }
 
-  _tex = SDL_CreateTextureFromSurface(_ren->get(), _surface);
+  _tex = SDL_CreateTextureFromSurface(_game->renderer()->get(), _surface);
   SDL_FreeSurface(_surface);
 
   if(_tex == NULL) {
@@ -37,11 +36,11 @@ Text::Text(Window& win, Renderer& ren, TTF_Font* font, SDL_Color color, string t
     SDL_QueryTexture(_tex, NULL, NULL, &_width, &_height);
 
 
-    if(_x_alignment == 0) _x = ((_win->width() / 2) - (_width / 2));
-    if(_x_alignment == 1) _x = (_win->width() - _width);
+    if(_x_alignment == 0) _x = ((_game->window()->width() / 2) - (_width / 2));
+    if(_x_alignment == 1) _x = (_game->window()->width() - _width);
 
-    if(_y_alignment == 0) _y = ((_win->height() / 2) - (_height / 2));
-    if(_y_alignment == 1) _y = (_win->height() - _height);
+    if(_y_alignment == 0) _y = ((_game->window()->height() / 2) - (_height / 2));
+    if(_y_alignment == 1) _y = (_game->window()->height() - _height);
 
     _dest_rect = { _x, _y, _width, _height };
   }
@@ -63,7 +62,7 @@ void Text::update(string text) {
   }
 
   SDL_DestroyTexture(_tex);
-  _tex = SDL_CreateTextureFromSurface(_ren->get(), _surface);
+  _tex = SDL_CreateTextureFromSurface(_game->renderer()->get(), _surface);
   SDL_FreeSurface(_surface);
 
   if(_tex == NULL) {
@@ -98,8 +97,8 @@ void Text::align_center() {
   _x_alignment = 0;
 
   // defines container positions
-  _x = ((_win->width() / 2) - (_width / 2));
-  _y = ((_win->height() / 2) - (_height / 2));
+  _x = ((_game->window()->width() / 2) - (_width / 2));
+  _y = ((_game->window()->height() / 2) - (_height / 2));
 
   _dest_rect.x = _x;
   _dest_rect.y = _y;
@@ -108,12 +107,12 @@ void Text::align_center_x() {
   _x_alignment = 0;
 
   // defines container position
-  _x = ((_win->width() / 2) - (_width / 2));
+  _x = ((_game->window()->width() / 2) - (_width / 2));
   _dest_rect.x = _x;
 }
 void Text::align_center_y() {
   // defines container position
-  _y = ((_win->height() / 2) - (_height / 2));
+  _y = ((_game->window()->height() / 2) - (_height / 2));
   _dest_rect.y = _y;
 }
 
@@ -125,7 +124,7 @@ void Text::align_top() {
 
 void Text::align_bottom() {
   // defines container position
-  _y = (_win->height() - _height);
+  _y = (_game->window()->height() - _height);
   _dest_rect.y = _y;
 }
 
@@ -141,7 +140,7 @@ void Text::align_right() {
   _x_alignment = 1;
 
   // defines container position
-  _x = (_win->width() - _width);
+  _x = (_game->window()->width() - _width);
   _dest_rect.x = _x;
 }
 
@@ -165,5 +164,5 @@ void Text::y(int y) {
 
 
 void Text::render() {
-  SDL_RenderCopy(_ren->get(), _tex, NULL, &_dest_rect);
+  SDL_RenderCopy(_game->renderer()->get(), _tex, NULL, &_dest_rect);
 }

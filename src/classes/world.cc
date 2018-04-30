@@ -3,36 +3,23 @@
 
 #include <iostream>
 #include <cmath>
-#include <string>
-#include <vector>
-#include <map>
 #include <fstream>
 #include <sstream>
 
 #include "world.h"
 #include "functions.h"
-#include "image.h"
-#include "../config.h"
-#include "fps.h"
-#include "player.h"
-#include "text.h"
-#include "tile.h"
 
 using namespace std;
 
 
-World::World(Window& win, Renderer& ren, FPS& fps, Player& player) {
-  _win = &win;
-  _ren = &ren;
-  _fps = &fps;
-  _player = &player;
-
-  _texture = new Image(*_win, *_ren, world_texture_path, 0, 0);
+World::World(Game& game) {
+  _game = &game;
+  _texture = new Image(*_game, world_texture_path, 0, 0);
 
 
   for(int i = 0; i < (signed) dir_text.size(); i++) _neighbor_tiles.push_back(NULL);
   for(int i = 0; i < (signed) dir_text.size(); i++) {
-    _debug_neighbors.push_back(new Text(*_win, *_ren, fonts["main_16"], color_white, dir_text[i], 0, 0));
+    _debug_neighbors.push_back(new Text(*_game, fonts["main_16"], color_white, dir_text[i], 0, 0));
   }
 
 
@@ -163,7 +150,7 @@ void World::add_to_grid(const string& string_to_parse) {
   }
 
   if(is_valid_tile(id) || id == -1) {
-    _tiles.push_back(new Tile(*_win, *_ren, *_fps, *_player, (grid_tile_data) id, row, col));
+    _tiles.push_back(new Tile(*_game, (grid_tile_data) id, row, col));
   }
 }
 
@@ -179,7 +166,7 @@ void World::update_current_tile() {
       _current_tile->col(this->player_col());
     }
   } else {
-    _current_tile = new Tile(*_win, *_ren, *_fps, *_player, (grid_tile_data) -1, this->player_row(), this->player_col());
+    _current_tile = new Tile(*_game, (grid_tile_data) -1, this->player_row(), this->player_col());
   }
 }
 
@@ -259,10 +246,10 @@ void World::key_released(SDL_Keycode key){
 
 
 void World::update() {
-  float delta_velocity = (world_velocity * _fps->delta_time());
+  float delta_velocity = (world_velocity * _game->fps()->delta_time());
 
   if(_moving_up) {
-    _player->direction(NORTH);
+    _game->player()->direction(NORTH);
 
     if((this->player_y() - delta_velocity) > 0) {
       if(_neighbor_tiles[N_NORTH] == NULL) {
@@ -276,7 +263,7 @@ void World::update() {
   }
 
   if(_moving_down) {
-    _player->direction(SOUTH);
+    _game->player()->direction(SOUTH);
 
     if((this->player_y() + delta_velocity) < (_texture->height() - grid_size)) {
       if(_neighbor_tiles[N_SOUTH] == NULL) {
@@ -291,7 +278,7 @@ void World::update() {
 
 
   if(_moving_left) {
-    _player->direction(WEST);
+    _game->player()->direction(WEST);
 
     if((this->player_x() - delta_velocity) > 0) {
       if(_neighbor_tiles[N_WEST] == NULL) {
@@ -305,7 +292,7 @@ void World::update() {
   }
 
   if(_moving_right) {
-    _player->direction(EAST);
+    _game->player()->direction(EAST);
 
     if((this->player_x() + delta_velocity) < (_texture->width() - grid_size)) {
       //_x -= delta_velocity;
@@ -357,10 +344,10 @@ void World::update() {
 
 
   neighbor_direction n_dir = N_SOUTH;
-  if(_player->direction() == NORTH) n_dir = N_NORTH;
-  else if(_player->direction() == SOUTH) n_dir = N_SOUTH;
-  else if(_player->direction() == WEST) n_dir = N_WEST;
-  else if(_player->direction() == EAST) n_dir = N_EAST;
+  if(_game->player()->direction() == NORTH) n_dir = N_NORTH;
+  else if(_game->player()->direction() == SOUTH) n_dir = N_SOUTH;
+  else if(_game->player()->direction() == WEST) n_dir = N_WEST;
+  else if(_game->player()->direction() == EAST) n_dir = N_EAST;
 
   if(_neighbor_tiles[n_dir] != NULL) {
     if(_action_key_pressed) {
@@ -398,7 +385,7 @@ void World::render() {
   }
 
   for(int row = 0; row < (this->width() / grid_size); row++) {
-    if(this->player_row() == row) _player->render();
+    if(this->player_row() == row) _game->player()->render();
 
     for(const TILE& value: _tiles) {
       // needs to be tweaked a bit
@@ -410,10 +397,10 @@ void World::render() {
 
 
   neighbor_direction n_dir = N_SOUTH;
-  if(_player->direction() == NORTH) n_dir = N_NORTH;
-  else if(_player->direction() == SOUTH) n_dir = N_SOUTH;
-  else if(_player->direction() == WEST) n_dir = N_WEST;
-  else if(_player->direction() == EAST) n_dir = N_EAST;
+  if(_game->player()->direction() == NORTH) n_dir = N_NORTH;
+  else if(_game->player()->direction() == SOUTH) n_dir = N_SOUTH;
+  else if(_game->player()->direction() == WEST) n_dir = N_WEST;
+  else if(_game->player()->direction() == EAST) n_dir = N_EAST;
 
   if(_neighbor_tiles[n_dir] != NULL) {
     if(_neighbor_tiles[n_dir]->type() != COLLIDER) {
