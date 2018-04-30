@@ -77,8 +77,8 @@ bool Game::key_ready(SDL_Keycode key) {
 
 bool Game::key_ready(SDL_Keycode key, uint32_t timeout) {
   if(this->key_pressed(key)) {
-    while(SDL_TICKS_PASSED(SDL_GetTicks(), _key_timeouts[key])) {
-      _key_timeouts[key] = (SDL_GetTicks() + timeout);
+    while(SDL_TICKS_PASSED(_fps->ticks(), _key_timeouts[key])) {
+      _key_timeouts[key] = (_fps->ticks() + timeout);
       return true;
     }
 

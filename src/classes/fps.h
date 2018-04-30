@@ -6,7 +6,6 @@ class FPS {
     float _alpha = 0.2;
 
     uint32_t _frame_count = 0;
-    uint32_t _ticks = 0;
     uint32_t _ticks_last = 0;
     int _delta = 0;
 
@@ -24,7 +23,6 @@ class FPS {
 
     uint32_t frame_count(); // get the frame count
     uint32_t ticks(); // get the current SDL Tick count
-    uint32_t ticks_prev(); // get the previous SDL Tick count
 
     float delta_time(); // get current delta time
     float current(); // get the current FPS count

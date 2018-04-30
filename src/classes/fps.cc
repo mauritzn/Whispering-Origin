@@ -9,9 +9,8 @@ FPS::FPS() {
 
 
 void FPS::calculate() {
-  _ticks_last = _ticks;
-  _ticks = SDL_GetTicks();
-  _delta = (_ticks - _ticks_last);
+  _delta = (this->ticks() - _ticks_last);
+  _ticks_last = this->ticks();
   _delta_time = _delta / 1000.0;
 
   _frame_time = (_alpha * _delta) + ((1.0 - _alpha) * _frame_time);
@@ -32,11 +31,7 @@ uint32_t FPS::frame_count() {
 }
 
 uint32_t FPS::ticks() {
-  return _ticks;
-}
-
-uint32_t FPS::ticks_prev() {
-  return _ticks_last;
+  return SDL_GetTicks();
 }
 
 float FPS::delta_time() {
