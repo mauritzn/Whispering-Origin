@@ -46,6 +46,10 @@ Tile::Tile(Game& game, const grid_tile_data& id, int row, int col) {
   _progress_text = new Text(*_game, fonts["main_18"], color_white, (format_number(_resources_left) + "/" + format_number(_resources)), 0, 0);
   _progress_text->align_center_y();
 
+  SDL_Color bar_color = { 21, 108, 153, 255 };
+  _progress_bar = new Progress(*_game, bar_color, 68, 16, 0, 0);
+  _progress_bar->progress((int) _resource_percentage);
+
 
   _x_start = (_col * grid_size);
   _x_end = (_x_start + grid_size);
@@ -161,22 +165,29 @@ void Tile::action() {
   if((_game->fps()->ticks() - _last_action_at) >= 1000) {
     if(_resources_left > 0) {
       _last_action_at = _game->fps()->ticks();
+      _resource_percentage = constrain((_resource_percentage - (100.0 / 3.0)), 0, 100);
 
-      _resources_left--;
-      _progress_text->update((format_number(_resources_left) + "/" + format_number(_resources)));
+      if(_resource_percentage <= 0) {
+        _resource_percentage = 100.0;
+        _resources_left--;
+        _progress_text->update((format_number(_resources_left) + "/" + format_number(_resources)));
 
-      if(_type == TREE) _game->player()->skill("Woodcutting")->increase_xp(5);
-      else if(_type == ORE) _game->player()->skill("Mining")->increase_xp(5);
-      //else if(_type == FISH) _game->player()->skill("Fishing")->increase_xp(5);
+        if(_type == TREE) _game->player()->skill("Woodcutting")->increase_xp(5);
+        else if(_type == ORE) _game->player()->skill("Mining")->increase_xp(5);
+        //else if(_type == FISH) _game->player()->skill("Fishing")->increase_xp(5);
 
-      _game->player()->add_item(grid_tile_drops.at(_id));
+        _game->player()->add_item(grid_tile_drops.at(_id));
 
-      if(_resources_left == 0) {
-        if(_depleted_at == 0) {
-          _depleted_at = _game->fps()->ticks();
-          _tile_image->image_x(_tile_grid_size);
+        if(_resources_left == 0) {
+          if(_depleted_at == 0) {
+            _depleted_at = _game->fps()->ticks();
+            _tile_image->image_x(_tile_grid_size);
+          }
         }
       }
+
+      _progress_bar->progress((int) _resource_percentage);
+
     }
   }
 }
@@ -191,12 +202,24 @@ bool Tile::action_on_cooldown() {
 
 
 void Tile::show_progress() {
-  _progress_text->x(_tile_image->x() + ((_tile_image->width() / 2) - (_progress_text->width() / 2)));
-  _progress_text->y(_tile_image->y());
+  _progress_bar->x(_tile_image->x() + ((_tile_image->width() / 2) - (_progress_bar->width() / 2)));
+  _progress_text->x(_progress_bar->x() + ((_progress_bar->width() / 2) - (_progress_text->width() / 2)));
 
-  if(_type == ORE) _progress_text->y(_progress_text->y() - 30);
+  if(_type == TREE) {
+    if(_depleted_at > 0) {
+      _progress_bar->y(_tile_image->y() + (_tile_image->height() - 60));
+    } else {
+      _progress_bar->y(_tile_image->y());
+    }
+
+    _progress_text->y(_progress_bar->y() - 25);
+  } else if(_type == ORE) {
+    _progress_bar->y(_tile_image->y() - 30);
+    _progress_text->y(_progress_bar->y() - 25);
+  }
 
   _progress_text->render();
+  _progress_bar->render();
 }
 
 
@@ -207,8 +230,10 @@ void Tile::update() {
       _tile_image->image_x(0);
       _resources_left = _resources;
       _progress_text->update((format_number(_resources_left) + "/" + format_number(_resources)));
+      _progress_bar->progress((int) _resource_percentage);
     } else {
       _progress_text->update(format_number(((5000 - (_game->fps()->ticks() - _depleted_at)) / 1000) + 1) + "s");
+      _progress_bar->progress(0);
     }
   }
 }

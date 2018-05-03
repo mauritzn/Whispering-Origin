@@ -6,6 +6,7 @@
 #include "game.h"
 #include "image.h"
 #include "text.h"
+#include "progress_bar.h"
 #include "../config.h"
 
 using namespace std;
@@ -17,6 +18,7 @@ class Tile {
 
     Image* _tile_image;
     Text* _progress_text;
+    Progress* _progress_bar;
     int _tile_grid_size;
 
     grid_tile_data _id;
@@ -37,7 +39,8 @@ class Tile {
 
 
     int _resources = 0; // how much resources can the player get from this tile (in total)
-    int _resources_left = 0;
+    int _resources_left = 0; // how many resources are left in this tile
+    float _resource_percentage = 100.0; // what is the percentage of getting one resource (when 0 give 1 resource, and reset to 100%) [0-100]%
 
     uint32_t _depleted_at = 0; // used to see if an tile has depleted all it's resources and when it happend (-1 = not depleted, > 0 = depleted)
     uint32_t _last_action_at = 0; // used to see when an action was last taken (will be used for timing the deplition)
