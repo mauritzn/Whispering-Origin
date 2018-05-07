@@ -29,9 +29,32 @@ Game::Game() {
   _win = new Window(game_name, ((_display_width / 2) - (window_width / 2)), ((_display_height / 2) - (window_height / 2)), window_width, window_height);
   _ren = new Renderer(*_win, color_game_background);
 
+  _player = new Player(*this);
+  _world = new World(*this);
+
   SDL_Surface* icon = IMG_Load(icon_path);
   SDL_SetWindowIcon(_win->get(), icon);
+
+  _running = true;
 }
+
+Game::~Game() {
+  for(const auto& value : fonts) {
+    TTF_CloseFont(value.second);
+  }
+
+  TTF_Quit();
+  SDL_Quit();
+  cout << ">> Bye Bye! <<" << endl << endl;
+}
+
+
+bool Game::running() { return _running; }
+void Game::running(bool new_state) { _running = new_state; }
+
+SDL_Event* Game::event() { return &_event; }
+uint32_t Game::event_type() { return _event.type; }
+SDL_Keycode Game::event_key() { return _event.key.keysym.sym; }
 
 
 Window* Game::window() { return _win; }
@@ -85,6 +108,35 @@ bool Game::key_ready(SDL_Keycode key, uint32_t timeout) {
     return false;
   } else {
     return false;
+  }
+}
+
+
+void Game::check_keys() {
+  if(this->key_ready(SDLK_F1, 250)) debug_mode = !debug_mode;
+
+  if(this->key_ready(SDLK_F5)) _player->increase_xp(5);
+  if(this->key_ready(SDLK_F6)) _player->skill("Woodcutting")->increase_xp(5);
+  if(this->key_ready(SDLK_F7)) _player->skill("Mining")->increase_xp(5);
+  if(this->key_ready(SDLK_F8)) _player->skill("Smithing")->increase_xp(5);
+  if(this->key_ready(SDLK_F9)) _player->skill("Fishing")->increase_xp(5);
+  if(this->key_ready(SDLK_F10)) _player->skill("Cooking")->increase_xp(5);
+
+
+  if(this->key_ready(keys.at("inv_prev"))) {
+    _player->prev_inventory_slot();
+  }
+
+  if(this->key_ready(keys.at("inv_next"))) {
+    _player->next_inventory_slot();
+  }
+
+  if(this->key_ready(keys.at("drop_key"))) {
+    if(this->key_pressed(SDLK_LSHIFT) || this->key_pressed(SDLK_RSHIFT)) {
+      _player->drop_active_stack();
+    } else {
+      _player->drop_active_item();
+    }
   }
 }
 

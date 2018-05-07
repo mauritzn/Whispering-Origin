@@ -36,12 +36,23 @@ class Game {
     int _display_width = 0;
     int _display_height = 0;
 
+    bool _running = false;
+    SDL_Event _event;
+
     map<SDL_Keycode, bool> _pressed_keys;
     map<SDL_Keycode, uint32_t> _key_timeouts;
 
 
   public:
     Game();
+    ~Game();
+
+    bool running();
+    void running(bool);
+
+    SDL_Event* event();
+    uint32_t event_type();
+    SDL_Keycode event_key();
 
     Window* window();
     Renderer* renderer();
@@ -64,6 +75,7 @@ class Game {
     bool key_ready(SDL_Keycode);
     bool key_ready(SDL_Keycode, uint32_t);
 
+    void check_keys();
     void render();
 };
 

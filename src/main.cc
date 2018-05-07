@@ -19,41 +19,22 @@
  *  - KDE Neon (Ubuntu with 16.04.1)
  */
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
-#include <SDL2/SDL_image.h>
 
 #include <iostream>
 #include <string>
-#include <vector>
 #include <map>
-#include <cmath>
 
 #include "config.h"
-#include "classes/window.h"
-#include "classes/renderer.h"
 #include "classes/functions.h"
 #include "classes/image.h"
 #include "classes/text.h"
-#include "classes/fps.h"
-#include "classes/player.h"
-#include "classes/world.h"
-#include "classes/progress_bar.h"
-#include "classes/skill.h"
 #include "classes/game.h"
 using namespace std;
 
 
 int main() {
-  SDL_Event event;
-
-  bool game_running = true;
-  bool debug_test_refresh_done = false;
-
   Game game;
-  game.player(*(new Player(game)));
-  game.world(*(new World(game)));
-
-
+  bool debug_test_refresh_done = false;
 
   Image UI_base(game, base_ui_image_path, 0, 0);
 
@@ -99,45 +80,20 @@ int main() {
   init_debug_info_position(debug_info);
 
 
-  while(game_running) {
-    while(SDL_PollEvent(&event)) {
-      if(event.type == SDL_QUIT) game_running = false;
-      else if(event.type == SDL_KEYDOWN || event.type == SDL_KEYUP) {
-        if(event.type == SDL_KEYDOWN) game.press_key(event.key.keysym.sym);
-        else if(event.type == SDL_KEYUP) game.release_key(event.key.keysym.sym);
+  while(game.running()) {
+    while(SDL_PollEvent(game.event())) {
+      if(game.event_type()== SDL_QUIT) game.running(false);
+      else if(game.event_type() == SDL_KEYDOWN || game.event_type() == SDL_KEYUP) {
+        if(game.event_type() == SDL_KEYDOWN) game.press_key(game.event_key());
+        else if(game.event_type() == SDL_KEYUP) game.release_key(game.event_key());
       } else {
-        //if(event.type != 1024 && event.type != 512) cout << ">> Event: " << event.type << endl;
+        //if(game.event_type() != 1024 && game.event_type() != 512) cout << ">> Event: " << game.event_type() << endl;
       }
     }
 
 
 
-    if(game.key_ready(SDLK_F1, 250)) debug_mode = !debug_mode;
-
-    if(game.key_ready(SDLK_F5)) game.player()->increase_xp(5);
-    if(game.key_ready(SDLK_F6)) game.player()->skill("Woodcutting")->increase_xp(5);
-    if(game.key_ready(SDLK_F7)) game.player()->skill("Mining")->increase_xp(5);
-    if(game.key_ready(SDLK_F8)) game.player()->skill("Smithing")->increase_xp(5);
-    if(game.key_ready(SDLK_F9)) game.player()->skill("Fishing")->increase_xp(5);
-    if(game.key_ready(SDLK_F10)) game.player()->skill("Cooking")->increase_xp(5);
-
-
-    if(game.key_ready(keys.at("inv_prev"))) {
-      game.player()->prev_inventory_slot();
-    }
-
-    if(game.key_ready(keys.at("inv_next"))) {
-      game.player()->next_inventory_slot();
-    }
-
-    if(game.key_ready(keys.at("drop_key"))) {
-      if(game.key_pressed(SDLK_LSHIFT) || game.key_pressed(SDLK_RSHIFT)) {
-        game.player()->drop_active_stack();
-      } else {
-        game.player()->drop_active_item();
-      }
-    }
-
+    game.check_keys();
 
     game.fps()->update();
     game.world()->update();
@@ -181,13 +137,4 @@ int main() {
     game.renderer()->update(); // update the screen
     // SDL_Delay(1000); // <= sometimes used for debuggning issues
   }
-
-
-  for(const auto& value : fonts) {
-    TTF_CloseFont(value.second);
-  }
-
-  TTF_Quit();
-  SDL_Quit();
-  cout << ">> Bye Bye! <<" << endl << endl;
 }
