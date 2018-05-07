@@ -88,13 +88,11 @@ void Progress::y(int new_y) {
 }
 
 
+int Progress::progress() { return _progress; }
+
 void Progress::progress(int new_progress) {
   _progress = constrain(new_progress, 0, 100);
   _bar_rect.w = _background_rect.w * ((float) _progress / 100.0);
-}
-
-int Progress::progress() {
-  return _progress;
 }
 
 

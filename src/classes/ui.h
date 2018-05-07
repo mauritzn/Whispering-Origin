@@ -25,8 +25,8 @@ class UI {
   public:
     UI(Game&);
 
-    void update();
-    void render();
+    void update(); // update debug info
+    void render(); // renders UI base, text and debug info
 };
 
 #endif

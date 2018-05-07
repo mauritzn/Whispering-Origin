@@ -40,33 +40,31 @@ class World {
   public:
     World(Game&);
 
-    int width();
-    int height();
+    int width(); // get the world's width
+    int height(); // get the world's height
 
-    int x();
-    int y();
-
-    void x(int);
-    void y(int);
-
-
-    int player_x();
-    int player_y();
+    int x(); // get the world's x
+    int y(); // get the world's y
+    void x(int); // set the world's x
+    void y(int); // set the world's y
 
 
-    int player_row();
-    int player_col();
-    string player_row_and_col();
+    int player_x(); // get the player's x
+    int player_y(); // get the player's y
+
+    int player_row(); // get the player's row
+    int player_col(); // get the player's col
+    string player_row_and_col(); // get the player's row and col, ROWxCOL
 
 
-    void add_to_grid(const string&);
+    void add_to_grid(const string&); // create tile and add to grid
 
 
-    void update_current_tile();
-    void update_neighbors();
+    void update_current_tile(); // change the value of the current tile (row, col)
+    void update_neighbors(); // get all the neighbors around the current tile
 
-    void update();
-    void render();
+    void update(); // handles player movments, player actions, collisions
+    void render(); // render the world's texture, player, tile images, tile progress
 };
 
 #endif

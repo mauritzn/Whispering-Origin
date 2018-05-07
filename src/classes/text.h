@@ -39,17 +39,18 @@ class Text {
 
     void update(string); // change the text value
 
-    int width();
-    int height();
+    int width(); // get the text's width
+    int height(); // get the text's height
 
-    void align_center();
-    void align_center_x();
-    void align_center_y();
+    // also sets alignment, this keeps it aligned properly when the text is updated
+    void align_center(); // set x & y to the center of the screen
+    void align_center_x(); // set x to the center of the screen
+    void align_center_y(); // set y to the center of the screen
 
-    void align_top();
-    void align_bottom();
-    void align_left();
-    void align_right();
+    void align_top(); // set y to the top of the screen
+    void align_bottom(); // set y to the bottom of the screen
+    void align_left(); // set x to the left of the screen
+    void align_right(); // set x to the right of the screen
 
 
     int x(); // get the texts x position

@@ -32,19 +32,16 @@ class Skill {
   public:
     Skill(Game&, string, int, int, int, int);
 
-    string name();
+    string name(); // get the skill's name
+    int level(); // get the current level
+    int xp(); // get the current xp
 
+    int prev_xp_to_level(); // get the xp that was required to level up last time
+    int xp_to_level(); // get the current xp that is required to level up
+    void increase_xp(int); // increase the skill's xp, this also check if the cap is reached and increases level
+    bool has_leveled_up(); // check if the skill has leveled up, how long is defined using: time_to_display_level_up_message (in config)
 
-    int level();
-    int xp();
-
-    int prev_xp_to_level();
-    int xp_to_level();
-    void increase_xp(int);
-    bool has_leveled_up();
-
-
-    void render();
+    void render(); // render the skill's progress bar and UI text connected to it
 };
 
 #endif

@@ -33,49 +33,48 @@ class Player {
   public:
     Player(Game&);
 
-    int x();
-    int y();
-
-    void x(int);
-    void y(int);
-
-
-    player_direction direction();
-    void direction(player_direction);
-
-    int max_health();
-    int health();
-    int level();
-    int xp();
-
-    Skill* skill(string);
-
-    void heal(int);
-    void damage(int);
-    bool is_alive();
+    int x(); // get the player's x value on the screen (not in the world)
+    int y(); // get the player's y value on the screen (not in the world)
+    void x(int); // set the player's x value on the screen (not in the world)
+    void y(int); // set the player's y value on the screen (not in the world)
 
 
-    void add_item(items item_to_add);
-    void drop_active_item();
-    void drop_active_stack();
+    player_direction direction(); // get the player's direction
+    void direction(player_direction); // set the player's direction
 
-    int current_inventory_slot();
-    void inventory_slot(int);
-    void prev_inventory_slot();
-    void next_inventory_slot();
+    int max_health(); // get the player's health cap
+    int health(); // get the player's health
+    int level(); // get the player's level
+    int xp(); // get the player's main xp
+
+    Skill* skill(string); // get a player's skill, using the skill's name
+
+    void heal(int); // heal the player (increase health)
+    void damage(int); // damage the player (decrease health)
+    bool is_alive(); // check if the player is alive (health > 0)
 
 
-    uint32_t money();
-    void money(int);
-    void increase_money(int);
-    void decrease_money(int);
+    void add_item(items item_to_add); // add an item to the player's inventory
+    void drop_active_item(); // drop a single item from the inventory
+    void drop_active_stack(); // drop an item stack from the inventory
 
-    int xp_to_level();
-    void increase_xp(int);
-    bool has_leveled_up();
+    int current_inventory_slot(); // get the current inventory slot
+    void inventory_slot(int); // set the current inventory slot
+    void prev_inventory_slot(); // move to the prev inventory slot
+    void next_inventory_slot(); // move to the next inventory slot
 
-    void render_inventory();
-    void render();
+
+    uint32_t money(); // get the player's money amount
+    void money(int); // set the player's money amount (0-2m)
+    void increase_money(int); // increase the player's money amount (0-2m)
+    void decrease_money(int); // decrease the player's money amount (0-2m)
+
+    int xp_to_level(); // get the required xp to level up the player
+    void increase_xp(int); // increase the player's main xp
+    bool has_leveled_up(); // check if the player has leveled up, how long is defined using: time_to_display_level_up_message (in config)
+
+    void render_inventory(); // render the inventory active slot, slot images, slot nr's
+    void render(); // render the player's image and skills
 };
 
 #endif

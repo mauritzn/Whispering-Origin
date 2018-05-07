@@ -29,39 +29,38 @@ class Progress {
   public:
     Progress(Game&, SDL_Color, int, int, int, int);
 
-    int width();
-    int height();
+    int width(); // get the progress bar's width
+    int height(); // get the progress bar's height
+    void width(int); // set the progress bar's width
+    void height(int); // set the progress bar's height
 
-    void width(int);
-    void height(int);
-
-    int border_size();
-    void border_size(int);
-
-
-    SDL_Color bar_color();
-    SDL_Color background_color();
-    SDL_Color border_color();
-
-    void bar_color(SDL_Color);
-    void background_color(SDL_Color);
-    void border_color(SDL_Color);
+    int border_size(); // get the progress bar's border size
+    void border_size(int); // set the progress bar's border size
 
 
-    int original_x();
-    int original_y();
+    SDL_Color bar_color(); // get the progress color
+    SDL_Color background_color(); // get the progress bar's background color
+    SDL_Color border_color(); // get the progress bar's border color
 
-    int x();
-    int y();
-    void x(int);
-    void y(int);
-
-
-    void progress(int);
-    int progress();
+    void bar_color(SDL_Color); // set the progress color
+    void background_color(SDL_Color); // set the progress bar's background color
+    void border_color(SDL_Color); // set the progress bar's border color
 
 
-    void render();
+    int original_x(); // get the progress bar's creation x value
+    int original_y(); // get the progress bar's creation y value
+
+    int x(); // get the progress bar's x value
+    int y(); // get the progress bar's y value
+    void x(int); // set the progress bar's x value
+    void y(int); // set the progress bar's y value
+
+
+    int progress(); // get the progress bar's progress (0-100)
+    void progress(int); // set the progress bar's progress (0-100)
+
+
+    void render(); // render the progress bar
 };
 
 #endif

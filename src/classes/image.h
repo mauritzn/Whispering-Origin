@@ -26,25 +26,24 @@ class Image {
     Image(Game&, string, int, int);
     ~Image(); // free textures when the object is destroyed
 
+    int width();  // get image file real width
+    int height(); // get image file real height
 
-    int width();  // get image width
-    int height(); // get image height
+    void image_width(int); // get the image's width
+    void image_height(int); // get the image's height
 
-    void image_width(int);
-    void image_height(int);
-
-    void container_width(int);
-    void container_height(int);
+    void container_width(int); // get the container's width
+    void container_height(int); // get the container's height
 
 
-    void align_center();
-    void align_center_x();
-    void align_center_y();
+    void align_center(); // set x & y to the center of the screen
+    void align_center_x(); // set x to the center of the screen
+    void align_center_y(); // set y to the center of the screen
 
-    void align_top();
-    void align_bottom();
-    void align_left();
-    void align_right();
+    void align_top(); // set y to the top of the screen
+    void align_bottom(); // set y to the bottom of the screen
+    void align_left(); // set x to the left of the screen
+    void align_right(); // set x to the right of the screen
 
 
     int image_x(); // get the image's x position

@@ -167,10 +167,10 @@ void Game::update() {
 
 void Game::render() {
   this->renderer()->clear();
+
   this->world()->render();
-
-
   this->ui()->render();
   this->player()->render_inventory();
+
   this->renderer()->update(); // update the screen
 }

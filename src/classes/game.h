@@ -50,40 +50,40 @@ class Game {
     Game();
     ~Game();
 
-    bool running();
-    void running(bool);
+    bool running(); // check if the game is running
+    void running(bool); // set wether the game is running or not
 
-    SDL_Event* event();
-    uint32_t event_type();
-    SDL_Keycode event_key();
-    void catch_events();
+    SDL_Event* event(); // get the game's SDL event variable
+    uint32_t event_type(); // get the current type stored in the event()
+    SDL_Keycode event_key(); // get the current key stored in the event()
+    void catch_events(); // detect event changes, like: change in type, key press/release, update the game's event variable
 
-    Window* window();
-    Renderer* renderer();
-    FPS* fps();
-    Player* player();
-    World* world();
-    UI* ui();
+    Window* window(); // get the game's Window instance
+    Renderer* renderer(); // get the game's Renderer instance
+    FPS* fps(); // get the game's FPS instance
+    Player* player(); // get the game's Player instance
+    World* world(); // get the game's World instance
+    UI* ui(); // get the game's UI instance
 
-    void window(Window&);
-    void renderer(Renderer&);
-    void fps(FPS&);
-    void player(Player&);
-    void world(World&);
-    void ui(UI&);
+    void window(Window&); // set the game's Window instance
+    void renderer(Renderer&); // set the game's Renderer instance
+    void fps(FPS&); // set the game's FPS instance
+    void player(Player&); // set the game's Player instance
+    void world(World&); // set the game's World instance
+    void ui(UI&); // set the game's UI instance
 
-    int display_width();
-    int display_height();
+    int display_width(); // get the displays width
+    int display_height(); // get the displays height
 
-    void press_key(SDL_Keycode);
-    void release_key(SDL_Keycode);
-    bool key_pressed(SDL_Keycode);
-    bool key_ready(SDL_Keycode);
-    bool key_ready(SDL_Keycode, uint32_t);
+    void press_key(SDL_Keycode); // mark key as pressed
+    void release_key(SDL_Keycode); // unmark key as pressed
+    bool key_pressed(SDL_Keycode); // check if a key is marked as pressed
+    bool key_ready(SDL_Keycode); // check if a key is marked as pressed and 100ms has passed since last press
+    bool key_ready(SDL_Keycode, uint32_t); // check if a key is marked as pressed and a certain amount of time has passed since last press
 
-    void check_keys();
-    void update();
-    void render();
+    void check_keys(); // check if game keys are pressed
+    void update(); // updates the game's FPS, World and UI instance
+    void render(); // clear the renderer, render the game's World, UI and Player instance
 };
 
 #endif
