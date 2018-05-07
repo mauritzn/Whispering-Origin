@@ -10,6 +10,7 @@ class Text;
 class Skill;
 class Progress;
 class Tile;
+class UI;
 
 #include <map>
 #include "window.h"
@@ -17,6 +18,7 @@ class Tile;
 #include "fps.h"
 #include "player.h"
 #include "world.h"
+#include "ui.h"
 
 using namespace std;
 
@@ -32,6 +34,7 @@ class Game {
     FPS* _fps = NULL;
     Player* _player = NULL;
     World* _world = NULL;
+    UI* _ui = NULL;
 
     int _display_width = 0;
     int _display_height = 0;
@@ -53,18 +56,21 @@ class Game {
     SDL_Event* event();
     uint32_t event_type();
     SDL_Keycode event_key();
+    void catch_events();
 
     Window* window();
     Renderer* renderer();
     FPS* fps();
     Player* player();
     World* world();
+    UI* ui();
 
     void window(Window&);
     void renderer(Renderer&);
     void fps(FPS&);
     void player(Player&);
     void world(World&);
+    void ui(UI&);
 
     int display_width();
     int display_height();
@@ -76,6 +82,7 @@ class Game {
     bool key_ready(SDL_Keycode, uint32_t);
 
     void check_keys();
+    void update();
     void render();
 };
 

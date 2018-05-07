@@ -31,6 +31,7 @@ Game::Game() {
 
   _player = new Player(*this);
   _world = new World(*this);
+  _ui = new UI(*this);
 
   SDL_Surface* icon = IMG_Load(icon_path);
   SDL_SetWindowIcon(_win->get(), icon);
@@ -56,12 +57,25 @@ SDL_Event* Game::event() { return &_event; }
 uint32_t Game::event_type() { return _event.type; }
 SDL_Keycode Game::event_key() { return _event.key.keysym.sym; }
 
+void Game::catch_events() {
+  while(SDL_PollEvent(this->event())) {
+    if(this->event_type()== SDL_QUIT) this->running(false);
+    else if(this->event_type() == SDL_KEYDOWN || this->event_type() == SDL_KEYUP) {
+      if(this->event_type() == SDL_KEYDOWN) this->press_key(this->event_key());
+      else if(this->event_type() == SDL_KEYUP) this->release_key(this->event_key());
+    } else {
+      //if(this->event_type() != 1024 && this->event_type() != 512) cout << ">> Event: " << this->event_type() << endl;
+    }
+  }
+}
+
 
 Window* Game::window() { return _win; }
 Renderer* Game::renderer() { return _ren; }
 FPS* Game::fps() { return _fps; }
 Player* Game::player() { return _player; }
 World* Game::world() { return _world; }
+UI* Game::ui() { return _ui; }
 
 
 void Game::window(Window& win) { _win = &win; }
@@ -69,6 +83,7 @@ void Game::renderer(Renderer& ren) { _ren = &ren; }
 void Game::fps(FPS& fps) { _fps = &fps; }
 void Game::player(Player& player) { _player = &player; }
 void Game::world(World& world) { _world = &world; }
+void Game::ui(UI& ui) { _ui = &ui; }
 
 
 int Game::display_width() { return _display_width; }
@@ -141,4 +156,21 @@ void Game::check_keys() {
 }
 
 
-void Game::render() {}
+void Game::update() {
+  this->check_keys();
+
+  this->fps()->update();
+  this->world()->update();
+  this->ui()->update();
+}
+
+
+void Game::render() {
+  this->renderer()->clear();
+  this->world()->render();
+
+
+  this->ui()->render();
+  this->player()->render_inventory();
+  this->renderer()->update(); // update the screen
+}

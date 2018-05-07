@@ -15,8 +15,8 @@ class Progress {
     int _progress = 0; // 0-100
 
     SDL_Color _bar_color;
-    SDL_Color _background_color = { 255, 255, 255 };
-    SDL_Color _border_color = { 0, 0, 0 };
+    SDL_Color _background_color = { 255, 255, 255, 255 };
+    SDL_Color _border_color = { 0, 0, 0, 255 };
 
     int _original_x;
     int _original_y;
