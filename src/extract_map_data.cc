@@ -65,6 +65,9 @@ int main() {
   int current_x = 0;
   int current_y = 0;
 
+  int grid_size = 32; // default grid size (used if none is found in data file)
+  bool player_pos_found = false;
+
   bool parsing = true;
 
 
@@ -76,21 +79,13 @@ int main() {
   } else {
     cout << "Extracting map data from image..." << endl << endl;
 
-    map_file.open(save_to.c_str());
     const int map_width = surface->w;
     const int map_height = surface->h;
-    const int grid_size = 32;
-
-
-    map_file << map_width << "x" << map_height
-             << ":" << grid_size << endl;
-
 
 
     SDL_Color current_color = { 255, 255, 255, 255 };
-    bool player_pos_found = false;
-    int player_pos_x = floor(map_width / 2);
-    int player_pos_y = floor(map_height / 2);
+    int player_pos_x = floor(map_width / 2); // default (if none is found in data file)
+    int player_pos_y = floor(map_height / 2); // default (if none is found in data file)
 
     grid_pixel_type current_grid_type;
     grid_tile_type current_tile_type;
@@ -131,6 +126,11 @@ int main() {
       if(get_RGB(current_color, surface, current_x, current_y)) {
         current_grid_type = (grid_pixel_type) concat_RGB(current_color);
 
+        if(current_x == 0 && current_y == 0) {
+          grid_size = constrain((int) current_color.r, 6, 252);
+        }
+
+
         if(current_grid_type == P_COLLIDER) {
           if(get_RGB(current_color, surface, (current_x + 1), (current_y + 1))) {
             if(is_valid_tile(concat_RGB(current_color))) {
@@ -162,7 +162,7 @@ int main() {
               coliders_found++;
             }
           }
-        } else if(current_grid_type == P_PLAYER) {
+        } else if(current_grid_type == P_PLAYER && player_pos_found == false) {
           player_pos_x = current_x;
           player_pos_y = current_y;
           player_pos_found = true;
@@ -185,7 +185,11 @@ int main() {
     }
 
 
-    map_file << endl;
+
+    map_file.open(save_to.c_str());
+    map_file << map_width << "x" << map_height
+             << ":" << grid_size << endl << endl;
+
     if(player_pos_found) {
       player << to_grid_row(player_pos_y, grid_size) << "x" << to_grid_col(player_pos_x, grid_size);
     } else {
@@ -215,7 +219,8 @@ int main() {
 
 
 
-    cout << "Colliders found: " << coliders_found << endl
+    cout << "Grid size found: " << grid_size << endl
+         << "Colliders found: " << coliders_found << endl
          << "Trees found: " << found_count.at(TREE) << endl
          << "Ores found: " << found_count.at(ORE) << endl
          << "Fish found: " << found_count.at(FISH) << endl
