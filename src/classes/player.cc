@@ -14,9 +14,11 @@ Player::Player(Game& game) {
   _character->container_height(character_grid_size);
   _character->image_width(character_grid_size);
   _character->image_height(character_grid_size);
+  _animation_states = (_character->width() / character_grid_size);
 
   _character->align_center();
   _character->image_y(SOUTH);
+  _character->image_x((_current_animation_state * character_grid_size));
 
   UI_active_slot = new Image(*_game, active_slot_image_path, 0, 0);
   UI_active_slot->align_bottom();
@@ -63,6 +65,25 @@ player_direction Player::direction() {
 
 void Player::direction(player_direction new_direction) {
   _character->image_y(new_direction);
+}
+
+void Player::rest_pose() {
+  _last_animation = 0;
+  _current_animation_state = 0;
+  _character->image_x((_current_animation_state * character_grid_size));
+}
+
+void Player::animate() {
+  if((_game->fps()->ticks() - _last_animation) >= 150) {
+    _last_animation = _game->fps()->ticks();
+    _current_animation_state++;
+
+    if(_current_animation_state > _animation_states) {
+      _current_animation_state = 0;
+    }
+
+    _character->image_x((_current_animation_state * character_grid_size));
+  }
 }
 
 

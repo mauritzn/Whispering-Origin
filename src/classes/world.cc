@@ -298,6 +298,12 @@ void World::update() {
     _texture->x((int) _x);
   }
 
+  if(_game->key_pressed(keys.at("move_up")) || _game->key_pressed(keys.at("move_down")) || _game->key_pressed(keys.at("move_left")) || _game->key_pressed(keys.at("move_right"))) {
+    _game->player()->animate();
+  } else {
+    _game->player()->rest_pose();
+  }
+
 
   if(this->player_row_and_col() != _current_tile->row_and_col()) {
     this->update_current_tile();

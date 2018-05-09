@@ -17,6 +17,10 @@ class Player {
     Game* _game;
     Image* _character;
 
+    int _animation_states = 0;
+    int _current_animation_state = 0;
+    uint32_t _last_animation = 0;
+
     int _hp;
     uint32_t _money = 0;
 
@@ -41,6 +45,8 @@ class Player {
 
     player_direction direction(); // get the player's direction
     void direction(player_direction); // set the player's direction
+    void rest_pose(); // reset player's sprite
+    void animate(); // animate the player's sprite
 
     int max_health(); // get the player's health cap
     int health(); // get the player's health
