@@ -15,10 +15,10 @@ class Window {
   public:
     Window(string, int, int, int, int);
     ~Window(); // free the SDL_Window instance when the object is destroyed
-    
-    
+
+
     SDL_Window* get(); // get the SDL_Window instance
-    
+
     int width();  // get the windows width
     int height(); // get the windows height
 };

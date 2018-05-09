@@ -29,7 +29,7 @@ int main() {
     game.catch_events();
     game.update();
     game.render();
-    
+
     // SDL_Delay(1000); // <= sometimes used for debuggning issues
   }
 }

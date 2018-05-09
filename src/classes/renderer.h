@@ -12,9 +12,9 @@ class Renderer {
   public:
     Renderer(Window&, SDL_Color);
     ~Renderer(); // free the SDL_Renderer instance when the object is destroyed
-    
+
     SDL_Renderer* get(); // get the SDL_Renderer instance
-    
+
     void clear();  // clear the renderer
     void update(); // update the screen
 };
