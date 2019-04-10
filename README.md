@@ -123,9 +123,9 @@ That in return will mean that the system will go after a polynomial progress whi
 
 ## Controls
 
-WASD: Up, Left, Down, Right
-E: Interaction (Talking to NPCs & Non-combat related matters)
-Space: Attack
-Left Shift: Block (To be investigated)
-F4: Toggle Debug Mode
-Esc: Toggle menu (or exit screen)
+- **WASD:** Up, Left, Down, Right
+- **E:** Interaction *(Talking to NPCs & Non-combat related matters)*
+- **Space:** Attack
+- **Left Shift:** Block *(To be investigated)*
+- **F4:** Toggle Debug Mode
+- **Esc:** Toggle menu *(or exit screen)*
