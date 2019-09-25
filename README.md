@@ -45,9 +45,9 @@ A 2D top-down RPG game, with a tile-based world.
 
 - Woodcutting
 - Mining
-- Fishing
-- Simple Cooking
-- Smithing
+*- Fishing*
+*- Simple Cooking*
+*- Smithing*
 
 <br />
 
@@ -81,7 +81,7 @@ Stores items you get from resources like trees, ores, fishing spots and of cours
 ## Polynomial Progression
 
 The experience system will go after this formula: 
-*(current level * 3) ^ 3*
+*(current level * 2) ^ 3*
 
 
 That in return will mean that the system will go after a polynomial progress which is cubed, much similar to the system made with the old game Armada which had *(current level * 8) ^ 3*.
